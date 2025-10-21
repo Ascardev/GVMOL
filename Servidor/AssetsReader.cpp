@@ -4,7 +4,6 @@
 #include <array>
 #include <cctype>
 #include <cstring>
-#include <filesystem>
 #include <fstream>
 #include <limits>
 #include <memory>
@@ -44,19 +43,15 @@ namespace Game
                 {
                         auto ErasePredicate = [CurrentTime](const AssetsBinary& Binary)
                         {
-                                if (Binary.AllocationTime + MaxAllocationTime < CurrentTime)
-                                {
-                                        return true;
-                                }
-
-                                return false;
+                                return (Binary.AllocationTime + MaxAllocationTime) < CurrentTime;
                         };
 
                         // Our check time is every 10 seconds to avoid overhead.
                         s_LastCheckTime = CurrentTime + 10 * 1000;
 
                         // Erase by predicate.
-                        std::erase_if(m_Cache, ErasePredicate);
+                        const auto FirstExpired = std::remove_if(m_Cache.begin(), m_Cache.end(), ErasePredicate);
+                        m_Cache.erase(FirstExpired, m_Cache.end());
                 }
         }
 
@@ -91,36 +86,35 @@ namespace Game
                         }
                 }
 
-                namespace fs = std::filesystem;
-
                 // Perform decrypt operation.
                 const auto FileID = FileCRC + CypherSalt;
 
-                // Get our file path.
-                const auto FilePathResolved = fs::path{ AssetsPath } / (std::to_string(FileID) + ".bin");
+                // Resolve our legacy on-disk location.
+                const std::string FilePathResolved = std::string(AssetsPath) + "\\" + std::to_string(FileID) + ".bin";
 
-                std::error_code ErrorCode{ };
-                const auto FileSizeOnDisk = fs::file_size(FilePathResolved, ErrorCode);
-                if (ErrorCode || FileSizeOnDisk == 0)
-                {
-                        return false;
-                }
-
-                if (FileSizeOnDisk > static_cast<uintmax_t>(std::numeric_limits<unsigned int>::max()))
-                {
-                        return false;
-                }
-
-                std::ifstream Input(FilePathResolved, std::ios::binary);
+                std::ifstream Input(FilePathResolved, std::ios::binary | std::ios::ate);
                 if (!Input)
                 {
                         return false;
                 }
 
-                const auto FileSize = static_cast<unsigned int>(FileSizeOnDisk);
-                std::vector<unsigned char> Buffer(FileSize);
+                const auto FileSizeOnDisk = static_cast<std::streamoff>(Input.tellg());
+                if (FileSizeOnDisk <= 0)
+                {
+                        return false;
+                }
 
-                if (!Input.read(reinterpret_cast<char*>(Buffer.data()), static_cast<std::streamsize>(Buffer.size())))
+                Input.seekg(0, std::ios::beg);
+
+                if (FileSizeOnDisk > static_cast<std::streamoff>(std::numeric_limits<unsigned int>::max()))
+                {
+                        return false;
+                }
+
+                const auto FileSize = static_cast<unsigned int>(FileSizeOnDisk);
+                auto Memory = std::make_shared<std::vector<unsigned char>>(FileSize);
+
+                if (!Input.read(reinterpret_cast<char*>(Memory->data()), static_cast<std::streamsize>(Memory->size())))
                 {
                         return false;
                 }
@@ -128,11 +122,9 @@ namespace Game
                 std::array<unsigned char, sizeof(FileCRC)> Keys{ };
                 std::memcpy(Keys.data(), &FileCRC, Keys.size());
 
-                auto Memory = std::make_shared<std::vector<unsigned char>>(Buffer.size());
-
-                for (size_t i = 0; i < Buffer.size(); ++i)
+                for (size_t i = 0; i < Memory->size(); ++i)
                 {
-                        (*Memory)[i] = Buffer[i] ^ Keys[i % Keys.size()];
+                        (*Memory)[i] ^= Keys[i % Keys.size()];
                 }
 
                 AssetsBinary Result;
