@@ -1,0 +1,94 @@
+
+parte 1 conf no servidor
+
+Abra o Launcher.sln (caso esteja em Debug, mude para Release) e procure por essa linha
+
+
+string Servidor = "http://127.0.0.1/Launcher/" ;  
+nessa linha você vai alterar 127.0.0.1 para o IP do seu Host (normalmente é o mesmo IP que você entra no Host pela Área Remota)
+
+Em alguns casos (como no meu) o Host tem algumas frescuras (usar IP diferente do qual você usa pra se conectar na maquina, ter limite de portas, etc cada um funciona de um jeito)
+no meu caso eu tenho de adicionar a porta junto ao IP caso contrario o Launcher não "funciona" ficando assim: (porta 9999 como exemplo)
+
+
+string Servidor = "http://127.0.0.1:9999/Launcher/" ;  
+feito isso só Compilar e Pronto.
+(oque, é só isso?)
+sim, está pronto seu Launcher.
+
+
+Para configurar no cliente 2
+
+
+Abra a pasta do (Launcher Priston4Fun) e vá até ao caminho que o Visual Studio te informou após a compilação
+
+
+1 >------ Compila çã o iniciada : Projeto : Launcher , Configura çã o : Release Any CPU ------ 1 > Launcher -> C : \Users\PTL\Desktop\Launcher Priston4Fun \Launcher\Launcher \bin\Release\Launcher . exe
+ ========== Compilar : 1 com ê xito , 0 com falha , 0 atualizados , 0 ignorados ==========      
+        
+Exemplo = C:\Users\PTL\Desktop\Launcher Priston4Fun\Launcher\Launcher\bin\Release\Launcher.exe
+
+Lá você vai ter dois arquivos "Launcher.exe" e "Ionic.Zip.dll" 
+
+Copie os dois e Cole na pasta do seu Jogo (Client)
+
+feito isso seu Client está Pronto.
+(oque, é só isso?)
+sim
+
+
+parte 3 Configurando lauch no servidor 
+
+Abra a pasta Host (dentro da pasta Launcher Priston4Fun) e Copie a pasta Launcher (haverá dois arquivos dentro de "Updates" e "Version")
+
+Entre no seu Host e vá até a pasta wwwroot e Cole a pasta Launcher lá
+
+feito isso sua parte do Host esta Pronta.
+(oque, é só isso?)
+sim
+
+
+Parte 4 como travare o game no lauch
+
+em Winmain.cpp procure por essa linha (dependendo da Source pode ser Diferente procure por algo assim)
+
+
+INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPreInst, LPSTR lpCmdLine, INT nCmdShow)
+Logo abaixo você adiciona
+
+
+// TRAVAR GAME NO LAUNCHER (Referencia para quando quiser achar mais facil)
+	
+        if ( strcmp ( lpCmdLine , "Zaraki_APT" ) != 0 ) { 
+		STARTUPINFO si ; 
+		PROCESS_INFORMATION pi ;   
+	
+
+		ZeroMemory (& si , sizeof ( si )); 
+		sim . cb = tamanho ( si ); ZeroMemory (& pi , sizeof ( pi ));  
+		 
+
+		CreateProcess ( "Launcher.exe" , NULL , NULL , NULL , FALSE , NULL , NULL , NULL , & si , & pi ); 
+		saída ( 0 ); }  
+	
+
+Costumizando o laucher
+
+
+Para alterar a imagem do seu Launcher você vai fazer o seguinte
+
+
+Ir até o caminho Launcher Priston4Fun\Launcher\Launcher\Resources
+abrir o bg_1 e bg_2 no seu editor de fotos e editar do seu gosto
+ 
+
+(ain mas essa imagem é pequena eu quero um maior e mudar o local das informações de atualização) ok fodão
+
+é simples também, clique duas vezes em "Form1.cs", depois clique com direito em Propriedades
+e lá você tem todas as informações que quiser alterar de Layout do seu Launcher
+
+cor, fonte, tamanho do Launcher, disposição dos textos, adicionar mais textos, retirar os textos.
+
+ai é com você use sua criatividade.
+
+Soucer do lauche ja esta com fix 

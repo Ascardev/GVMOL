@@ -1,0 +1,62 @@
+
+
+
+
+
+
+
+
+int	rsHackTrap_FieldNPC[] = {
+	sinNPC_SHOP,															
+	0,																		
+	0,																		
+	sinNPC_SHOP|sinNPC_MIX|sinNPC_WARE|sinNPC_SKILL|sinNPC_FORCE|sinNPC_MANUFACTURE,			
+	0,																		
+	0,																		
+	sinNPC_SHOP|sinNPC_WARE,												
+	sinNPC_SHOP,															
+	0,																		
+	sinNPC_SHOP,															
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	sinNPC_SHOP,															
+	0,																		
+	0,																		
+	sinNPC_SHOP|sinNPC_AGING|sinNPC_WARE|sinNPC_SKILL|sinNPC_FORCE|sinNPC_SMELTING,			
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	sinNPC_SHOP|sinNPC_WARE|sinNPC_FORCE,									
+	0,																		
+	0,																		
+	0,																		
+	sinNPC_SHOP|sinNPC_WARE,												
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+	0,																		
+};
+

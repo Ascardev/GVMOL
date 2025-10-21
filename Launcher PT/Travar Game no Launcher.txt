@@ -1,0 +1,14 @@
+	// TRAVAR GAME NO LAUNCHER
+	/*
+        if(strcmp(lpCmdLine, "Zaraki_APT") != 0)
+	{
+		STARTUPINFO si;
+		PROCESS_INFORMATION pi;
+
+		ZeroMemory(&si, sizeof(si));
+		si.cb = sizeof(si);
+		ZeroMemory(&pi, sizeof(pi));
+
+		CreateProcess("Launcher.exe", NULL, NULL, NULL, FALSE, NULL, NULL, NULL, &si, &pi);
+		exit(0);
+	}*/

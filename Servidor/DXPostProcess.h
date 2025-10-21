@@ -1,0 +1,46 @@
+enum EPostEffects
+{
+	POSTPROCESSID_None,
+	POSTPROCESSID_Dead,
+	POSTPROCESSID_Poison,
+	POSTPROCESSID_ControlColor,
+};
+
+class DXPostProcess
+{
+protected:
+	float							fDeadIntensity = 0.1f;
+	BOOL							bPostProcess;
+	BOOL							bPostProcessInitialized;
+	LPD3DXEFFECT					lpRenderEffect;
+	LPD3DXSPRITE					lpRenderSprite;
+	LPDIRECT3DTEXTURE9				lpRenderTexture;
+	IDirect3DSurface9*				lpRenderSurface;
+	IDirect3DSurface9*				lpBackBuffer;
+
+	HRESULT							hr;
+private:
+
+	void							PostProcessON(EPostEffects eTechnique);
+	void							PostProcessOFF();
+	void							SetPostProcessFloat(const char * pszVariable, const float fValue);
+	void							PostProcess3D();
+
+	BOOL							CreatePostProcessBuffers();
+	BOOL							CreatePostProcess();
+
+public:
+
+	DXPostProcess();
+	virtual ~DXPostProcess();
+
+	void										OnBegin3D();
+	void										OnEnd3D();
+	void										OnResetDevice();
+	void										OnLostDevice();
+	//	void										Reload
+
+	BOOL										Init();
+};
+
+DXPostProcess * lpPostProcess;

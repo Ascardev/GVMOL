@@ -1,0 +1,1633 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{b92e6c73-6583-497f-bb04-0b57263d3127}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\smD3D">
+      <UniqueIdentifier>{3d8f3927-f24a-4b7a-be11-4a735ecf3ee3}</UniqueIdentifier>
+      <Extensions>cpp</Extensions>
+    </Filter>
+    <Filter Include="Source Files\smD3D\Header">
+      <UniqueIdentifier>{09cde9ee-caec-4c99-9f30-3f3a69067274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SinBaRam">
+      <UniqueIdentifier>{b529ab5c-5178-4a38-a38e-876f391b4845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SinBaRam\header">
+      <UniqueIdentifier>{64d1e706-b9d0-4c42-a614-c42e4ead6027}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Source Files\SinBaRam\SkillFunction">
+      <UniqueIdentifier>{00e98bd3-5b4a-4187-a689-21e689901fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SinBaRam\sin3D">
+      <UniqueIdentifier>{2becda60-28b1-426a-8805-b0083dd1e295}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SinBaRam\sin3D\AssaEffect">
+      <UniqueIdentifier>{7e043b0a-85b8-4a2e-8437-93f947c77344}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SinBaRam\sinETC">
+      <UniqueIdentifier>{8ef8d0c1-9f25-4e1c-b6d6-49fd947a73b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sound">
+      <UniqueIdentifier>{c3596817-7da5-4786-b8b5-4d6e0dcadccc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HoDong">
+      <UniqueIdentifier>{a93aee95-3523-406a-b08d-46a5b2d84e72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HoDong\NewEffect">
+      <UniqueIdentifier>{2a724ea7-e4e1-4355-9f0f-36ca3bbf3056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HoDong\NewEffect\Util">
+      <UniqueIdentifier>{9bc3eb98-3a6f-4a34-9157-4b57c6c83670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\exc">
+      <UniqueIdentifier>{6c243bf3-70d3-4fd3-a8f8-252c0ed75dc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HanGame">
+      <UniqueIdentifier>{2f9e2df7-07fc-4134-9b92-e93c2d0e779c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network">
+      <UniqueIdentifier>{ef9b85b3-90ec-46f0-a208-424aefb226e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IME">
+      <UniqueIdentifier>{17866c01-275f-40cb-be17-331e3168c4b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HeaderFile">
+      <UniqueIdentifier>{123162f9-96a3-49c5-8bb7-fafff85b8de0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ConvLang">
+      <UniqueIdentifier>{7f882836-3ba0-42f1-8dc4-5073f202c65a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tjboy">
+      <UniqueIdentifier>{3960b7fa-fbe9-4378-8a52-9a7b72bf0271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tjboy\ClanMenu">
+      <UniqueIdentifier>{e4de1326-a481-4dbd-8aca-c6cb0b123c63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tjboy\IsaoCheck">
+      <UniqueIdentifier>{a0cd0287-4e88-4ff8-9690-6f5cfd2cb177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tjboy\ygy">
+      <UniqueIdentifier>{78e84809-cea8-4bdf-8952-3d97605fd0f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tjboy\ygy\Memmap">
+      <UniqueIdentifier>{e54e01fd-8f3b-4bc3-94be-831c0c143dc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tjboy\ygy\Packet">
+      <UniqueIdentifier>{ba02058c-3bb8-44c5-927b-a1a57f6ba017}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tjboy\ygy\Process">
+      <UniqueIdentifier>{528a9996-1cef-444b-86d5-4a6e28bb4819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tjboy\Park">
+      <UniqueIdentifier>{bff0e2f4-760c-4dd5-9a79-b05c477d5c81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\WinInt">
+      <UniqueIdentifier>{785a4d54-e162-4452-aa67-a614457a8c99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Park">
+      <UniqueIdentifier>{011036b5-9035-48ba-b59d-f34d2897871d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{f084897b-120a-4c34-82b5-2649a4599675}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{fc2adcc8-831d-42c9-a03e-80a35ab73593}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="XtrapSrcD5">
+      <UniqueIdentifier>{073119bd-405f-41a0-ab66-ca2a1bc479e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XtrapSrcD5\Client">
+      <UniqueIdentifier>{d595947c-fd02-469b-97f7-9af9f423edab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XtrapSrcD5\Server">
+      <UniqueIdentifier>{82fd44f5-7740-40ad-b82d-a772d5b80725}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nProtect">
+      <UniqueIdentifier>{110c83fe-bf0d-4468-b534-16f74381d7fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MiniDump">
+      <UniqueIdentifier>{e2c5a6ca-63e2-4e9a-bfe5-aa861c2a4145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XignCode">
+      <UniqueIdentifier>{598da908-91b7-4222-8057-ca9703aae282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XignCode\Server">
+      <UniqueIdentifier>{4b4277e4-6e4b-4cf8-8b0d-5b1c82e2c4a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XignCode\Client">
+      <UniqueIdentifier>{01b02681-08e9-4071-bc6e-6c77b0c1a701}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ActionGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AreaServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BellatraFontEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CAutoCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurseFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Damage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawsub.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FontImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FullZoomMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillSub.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Winmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="checkdll.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="field.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fileread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="makeshadow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pbackground.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="playmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="playsub.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="record.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="smwsock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smDsx.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smJpeg.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smMap3d.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smObj3d.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smRead3d.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smRend3d.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smSin.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smStage3d.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smStgObj.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smTexture.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smgeosub.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="smlib3d\smmatrix.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\HaQuest.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\YameEffect.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\haPremiumItem.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinCharStatus.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinHelp.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinHelpPet.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinInterFace.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinInvenTory.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinItem.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinMain.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinMessageBox.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinMsg.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinParkPcBangPet.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinQuest.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinSOD2.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinShop.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinSkill.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinSkill_Info.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinSubMain.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinTrade.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinUtil.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinWarpGate.cpp">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\SkillFunction\Morayion.cpp">
+      <Filter>Source Files\SinBaRam\SkillFunction</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\SkillFunction\Tempskron.cpp">
+      <Filter>Source Files\SinBaRam\SkillFunction</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sin3D.cpp">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinEffect.cpp">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinEffect2.cpp">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinParticle.cpp">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinPublicEffect.cpp">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinSkillEffect.cpp">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\AssaEffect.cpp">
+      <Filter>Source Files\SinBaRam\sin3D\AssaEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\AssaParticle7.cpp">
+      <Filter>Source Files\SinBaRam\sin3D\AssaEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\AssaTestParticle.cpp">
+      <Filter>Source Files\SinBaRam\sin3D\AssaEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinAssaParticle.cpp">
+      <Filter>Source Files\SinBaRam\sin3D\AssaEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinAssaSkillEffect.cpp">
+      <Filter>Source Files\SinBaRam\sin3D\AssaEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\AssaUtil.cpp">
+      <Filter>Source Files\SinBaRam\sinETC</Filter>
+    </ClCompile>
+    <ClCompile Include="sinbaram\sinEvent.cpp">
+      <Filter>Source Files\SinBaRam\sinETC</Filter>
+    </ClCompile>
+    <ClCompile Include="srcsound\Dxwav.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="srcsound\Wave.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="effectsnd.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\AssaParticle.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoAnimData.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoEffect.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoLinkHeader.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoLogic.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoLogin.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoMinMax.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoNewParticle.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoNewParticleMgr.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoOpening.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoParticle.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoParty.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoPhysics.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoSky.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\HoTextFile.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\LowLevelPetSystem.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\PCBangPetSystem.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\hoAssaParticleEffect.cpp">
+      <Filter>Source Files\HoDong</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\HoEffectController.cpp">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\HoEffectMain.cpp">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\HoEffectManager.cpp">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\HoEffectModel.cpp">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\HoEffectResMgr.cpp">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\HoEffectUtil.cpp">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\HoEffectView.cpp">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\HoNewEffectFunction.cpp">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\math\COLOR3.CPP">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\math\COLOR4.CPP">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\math\MATRIX4.CPP">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\math\POINT3.CPP">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\Script\PiScript.cpp">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="HoBaram\NewEffect\HoEffect\Script\PiScriptLuaCommand.cpp">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="smReg.cpp">
+      <Filter>Source Files\exc</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcServer\ClientFuncPos.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcServer\DllServer.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcServer\OnSever.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcServer\PartySever.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcServer\Svr_Damge.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcServer\gameSQL.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="netplay.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcServer\openlive.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcServer\svrEventSpawn.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Ime.cpp">
+      <Filter>Source Files\IME</Filter>
+    </ClCompile>
+    <ClCompile Include="STRCLASS.CPP">
+      <Filter>Source Files\IME</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcLang\jts.cpp">
+      <Filter>Source Files\ConvLang</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\BMPsmooth.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\GuideHelp.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\Help.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_CJoin.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_CViewClanInfo.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_Cmake.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_Notice.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_Updatecldata.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_chatlist.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_chip.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_deletecha.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_isclanmember.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_nouser.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_report.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\cE_user.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\clan_Enti.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\tjScroll.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\clanmenu\tjclan.cpp">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\isaocheck\auth.cpp">
+      <Filter>Source Files\tjboy\IsaoCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\isaocheck\isaocheck.cpp">
+      <Filter>Source Files\tjboy\IsaoCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\Ygy\Util.cpp">
+      <Filter>Source Files\tjboy\ygy</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\Ygy\memmap\memmap.cpp">
+      <Filter>Source Files\tjboy\ygy\Memmap</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\Ygy\Packet\Packet.cpp">
+      <Filter>Source Files\tjboy\ygy\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\Ygy\Process\Process.cpp">
+      <Filter>Source Files\tjboy\ygy\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\park\MICVOL\MicVolume.cpp">
+      <Filter>Source Files\tjboy\Park</Filter>
+    </ClCompile>
+    <ClCompile Include="TJBOY\park\ParkPlayer\ParkDXPlayer.cpp">
+      <Filter>Source Files\tjboy\Park</Filter>
+    </ClCompile>
+    <ClCompile Include="WinInt\WavIntHttp.cpp">
+      <Filter>Source Files\WinInt</Filter>
+    </ClCompile>
+    <ClCompile Include="WinInt\WinIntThread.cpp">
+      <Filter>Source Files\WinInt</Filter>
+    </ClCompile>
+    <ClCompile Include="Park\HoMessageBox.cpp">
+      <Filter>Source Files\Park</Filter>
+    </ClCompile>
+    <ClCompile Include="XTrapSrcD5\Server\XTrap4Server.c">
+      <Filter>XtrapSrcD5\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="nprotect\PT_KeyCrypt.cpp">
+      <Filter>nProtect</Filter>
+    </ClCompile>
+    <ClCompile Include="nprotect\nProtect.cpp">
+      <Filter>nProtect</Filter>
+    </ClCompile>
+    <ClCompile Include="mini_dump.cpp">
+      <Filter>MiniDump</Filter>
+    </ClCompile>
+    <ClCompile Include="Xigncode\Server\zwave_sdk_linker.cpp">
+      <Filter>XignCode\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="CShop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SQL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IniFiles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TShop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bellatra.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawDamage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Party.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectGlow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DXPostProcess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Quest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="socket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="socketgame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="socketserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CMutex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CConfigFileReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CConfigFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="date.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sqlserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="strings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Challenge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLOld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AntiCheat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Firewall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleArena.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMigration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Loading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Social.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HellGates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AwardItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Roulette.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Battle.cpp">
+      <Filter>Source Files\smD3D</Filter>
+    </ClCompile>
+    <ClCompile Include="LockItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Puzzle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Alerta.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CTeleportWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cRestaureHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cRestaureWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="smLib3d\smType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetsReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cMixGuide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IO\PacketReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IO\PacketWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIRect2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RollDice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cTarget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CKillHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Natal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldCup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AreaServer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BellatraFontEffect.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FullZoomMap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemForm.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="damage.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="playmodel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="smPacket.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smDsx.h">
+      <Filter>Source Files\smD3D\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smGeosub.h">
+      <Filter>Source Files\smD3D\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smMap3d.h">
+      <Filter>Source Files\smD3D\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smObj3d.h">
+      <Filter>Source Files\smD3D\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smSin.h">
+      <Filter>Source Files\smD3D\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smStage3d.h">
+      <Filter>Source Files\smD3D\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smStgObj.h">
+      <Filter>Source Files\smD3D\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smTexture.h">
+      <Filter>Source Files\smD3D\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smType.h">
+      <Filter>Source Files\smD3D\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smrend3d.h">
+      <Filter>Source Files\smD3D\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\AssaParticle.h">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\HaQuest.h">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\_sinCraftItem.h">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\haPremiumItem.h">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinSOD2.h">
+      <Filter>Source Files\SinBaRam</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\YameEffect.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinCharStatus.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinCraftItem.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinHelpPet.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinInterFace.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinInvenTory.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinItem.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinLinkHeader.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinMain.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinMessageBox.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinMsg.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinQuest.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinShop.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinSkill.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinSkill_Info.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinSubMain.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinTrade.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinWarpGate.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\SkillFunction\Morayion.h">
+      <Filter>Source Files\SinBaRam\SkillFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\SkillFunction\Tempskron.h">
+      <Filter>Source Files\SinBaRam\SkillFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sin3D.h">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinEffect.h">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinEffect2.h">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinParticle.h">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinPublicEffect.h">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinSkillEffect.h">
+      <Filter>Source Files\SinBaRam\sin3D</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\AssaEffect.h">
+      <Filter>Source Files\SinBaRam\sin3D\AssaEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\AssaParticle7.h">
+      <Filter>Source Files\SinBaRam\sin3D\AssaEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\AssaTestParticle.h">
+      <Filter>Source Files\SinBaRam\sin3D\AssaEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinAssaParticle.h">
+      <Filter>Source Files\SinBaRam\sin3D\AssaEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinAssaSkillEffect.h">
+      <Filter>Source Files\SinBaRam\sin3D\AssaEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\AssaUtil.h">
+      <Filter>Source Files\SinBaRam\sinETC</Filter>
+    </ClInclude>
+    <ClInclude Include="sinbaram\sinEvent.h">
+      <Filter>Source Files\SinBaRam\sinETC</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoAnimData.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoEffect.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoLinkHeader.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoLogic.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoLogin.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoMinMax.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoNewParticle.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoNewParticleLinkHeader.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoNewParticleMgr.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoOpening.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoParticle.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoParty.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoPhysics.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoSky.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\HoTextFile.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\LowLevelPetSystem.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\PCBangPetSystem.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\hoAssaParticleEffect.h">
+      <Filter>Source Files\HoDong</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\HoEffectController.h">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\HoEffectEvent.h">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\HoEffectMain.h">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\HoEffectManager.h">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\HoEffectModel.h">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\HoEffectResMgr.h">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\HoEffectUtil.h">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\HoEffectView.h">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\HoNewEffectFunction.h">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\HoNewEffectHeader.h">
+      <Filter>Source Files\HoDong\NewEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\math\COLOR3.H">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\math\MATRIX4.H">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\math\POINT4.H">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\Script\PiScript.h">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\Script\PiScriptLuaCommand.h">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\math\bSphere3.h">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\math\color4.h">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\math\lineSeg3.h">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\math\mathGlobal.h">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="HoBaram\NewEffect\HoEffect\math\point3.h">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="SrcServer\PristonSQLDll.h">
+      <Filter>Source Files\HanGame</Filter>
+    </ClInclude>
+    <ClInclude Include="SrcServer\Gamesql.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="SrcServer\openlive.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="SrcServer\svrEventGame.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="SrcServer\svrEventSpawn.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="SrcServer\svrHaQuest.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Ime.h">
+      <Filter>Source Files\IME</Filter>
+    </ClInclude>
+    <ClInclude Include="STRCLASS.H">
+      <Filter>Source Files\IME</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientFuncPos.h">
+      <Filter>Source Files\HeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="SrcServer\DllServer.h">
+      <Filter>Source Files\HeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="SrcServer\ServerMsg.h">
+      <Filter>Source Files\HeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="language.h">
+      <Filter>Source Files\HeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="SrcServer\onserver.h">
+      <Filter>Source Files\HeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="SrcServer\svr_Damage.h">
+      <Filter>Source Files\HeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\BMPsmooth.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_CJoin.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_CViewClanInfo.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_Cmake.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_Notice.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_Updatecldata.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_chatlist.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_chip.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_deletecha.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_isclanmember.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_nouser.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_report.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\cE_user.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\clan_Enti.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\tjScroll.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\tjclan.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\clanmenu\tjclanDEF.h">
+      <Filter>Source Files\tjboy\ClanMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\isaocheck\auth.h">
+      <Filter>Source Files\tjboy\IsaoCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\isaocheck\isaocheck.h">
+      <Filter>Source Files\tjboy\IsaoCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\Ygy\Util.h">
+      <Filter>Source Files\tjboy\ygy</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\Ygy\YgyHeader.h">
+      <Filter>Source Files\tjboy\ygy</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\Ygy\memmap\memmap.h">
+      <Filter>Source Files\tjboy\ygy\Memmap</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\Ygy\Packet\Packet.h">
+      <Filter>Source Files\tjboy\ygy\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\Ygy\Packet\PacketStruct.h">
+      <Filter>Source Files\tjboy\ygy\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\Ygy\Process\Process.h">
+      <Filter>Source Files\tjboy\ygy\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\park\MICVOL\MicVolume.h">
+      <Filter>Source Files\tjboy\Park</Filter>
+    </ClInclude>
+    <ClInclude Include="TJBOY\park\ParkPlayer\ParkDXPlayer.h">
+      <Filter>Source Files\tjboy\Park</Filter>
+    </ClInclude>
+    <ClInclude Include="WinInt\RingBuff.h">
+      <Filter>Source Files\WinInt</Filter>
+    </ClInclude>
+    <ClInclude Include="WinInt\WavIntHttp.h">
+      <Filter>Source Files\WinInt</Filter>
+    </ClInclude>
+    <ClInclude Include="WinInt\WinIntThread.h">
+      <Filter>Source Files\WinInt</Filter>
+    </ClInclude>
+    <ClInclude Include="WinInt\ZipLib.h">
+      <Filter>Source Files\WinInt</Filter>
+    </ClInclude>
+    <ClInclude Include="Park\HoMessageBox.h">
+      <Filter>Source Files\Park</Filter>
+    </ClInclude>
+    <ClInclude Include="HanDes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillSub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="drawsub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="field.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fileread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="netplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pbackground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="playmain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="playsub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="record.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="smreg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="smwsock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XTrapSrcD5\Client\XTrap4Client.h">
+      <Filter>XtrapSrcD5\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="XTrapSrcD5\ClientExt\XTrap4ClientExt1.h">
+      <Filter>XtrapSrcD5\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="XTrapSrcD5\Server\MessageProtocol.h">
+      <Filter>XtrapSrcD5\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="XTrapSrcD5\Server\ServerXTrap.h">
+      <Filter>XtrapSrcD5\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="XTrapSrcD5\Server\XTrap4Server.h">
+      <Filter>XtrapSrcD5\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="nprotect\CSAuth.h">
+      <Filter>nProtect</Filter>
+    </ClInclude>
+    <ClInclude Include="nprotect\NPGameLib.h">
+      <Filter>nProtect</Filter>
+    </ClInclude>
+    <ClInclude Include="nprotect\PT_KeyCrypt.h">
+      <Filter>nProtect</Filter>
+    </ClInclude>
+    <ClInclude Include="nprotect\nProtect.h">
+      <Filter>nProtect</Filter>
+    </ClInclude>
+    <ClInclude Include="nprotect\npfgmsdk.h">
+      <Filter>nProtect</Filter>
+    </ClInclude>
+    <ClInclude Include="nprotect\npkcrypt.h">
+      <Filter>nProtect</Filter>
+    </ClInclude>
+    <ClInclude Include="mini_dump.h">
+      <Filter>MiniDump</Filter>
+    </ClInclude>
+    <ClInclude Include="Xigncode\Server\xtypes.h">
+      <Filter>XignCode\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Xigncode\Server\zwave_sdk_errors.h">
+      <Filter>XignCode\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Xigncode\Server\zwave_sdk_helper.h">
+      <Filter>XignCode\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Xigncode\Server\zwave_sdk_linker.h">
+      <Filter>XignCode\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Xigncode\Client\xtypes.h">
+      <Filter>XignCode\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Xigncode\Client\zcwave_errors.h">
+      <Filter>XignCode\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Xigncode\Client\zwave_sdk_client.h">
+      <Filter>XignCode\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Program Files\Microsoft Visual Studio\VC98\Include\basetsd.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="effectsnd.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="makeshadow.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smJpeg.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smRead3d.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smd3d.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="smlib3d\smmatrix.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="CShop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SQL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IniFiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TShop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sinSkill_InfoIni.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Brazil\b_sinSkill_Info.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bellatra.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawDamage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Party.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectGlow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DXPostProcess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Quest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="socket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="socketgame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="socketserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CMutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CConfigFileReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CConfigFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="strings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="delete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sqlserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Challenge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SQLOld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiCheat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Firewall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleArena.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="apihook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMigration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Loading.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Social.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HellGates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AwardItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Roulette.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Battle.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="LockItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Puzzle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Regen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx\StdAfx.h">
+      <Filter>Source Files\SinBaRam\header</Filter>
+    </ClInclude>
+    <ClInclude Include="CTeleportWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\_features.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\_platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\BitFlag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\BytesWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\FileInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\std_mfc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\std_stl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipAbstractFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipBaseException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipCallbackProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipCollections.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipCollections_mfc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipCollections_stl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipExport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipFileMapping.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipFileMapping_lnx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipFileMapping_win.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipMutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipMutex_lnx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipMutex_win.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipSplitNamesHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipString_mfc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipString_stl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ziparchive\ziparchive\ZipStringStoreSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cRestaureHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cRestaureWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetsReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cMixGuide.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IO\PacketReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IO\PacketWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIRect2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RollDice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CKillHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Natal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldCup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Brazil\b_TextMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="HoBaram\NewEffect\HoEffect\Script\Lua\Win32\Lua.lib">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </Library>
+    <Library Include="HoBaram\NewEffect\HoEffect\Script\Lua\Win32\lualib.lib">
+      <Filter>Source Files\HoDong\NewEffect\Util</Filter>
+    </Library>
+    <Library Include="HanDes.lib">
+      <Filter>Source Files\HanGame</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Loading.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Loading1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="SUBAPT.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="arario.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="arario2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="arario3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="argenPT.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon2.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="loadimg.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="loading_japan.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="로딩중.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Script1.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpItemList.dat" />
+    <None Include="Dependencies\ziparchive\ziparchive\.gitignore" />
+    <None Include="Dependencies\ziparchive\ziparchive\README.md" />
+    <None Include="Dependencies\ziparchive\ziparchive\ZipArchive.sln" />
+    <None Include="Dependencies\ziparchive\ziparchive\ZipArchive.vcxproj" />
+    <None Include="Dependencies\ziparchive\ziparchive\ZipArchive.vcxproj.filters" />
+    <None Include="Dependencies\ziparchive\ziparchive\ZipArchive.vcxproj.user" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Dependencies\ziparchive\ziparchive\_readme.txt" />
+    <Text Include="Dependencies\ziparchive\ziparchive\Appnote.txt" />
+    <Text Include="Dependencies\ziparchive\ziparchive\License.txt" />
+  </ItemGroup>
+</Project>

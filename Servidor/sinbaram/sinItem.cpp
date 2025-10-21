@@ -1,0 +1,7458 @@
+﻿#include "sinLinkHeader.h"
+#include "../language.h"
+
+cITEM cItem;
+
+sITEM TempItem;
+sITEM MouseItem;
+
+sITEMREQUIRE sRequire;
+POINT ItemBoxPosi;
+POINT ItemBoxSize;
+POINT TextSetPosi;
+
+char	szInfoBuff[5000];
+char    szInfoBuff2[5000];
+
+int sinShowItemInfoFlag = 0;
+
+int tWeaponClass = 0;
+int AgingGageFlag = 0;
+int AgingBarLenght = 0;
+
+DWORD sinItemTime = 0;
+
+int NotSell_Item_CODECnt = 0;
+int NotSell_Item_MASKCnt = 0;
+int NotSell_Item_KINDCnt = 0;
+
+int NotDrow_Item_CODECnt = 0;
+int NotDrow_Item_MASKCnt = 0;
+int NotDrow_Item_KINDCnt = 0;
+
+int NotSet_Item_CODECnt = 0;
+int NotSet_Item_MASKCnt = 0;
+int NotSet_Item_KINDCnt = 0;
+
+int Amuleto;
+int Ring;
+int Sheltom;
+int Amulet1;
+int Amulet2;
+int Efect1Line;
+int Efect1Line2;
+int Efect1Line3;
+int Efect2Line;
+int Efect2Line2;
+int Efect2Line3;
+
+int SetBoss = 0;
+extern int LValRing;
+extern int RValRing;
+extern int KelAmulet;
+extern int LShyRing;
+extern int FurySheltom;
+extern int RShyRing;
+extern int TullaAmulet;
+extern int SetBonus1;
+extern int SetBonus2;
+
+DWORD NotSell_Item_CODE[] = { (sinQT1 | sin07),(sinQT1 | sin08),0 };
+DWORD NotSell_Item_MASK[] = { 0 };
+DWORD NotSell_Item_KIND[] = { ITEM_KIND_QUEST_WEAPON,0 };
+
+DWORD NotDrow_Item_CODE[] = { (sinQT1 | sin07),(sinQT1 | sin08),0 };
+DWORD NotDrow_Item_MASK[] = { 0 };
+DWORD NotDrow_Item_KIND[] = { ITEM_KIND_QUEST_WEAPON,0 };
+
+DWORD NotSet_Item_CODE[] = { (sinQT1 | sin07),(sinQT1 | sin08),0 };
+DWORD NotSet_Item_MASK[] = { 0 };
+DWORD NotSet_Item_KIND[] = { ITEM_KIND_QUEST_WEAPON,0 };
+
+#ifdef _W_SERVER
+
+sITEM sItem[MAX_ITEM]
+{
+ {0x1010100,"Stone Axe","WA101",22,66,"Weapon",4,"WA101",4,1,1},
+ {0x1010200,"Steel Axe","WA102",44,66,"Weapon",4,"WA102",4,1,1},
+ {0x1020100,"Eagle Claw","WC101",22,44,"Weapon",4,"WC101",4,2,1},
+ {0x1030100,"Club","WH101",22,66,"Weapon",4,"WH101",4,3,1},
+ {0x1030400,"Gothic Mace","WH104",44,66,"Weapon",4,"WH104",4,3,1},
+ {0x1030500,"War Hammer","WH105",44,88,"Weapon",4,"WH105",4,3,1},
+ {0x1040100,"Wand","WM101",22,44,"Weapon",4,"WM101",4,19,3},
+ {0x1050100,"Pole","WP101",22,66,"Weapon",4,"WP101",4,5,1},
+ {0x1050300,"Bill","WP103",22,88,"Weapon",4,"WP103",4,5,1},
+ {0x1050500,"Horn Scythe","WP105",44,88,"Weapon",6,"WP105",4,5,1},
+ {0x1050600,"Trident","WP106",44,88,"Weapon",6,"WP106",4,5,1},
+ {0x1060100,"Short Bow","WS101",44,66,"Weapon",6,"WS101",2,6,2},
+ {0x1060200,"Horned Bow","WS102",44,44,"Weapon",4,"WS102",4,6,2},
+ {0x1060a00,"Double CrossBow","WS110",44,88,"Weapon",6,"WS110",4,6,2},
+ {0x1070100,"Dagger","WS201",22,44,"Weapon",4,"WS201",4,7,1},
+ {0x1011000,"Fury Axe","WA116",44,88,"Weapon",6,"WA116",4,1,1},
+ {0x1011100,"Ancient Axe","WA117",44,88,"Weapon",6,"WA117",4,1,1},
+ {0x1011200,"Chaos Axe","WA118",44,88,"Weapon",4,"WA118",4,1,1},
+ {0x1011300,"Relic Axe","WA119",44,88,"Weapon",6,"WA119",4,1,1},
+ {0x1011400,"Minotaur Axe","WA120",44,88,"Weapon",6,"WA120",4,1,1},
+ {0x1011500,"Wyvern Axe","WA121",44,88,"Weapon",6,"WA121",4,1,1},
+ {0x1011600,"Zecram Axe","WA122",44,88,"Weapon",6,"WA122",4,1,1},
+ {0x1011700,"Dragon Axe","WA123",44,88,"Weapon",6,"WA123",4,1,1},
+ {0x1011800,"Fury Axe","WA124",44,88,"Weapon",6,"WA124",4,1,1},
+ {0x1011900,"Legend Axe","WA125",44,66,"Weapon",4,"WA125",4,1,1},
+ {0x1012b00,"Mythology Axe","WA127",44,88,"Weapon",6,"WA127",4,1,1},
+ {0x1012c00,"Deadly Axe","WA128",44,88,"Weapon",6,"WA128",4,1,1},
+ {0x1012d00,"ÇÃ·¹ÀÓ ¾×½º","WA129",44,88,"Weapon",6,"WA129",4,1,1},
+ {0x1012e00,"º£·ç½º ¾×½º","WA130",44,88,"Weapon",6,"WA130",4,1,1},
+ {0x1012f00,"Abyss Axe","WA131",44,88,"Weapon",6,"WA131",4,1,1},
+ {0x1021000,"Titan Talon","WC116",44,66,"Weapon",4,"WC116",4,2,1},
+ {0x1021100,"Salamander Talon","WC117",44,66,"Weapon",4,"WC117",4,2,1},
+ {0x1021200,"Phoenix Talon","WC118",44,66,"Weapon",4,"WC118",4,2,1},
+ {0x1021300,"Chimera Talon","WC119",44,66,"Weapon",4,"WC119",4,2,1},
+ {0x1021400,"Extreme Talon","WC120",44,66,"Weapon",4,"WC120",4,2,1},
+ {0x1021500,"Viper Talon","WC121",44,66,"Weapon",4,"WC121",4,2,1},
+ {0x1021600,"Injustice Talon","WC122",44,66,"Weapon",4,"WC122",4,2,1},
+ {0x1021700,"Heretic Talon","WC123",44,66,"Weapon",4,"WC123",4,2,1},
+ {0x1021800,"Legend Talon","WC124",44,66,"Weapon",4,"WC124",4,2,1},
+ {0x1022a00,"Mythology Talon","WC126",44,66,"Weapon",4,"WC126",4,2,1},
+ {0x1022b00,"Deadly Talon","WC127",44,66,"Weapon",4,"WC127",4,2,1},
+ {0x1022c00,"ÇÃ·¹ÀÓ Å»·Ð","WC128",44,66,"Weapon",4,"WC128",4,2,1},
+ {0x1022d00,"º£·ç½º Å»·Ð","WC129",44,66,"Weapon",4,"WC129",4,2,1},
+ {0x1022e00,"Abyss Talon","WC130",44,66,"Weapon",4,"WC130",4,2,1},
+ {0x1031100,"Brutal Hammer","WH117",44,88,"Weapon",4,"WH117",4,3,1},
+ {0x1031200,"Gladiator Hammer","WH118",44,88,"Weapon",6,"WH118",4,3,1},
+ {0x1031300,"Archon Hammer","WH119",44,88,"Weapon",6,"WH119",4,3,1},
+ {0x1031400,"Justice Hammer","WH120",44,88,"Weapon",4,"WH120",4,3,1},
+ {0x1031500,"Dragon Bone Hammer","WH121",44,88,"Weapon",6,"WH121",4,3,1},
+ {0x1031600,"Guardian Hammer","WH122",44,88,"Weapon",6,"WH122",4,3,1},
+ {0x1031700,"Bane Hammer","WH123",44,88,"Weapon",6,"WH123",4,3,1},
+ {0x1031800,"Dragon Hammer","WH124",44,88,"Weapon",6,"WH124",4,3,1},
+ {0x1031900,"Phoenix Hammer","WH125",44,88,"Weapon",6,"WH125",4,3,1},
+ {0x1032a00,"Legend Hammer","WH126",44,66,"Weapon",4,"WH126",4,3,1},
+ {0x1032c00,"Mythology Hammer","WH128",44,88,"Weapon",6,"WH128",4,3,1},
+ {0x1032d00,"Deadly Hammer","WH129",44,88,"Weapon",6,"WH129",4,3,1},
+ {0x1032e00,"ÇÃ·¹ÀÓ ÇØ¸Ó","WH130",44,88,"Weapon",6,"WH130",4,3,1},
+ {0x1032f00,"º£·ç½º ÇØ¸Ó","WH131",44,88,"Weapon",6,"WH131",4,3,1},
+ {0x1033000,"Abyss Hammer","WH132",44,88,"Weapon",6,"WH132",4,3,1},
+ {0x1041100,"Apostle Wand","WM117",44,66,"Weapon",4,"WM117",4,19,3},
+ {0x1041200,"Relic Staff","WM118",44,88,"Weapon",6,"WM118",4,19,3},
+ {0x1041300,"Dragon Staff","WM119",44,88,"Weapon",6,"WM119",4,19,3},
+ {0x1041400,"Wyvern Wand","WM120",44,66,"Weapon",4,"WM120",4,19,3},
+ {0x1041500,"Gothic Staff","WM121",44,88,"Weapon",6,"WM121",4,19,3},
+ {0x1041600,"Oracle Wand","WM122",44,66,"Weapon",4,"WM122",4,19,3},
+ {0x1041700,"Celestial Staff","WM123",44,88,"Weapon",6,"WM123",4,19,3},
+ {0x1041800,"Astral Staff","WM124",44,88,"Weapon",6,"WM124",4,19,3},
+ {0x1041900,"Freyja Staff","WM125",44,88,"Weapon",6,"WM125",4,19,3},
+ {0x1042a00,"Freyja Wand","WM126",44,66,"Weapon",4,"WM126",4,19,3},
+ {0x1042c00,"Mythology Staff","WM128",44,88,"Weapon",6,"WM128",4,19,3},
+ {0x1042d00,"Deadly Staff","WM129",44,88,"Weapon",6,"WM129",4,19,3},
+ {0x1042e00,"ÇÃ·¹ÀÓ ½ºÅÂÇÁ","WM130",44,88,"Weapon",6,"WM130",4,19,3},
+ {0x1042f00,"º£·ç½º ½ºÅÂÇÁ","WM131",44,88,"Weapon",6,"WM131",4,19,3},
+ {0x1043000,"Abyss Staff","WM132",44,88,"Weapon",6,"WM132",4,19,3},
+ {0x1051100,"Hyper Scythe","WP117",44,88,"Weapon",6,"WP117",4,5,1},
+ {0x1051200,"Oracle Spear","WP118",44,88,"Weapon",6,"WP118",4,5,1},
+ {0x1051300,"Immortal Scythe","WP119",44,88,"Weapon",6,"WP119",4,5,1},
+ {0x1051400,"Extreme Spear","WP120",44,88,"Weapon",6,"WP120",4,5,1},
+ {0x1051500,"Hellfire Scythe","WP121",44,88,"Weapon",6,"WP121",4,5,1},
+ {0x1051600,"Dreadnaught Spear","WP122",44,88,"Weapon",6,"WP122",4,5,1},
+ {0x1051700,"Reaper Scythe","WP123",44,88,"Weapon",6,"WP123",4,5,1},
+ {0x1051800,"Dragon Scythe","WP124",44,88,"Weapon",6,"WP124",4,5,1},
+ {0x1051900,"Phoenix Spear","WP125",44,88,"Weapon",6,"WP125",4,5,1},
+ {0x1052b00,"Mythology Spear","WP127",44,88,"Weapon",6,"WP127",4,5,1},
+ {0x1052c00,"Deadly Spear","WP128",44,88,"Weapon",6,"WP128",4,5,1},
+ {0x1052d00,"ÇÃ·¹ÀÓ »çÀÌµå","WP129",44,88,"Weapon",6,"WP129",4,5,1},
+ {0x1052e00,"º£·ç½º »çÀÌµå","WP130",44,88,"Weapon",6,"WP130",4,5,1},
+ {0x1052f00,"Abyss Spear","WP131",44,88,"Weapon",6,"WP131",4,5,1},
+ {0x1061200,"Minotaur Bow","WS118",44,88,"Weapon",6,"WS118",2,6,2},
+ {0x1061300,"Wave Bow","WS119",44,88,"Weapon",6,"WS119",2,6,2},
+ {0x1061400,"Grande Bow","WS120",44,88,"Weapon",6,"WS120",4,6,2},
+ {0x1061500,"Dragon Bow","WS121",44,88,"Weapon",6,"WS121",2,6,2},
+ {0x1061600,"Revenge Bow","WS122",44,88,"Weapon",6,"WS122",2,6,2},
+ {0x1061700,"Wyvern Bow","WS123",44,88,"Weapon",6,"WS123",2,6,2},
+ {0x1061800,"Immortal Bow","WS124",44,88,"Weapon",6,"WS124",2,6,2},
+ {0x1061900,"Salamander Bow","WS125",44,88,"Weapon",6,"WS125",2,6,2},
+ {0x1062a00,"Cronus Bow","WS126",44,88,"Weapon",6,"WS126",2,6,2},
+ {0x1062c00,"Mythology Bow","WS128",44,88,"Weapon",6,"WS128",2,6,2},
+ {0x1062d00,"Deadly Bow","WS129",44,88,"Weapon",6,"WS129",2,6,2},
+ {0x1062e00,"ÇÃ·¹ÀÓ º¸¿ì","WS130",44,88,"Weapon",6,"WS130",2,6,2},
+ {0x1062f00,"º£·ç½º º¸¿ì","WS131",44,88,"Weapon",6,"WS131",2,6,2},
+ {0x1063000,"Abyss Bow","WS132",44,88,"Weapon",6,"WS132",2,6,2},
+ {0x1071300,"Salamanger Sword","WS219",44,88,"Weapon",6,"WS219",4,7,1},
+ {0x1071400,"Avenger Sword","WS220",44,88,"Weapon",4,"WS220",4,7,1},
+ {0x1071500,"Titan Sword","WS221",44,88,"Weapon",6,"WS221",4,7,1},
+ {0x1071600,"Wyvern Sword","WS222",44,88,"Weapon",4,"WS222",4,7,1},
+ {0x1071700,"Immortal Sword","WS223",44,88,"Weapon",6,"WS223",4,7,1},
+ {0x1071800,"Justice Sword","WS224",44,88,"Weapon",6,"WS224",4,7,1},
+ {0x1071900,"Extreme Sword","WS225",44,88,"Weapon",6,"WS225",4,7,1},
+ {0x1072a00,"Mirage Sword","WS226",44,88,"Weapon",6,"WS226",4,7,1},
+ {0x1072b00,"Tirbing Sword","WS227",44,88,"Weapon",6,"WS227",4,7,1},
+ {0x1072c00,"Legend Sword","WS228",44,66,"Weapon",4,"WS228",4,7,1},
+ {0x1072e00,"Mythology Sword","WS230",44,88,"Weapon",6,"WS230",4,7,1},
+ {0x1072f00,"Deadly Sword","WS231",44,88,"Weapon",6,"WS231",4,7,1},
+ {0x1073000,"ÇÃ·¹ÀÓ ¼Òµå","WS232",44,88,"Weapon",6,"WS232",4,7,1},
+ {0x1073100,"º£·ç½º ¼Òµå","WS233",44,88,"Weapon",6,"WS233",4,7,1},
+ {0x1073200,"Abyss Sword","WS234",44,88,"Weapon",6,"WS234",4,7,1},
+ {0x1081100,"Mystic Javelin","WT117",22,88,"Weapon",4,"WT117",4,8,2},
+ {0x1081200,"Extreme Javelin","WT118",22,88,"Weapon",4,"WT118",4,8,2},
+ {0x1081300,"Dragon Javelin","WT119",22,88,"Weapon",4,"WT119",4,8,2},
+ {0x1081400,"Spike Javelin","WT120",22,88,"Weapon",4,"WT120",4,8,2},
+ {0x1081500,"Salamander Javelin","WT121",22,88,"Weapon",4,"WT121",4,8,2},
+ {0x1081600,"Immortal Javelin","WT122",22,88,"Weapon",4,"WT122",4,8,2},
+ {0x1081700,"Heretic Javelin","WT123",22,88,"Weapon",4,"WT123",4,8,2},
+ {0x1081800,"Salamander Javelin","WT124",22,88,"Weapon",4,"WT124",4,8,2},
+ {0x1081900,"Cronus Javelin","WT125",22,88,"Weapon",4,"WT125",4,8,2},
+ {0x1082b00,"Mythology Javelin","WT127",22,88,"Weapon",4,"WT127",4,8,2},
+ {0x1082c00,"Deadly Javelin","WT128",22,88,"Weapon",4,"WT128",4,8,2},
+ {0x1082d00,"ÇÃ·¹ÀÓ Àçºí¸°","WT129",22,88,"Weapon",4,"WT129",4,8,2},
+ {0x1082e00,"º£·ç½º Àçºí¸°","WT130",22,88,"Weapon",4,"WT130",4,8,2},
+ {0x1082f00,"Abyss Javelin","WT131",22,88,"Weapon",4,"WT131",4,8,2},
+ { 0x1090100,"½¯µå ÆÒÅÒ","WN101",44,44,"Weapon",4,"WN101",4,19,3 },
+ { 0x1090200,"Å©¸¯ ÆÒÅÒ","WN102",44,44,"Weapon",4,"WN102",4,19,3 },
+ { 0x1090300,"ÇÉ ÆÒÅÒ","WN103",44,44,"Weapon",4,"WN103",4,19,3 },
+ { 0x1090400,"Å×¸£Å× ÆÒÅÒ","WN104",44,44,"Weapon",4,"WN104",4,19,3 },
+ { 0x1090500,"¿ÀÄíÅ× ÆÒÅÒ","WN105",44,44,"Weapon",4,"WN105",4,19,3 },
+ { 0x1090600,"¿ÏÄ«¶ó ÆÒÅÒ","WN106",44,44,"Weapon",4,"WN106",4,19,3 },
+ { 0x1090700,"ÆÄÇÏ ÆÒÅÒ","WN107",44,44,"Weapon",4,"WN107",4,19,3 },
+ { 0x1090800,"ÇÇ½ºÅ² ÆÒÅÒ","WN108",44,44,"Weapon",4,"WN108",4,19,3 },
+ { 0x1090900,"Å¸ÅÁÄ« ÆÒÅÒ","WN109",44,44,"Weapon",4,"WN109",4,19,3 },
+ { 0x1090a00,"¼Ò¼î ÆÒÅÒ","WN110",44,44,"Weapon",4,"WN110",4,19,3 },
+ { 0x1090b00,"À³´Ï ÆÒÅÒ","WN111",44,44,"Weapon",4,"WN111",4,19,3 },
+ { 0x1090c00,"½ÃÇÏ ÆÒÅÒ","WN112",66,44,"Weapon",4,"WN112",4,19,3 },
+ { 0x1090d00,"À§ ÆÒÅÒ","WN113",66,44,"Weapon",4,"WN113",4,19,3 },
+ { 0x1090e00,"·Î¾È ÆÒÅÒ","WN114",66,44,"Weapon",4,"WN114",4,19,3 },
+ { 0x1090f00,"Ä­Äí ÆÒÅÒ","WN115",66,44,"Weapon",4,"WN115",4,19,3 },
+ { 0x1091000,"¿À¿Í ÆÒÅÒ","WN116",44,66,"Weapon",4,"WN116",4,19,3 },
+ { 0x1091100,"ÀºÅ°Áî ÆÒÅÒ","WN117",66,44,"Weapon",4,"WN117",4,19,3 },
+ { 0x1091200,"ÆäÁÖ¶ó ÆÒÅÒ","WN118",44,66,"Weapon",4,"WN118",4,19,3 },
+ { 0x1091300,"·çÅ¸ ÆÒÅÒ","WN119",66,44,"Weapon",4,"WN119",4,19,3 },
+ { 0x1091400,"³ªÅº ÆÒÅÒ","WN120",66,44,"Weapon",4,"WN120",4,19,3 },
+ { 0x1091500,"Ä«¼¼Å¸ ÆÒÅÒ","WN121",66,44,"Weapon",4,"WN121",4,19,3 },
+ { 0x1091600,"´Ï¾ßÇÏ ÆÒÅÒ","WN122",66,44,"Weapon",4,"WN122",4,19,3 },
+ { 0x1091700,"¾ÆÄ«¶ó ÆÒÅÒ","WN123",44,66,"Weapon",4,"WN123",4,19,3 },
+ { 0x1091800,"¿ÍÅ²¾á ÆÒÅÒ","WN124",66,44,"Weapon",4,"WN124",4,19,3 },
+ { 0x1091900,"¿ÍÄ­ ÆÒÅÒ","WN125",66,44,"Weapon",4,"WN125",4,19,3 },
+ { 0x1092a00,"¹Ì¼Ö·ÎÁö ÆÒÅÒ","WN126",66,44,"Weapon",4,"WN126",4,19,3 },
+ { 0x1092b00,"µ¥µé¸® ÆÒÅÒ","WN127",66,44,"Weapon",4,"WN127",4,19,3 },
+ { 0x1092c00,"ÇÃ·¹ÀÓ ÆÒÅÒ","WN128",66,44,"Weapon",4,"WN128",4,19,3 },
+ { 0x1092d00,"º£·ç½º ÆÒÅÒ","WN129",66,44,"Weapon",4,"WN129",4,19,3 },
+ { 0x1092e00,"¾îºñ½º ÆÒÅÒ","WN130",66,44,"Weapon",4,"WN130",4,19,3 },
+ { 0x10a0100,"³ë¸Ö ´ë°Å","WD101",44,44,"Weapon",6,"WD101",4,7,1 },
+ { 0x10a0200,"¾ÆÀÌ¾ð ´ë°Å","WD102",44,44,"Weapon",6,"WD102",4,7,1 },
+ { 0x10a0300,"ÇåÆÃ ³ªÀÌÇÁ","WD103",44,44,"Weapon",6,"WD103",4,7,1 },
+ { 0x10a0400,"Ä¿Æ²·¯½º","WD104",44,44,"Weapon",6,"WD104",4,7,1 },
+ { 0x10a0500,"Çà¾î","WD105",44,66,"Weapon",6,"WD105",4,7,1 },
+ { 0x10a0600,"½ºÆ¿ ´ë°Å","WD106",44,66,"Weapon",6,"WD106",4,7,1 },
+ { 0x10a0700,"½½·¯ÅÍ ³ªÀÌÇÁ","WD107",44,88,"Weapon",6,"WD107",4,7,1 },
+ { 0x10a0800,"¼¼ÀÎÆ® ´ë°Å","WD108",44,88,"Weapon",6,"WD108",4,7,1 },
+ { 0x10a0900,"ÆÈÄ¡¿Â","WD109",44,88,"Weapon",6,"WD109",4,7,1 },
+ { 0x10a0a00,"¹ÙÀÎ ´ë°Å","WD110",44,88,"Weapon",6,"WD110",4,7,1 },
+ { 0x10a0b00,"¾îºñ½º ´ë°Å","WD111",44,88,"Weapon",6,"WD111",4,7,1 },
+ { 0x10a0c00,"À® µà¾ó ¼Òµå","WD112",44,88,"Weapon",6,"WD112",4,7,1 },
+ { 0x10a0d00,"¼Ö ´ë°Å","WD113",44,88,"Weapon",6,"WD113",4,7,1 },
+ { 0x10a0e00,"ÇÁ¶÷º£¸£±×","WD114",44,88,"Weapon",6,"WD114",4,7,1 },
+ { 0x10a0f00,"Æ÷Æ®¸®½º ´ë°Å","WD115",44,88,"Weapon",6,"WD115",4,7,1 },
+ { 0x10a1000,"¶ó¹Ù µà¾ó ¼Òµå","WD116",44,88,"Weapon",6,"WD116",4,7,1 },
+ { 0x10a1100,"¾Æ¸£Ä«³ª ´ë°Å","WD117",44,88,"Weapon",6,"WD117",4,7,1 },
+ { 0x10a1200,"¹®½ºÅæ ´ë°Å","WD118",44,88,"Weapon",6,"WD118",4,7,1 },
+ { 0x10a1300,"Ä«¿ÀÆ½ ´ë°Å","WD119",44,88,"Weapon",6,"WD119",4,7,1 },
+ { 0x10a1400,"ÇÃ·±´õ ´ë°Å","WD120",44,88,"Weapon",6,"WD120",4,7,1 },
+ { 0x10a1500,"ÀÌ´Ï±×¸¶ ´ë°Å","WD121",44,88,"Weapon",6,"WD121",4,7,1 },
+ { 0x10a1600,"µå·¡°ï µà¾ó ¼Òµå","WD122",44,88,"Weapon",6,"WD122",4,7,1 },
+ { 0x10a1700,"µ¥ºô¸®¾ð ´ë°Å","WD123",44,88,"Weapon",6,"WD123",4,7,1 },
+ { 0x10a1800,"´ÙÅ©»þÀÌ´× ´ë°Å","WD124",44,88,"Weapon",6,"WD124",4,7,1 },
+ { 0x10a1900,"Å©¸®½ºÅ» ´ë°Å","WD125",44,88,"Weapon",6,"WD125",4,7,1 },
+ { 0x10a2a00,"¹Ì¼Ö·ÎÁö ´ë°Å","WD126",44,88,"Weapon",6,"WD126",4,7,1 },
+ { 0x10a2b00,"µ¥µé¸® ´ë°Å","WD127",44,88,"Weapon",6,"WD127",4,7,1 },
+ { 0x10a2c00,"ÇÃ·¹ÀÓ ´ë°Å","WD128",44,88,"Weapon",6,"WD128",4,7,1 },
+ { 0x10a2d00,"º£·ç½º ´ë°Å","WD129",44,88,"Weapon",6,"WD129",4,7,1 },
+ { 0x10a2e00,"¾îºñ½º ´ë°Å","WD130",44,88,"Weapon",6,"WD130",4,7,1 },
+ { 0x10b0100,"¹ìºê·¹ÀÌ½º","WV101",44,44,"Weapon",6,"WV101",4,2,1 },
+ { 0x10b0200,"ÇÇ½ºÆ® ¹ìºê·¹ÀÌ½º","WV102",44,44,"Weapon",6,"WV102",4,2,1 },
+ { 0x10b0300,"¿¡³ª½º ¹ìºê·¹ÀÌ½º","WV103",44,44,"Weapon",6,"WV103",4,2,1 },
+ { 0x10b0400,"¸Þ°¡½º ¹ìºê·¹ÀÌ½º","WV104",44,44,"Weapon",6,"WV104",4,2,1 },
+ { 0x10b0500,"³×¿À½º ¹ìºê·¹ÀÌ½º","WV105",44,44,"Weapon",6,"WV105",4,2,1 },
+ { 0x10b0600,"Å×¸£¸ð½º ¹ìºê·¹ÀÌ½º","WV106",44,44,"Weapon",6,"WV106",4,2,1 },
+ { 0x10b0700,"ÇÁÅ×¶ó ¹ìºê·¹ÀÌ½º","WV107",44,44,"Weapon",6,"WV107",4,2,1 },
+ { 0x10b0800,"½ºÄÚÅ¸µð ¹ìºê·¹ÀÌ½º","WV108",44,44,"Weapon",6,"WV108",4,2,1 },
+ { 0x10b0900,"Ä«ÄÚ ¹ìºê·¹ÀÌ½º","WV109",44,44,"Weapon",6,"WV109",4,2,1 },
+ { 0x10b0a00,"¾Ë¸ð´Ï¾Æ ¹ìºê·¹ÀÌ½º","WV110",44,44,"Weapon",6,"WV110",4,2,1 },
+ { 0x10b0b00,"¸ÞÄ«³× ¹ìºê·¹ÀÌ½º","WV111",44,66,"Weapon",6,"WV111",4,2,1 },
+ { 0x10b0c00,"Æäµ· ¹ìºê·¹ÀÌ½º","WV112",44,66,"Weapon",6,"WV112",4,2,1 },
+ { 0x10b0d00,"Æ÷Æ¼¾Æ ¹ìºê·¹ÀÌ½º","WV113",44,66,"Weapon",6,"WV113",4,2,1 },
+ { 0x10b0e00,"½ºÅÂ³ë ¹ìºê·¹ÀÌ½º","WV114",44,66,"Weapon",6,"WV114",4,2,1 },
+ { 0x10b0f00,"¿À½ºÅä ¹ìºê·¹ÀÌ½º","WV115",44,66,"Weapon",6,"WV115",4,2,1 },
+ { 0x10b1000,"Æ®·Î¸ð½º ¹ìºê·¹ÀÌ½º","WV116",44,66,"Weapon",6,"WV116",4,2,1 },
+ { 0x10b1100,"¸¶±âÄÚ½º ¹ìºê·¹ÀÌ½º","WV117",44,66,"Weapon",6,"WV117",4,2,1 },
+ { 0x10b1200,"Æ÷º¸½º ¹ìºê·¹ÀÌ½º","WV118",44,66,"Weapon",6,"WV118",4,2,1 },
+ { 0x10b1300,"¿ÀÇÇ½º ¹ìºê·¹ÀÌ½º","WV119",44,88,"Weapon",6,"WV119",4,2,1 },
+ { 0x10b1400,"ÆÇÅ×¶ó ¹ìºê·¹ÀÌ½º","WV120",44,88,"Weapon",6,"WV120",4,2,1 },
+ { 0x10b1500,"¾Æ¸®³ª ¹ìºê·¹ÀÌ½º","WV121",44,88,"Weapon",6,"WV121",4,2,1 },
+ { 0x10b1600,"µ¥ÀÌ¸ð½º ¹ìºê·¹ÀÌ½º","WV122",44,88,"Weapon",6,"WV122",4,2,1 },
+ { 0x10b1700,"¾Æ·¹½º ¹ìºê·¹ÀÌ½º","WV123",44,88,"Weapon",6,"WV123",4,2,1 },
+ { 0x10b1800,"Æ÷¼¼ÀÌµ· ¹ìºê·¹ÀÌ½º","WV124",44,88,"Weapon",6,"WV124",4,2,1 },
+ { 0x10b1900,"ÆÄÅä½º ¹ìºê·¹ÀÌ½º","WV125",44,88,"Weapon",6,"WV125",4,2,1 },
+ { 0x10b2a00,"¹Ì¼Ö·ÎÁö ¹ìºê·¹ÀÌ½º","WV126",44,88,"Weapon",6,"WV126",4,2,1 },
+ { 0x10b2b00,"µ¥µé¸® ¹ìºê·¹ÀÌ½º","WV127",44,88,"Weapon",6,"WV127",4,2,1 },
+ { 0x10b2c00,"ÇÃ·¹ÀÓ ¹ìºê·¹ÀÌ½º","WV128",44,88,"Weapon",6,"WV128",4,2,1 },
+ { 0x10b2d00,"º£·ç½º ¹ìºê·¹ÀÌ½º","WV129",44,88,"Weapon",6,"WV129",4,2,1 },
+ { 0x10b2e00,"¾îºñ½º ¹ìºê·¹ÀÌ½º","WV130",44,88,"Weapon",6,"WV130",4,2,1 },
+ {0x3011200,"Sealed Amulet #1","OA118",22,22,"Accessory",512,"oa118",0,13,0},
+ {0x3011300,"Sealed Amulet #2","OA119",22,22,"Accessory",512,"oa119",0,13,0},
+ {0x3011400,"Sealed Amulet #3","OA120",22,22,"Accessory",512,"oa120",0,13,0},
+ {0x3011500,"Mystic Amulet","OA121",22,22,"Accessory",512,"oa121",0,13,0},
+ {0x3011600,"Mystic Amulet +1","OA122",22,22,"Accessory",512,"oa122",0,13,0},
+ {0x3011700,"Mystic Amulet +2","OA123",22,22,"Accessory",512,"oa123",0,13,0},
+ {0x3011800,"Mystic Amulet +3","OA124",22,22,"Accessory",512,"oa124",0,13,0},
+ {0x3011900,"Guidance Amulet","OA125",22,22,"Accessory",512,"oa125",0,13,0},
+ {0x3012a00,"°¡ÀÌ´ø½º ¾Æ¹Ä·¿+1","OA126",22,22,"Accessory",512,"oa126",0,13,0},
+ {0x3012d00,"º£·ç½º ¾Æ¹Ä·¿","OA129",22,22,"Accessory",512,"oa129",0,13,0},
+ {0x3012e00,"ÄÌº£Áê ¾Æ¹Ä·¿","OA130",22,22,"Accessory",512,"oa130",0,13,0},
+ {0x3012f00,"Songpyon Amulet","OA131",22,22,"Accessory",512,"oa131",0,13,0},
+ {0x3013000,"Santa Amulet","OA132",22,22,"Accessory",512,"oa132",0,13,0},
+ {0x3013100,"Event Amulet","OA133",22,22,"Accessory",512,"oa133",0,13,0},
+ {0x3013400,"Snowflower Amulet(7ÀÏ)","OA136",22,22,"Accessory",512,"oa136",0,13,0},
+ {0x3013600,"»ï°èÅÁ ¾Æ¹Ä·¿","OA138",22,22,"Accessory",512,"oa138",0,13,0},
+ {0x3013b00,"Å¥ÇÇ ¾Æ¹Ä·¿","OA143",22,22,"Accessory",512,"oa143",0,13,0},
+ {0x3013c00,"Tulla Amulet","OA144",22,22,"Accessory",512,"oa144",0,13,0},
+ {0x3014300,"Tulla Amulet","OA151",22,22,"Accessory",512,"oa151",0,13,0},
+ {0x3014400,"(P)¼¿¶óÀÓ ¾Æ¹Ä·¿(1ÀÏ)","OA152",22,22,"Accessory",512,"oa152",0,13,0},
+ {0x3014500,"(P)½Ç¶óÆä ¾Æ¹Ä·¿(1ÀÏ)","OA153",22,22,"Accessory",512,"oa153",0,13,0},
+ {0x3014800,"ÇÁ¸®½ºÅæ ¾Æ¹Ä·¿(3½Ã°£)","OA156",22,22,"Accessory",512,"oa156",0,13,0},
+ {0x3014900,"ÇÁ¸®½ºÅæ ¾Æ¹Ä·¿(1ÀÏ)","OA157",22,22,"Accessory",512,"oa157",0,13,0},
+ {0x3014a00,"ÇÁ¸®½ºÅæ ¾Æ¹Ä·¿(7ÀÏ)","OA158",22,22,"Accessory",512,"oa158",0,13,0},
+ {0x3014b00,"ÇÁ¸®½ºÅæ ¾Æ¹Ä·¿(30ÀÏ)","OA159",22,22,"Accessory",512,"oa159",0,13,0},
+ {0x3014c00,"(P)ÄÌº£Áê ¾Æ¹Ä·¿","OA160",22,22,"Accessory",512,"oa160",0,13,0},
+ {0x3014d00,"(P)Åø¶ó ¾Æ¹Ä·¿","OA161",22,22,"Accessory",512,"oa161",0,13,0},
+ {0x3014e00,"±º¹øÁÙ(1ÀÏ)","OA162",22,22,"Accessory",512,"oa162",0,13,0},
+ {0x3020100,"Leather Armlets","OA201",44,22,"Accessory",2048,"oa201",0,14,0},
+ {0x3020200,"Long Armlets","OA202",44,22,"Accessory",2048,"oa202",0,14,0},
+ {0x3020300,"Wide Armlets","OA203",44,22,"Accessory",2048,"oa203",0,14,0},
+ {0x3020400,"Fold Armlets","OA204",44,22,"Accessory",2048,"oa204",0,14,0},
+ {0x3020500,"Scale Armlets","OA205",44,22,"Accessory",2048,"oa205",0,14,0},
+ {0x3020600,"Elven Armlets","OA206",44,22,"Accessory",2048,"oa206",0,14,0},
+ {0x3020700,"Solid Armlets","OA207",44,22,"Accessory",2048,"oa207",0,14,0},
+ {0x3020800,"Mechanic Armlets","OA208",44,22,"Accessory",2048,"oa208",0,14,0},
+ {0x3020900,"Winged Armlets","OA209",44,22,"Accessory",2048,"oa209",0,14,0},
+ {0x3020a00,"Great Bracelet","OA210",44,44,"Accessory",2048,"oa210",0,14,0},
+ {0x3020b00,"Steel Bracelet","OA211",44,44,"Accessory",2048,"oa211",0,14,0},
+ {0x3020c00,"Magicial Bracelet","OA212",44,44,"Accessory",2048,"oa212",0,14,0},
+ {0x3020d00,"Spiked Bracelet","OA213",44,44,"Accessory",2048,"oa213",0,14,0},
+ {0x3020e00,"Justice Bracelet","OA214",44,44,"Accessory",2048,"oa214",0,14,0},
+ {0x3020f00,"Minotaur Bracelet","OA215",44,44,"Accessory",2048,"oa215",0,14,0},
+ {0x3021000,"Metal Bracelet","OA216",44,44,"Accessory",2048,"oa216",0,14,0},
+ {0x3021100,"Titan Bracelet","OA217",44,44,"Accessory",2048,"oa217",0,14,0},
+ {0x3021200,"Saint Bracelet","OA218",44,44,"Accessory",2048,"oa218",0,14,0},
+ {0x3021300,"Wyvern Bracelet","OA219",44,44,"Accessory",2048,"oa219",0,14,0},
+ {0x3021400,"Dragon Bracelet","OA220",44,44,"Accessory",2048,"oa220",0,14,0},
+ {0x3021500,"Inferno Bracelets","OA221",44,44,"Accessory",2048,"oa221",0,14,0},
+ {0x3021600,"Phoenix Bracelets","OA222",44,44,"Accessory",2048,"oa222",0,14,0},
+ {0x3021700,"Frenzy Bracelets","OA223",44,44,"Accessory",2048,"oa223",0,14,0},
+ {0x3021800,"Cronus Bracelets","OA224",44,44,"Accessory",2048,"oa224",0,14,0},
+ {0x3021900,"Mythology Bracelets","OA225",44,44,"Accessory",2048,"oa225",0,14,0},
+ {0x3022a00,"Deadly Bracelets","OA226",44,44,"Accessory",2048,"oa226",0,14,0},
+ {0x3022b00,"ÇÃ·¹ÀÓ ºê·¹ÀÌ½½¸´","OA227",44,44,"Accessory",2048,"oa227",0,14,0},
+ {0x3022c00,"º£·ç½º ºê·¹ÀÌ½½¸´","OA228",44,44,"Accessory",2048,"oa228",0,14,0},
+ {0x3022d00,"Abyss Bracelets","OA229",44,44,"Accessory",2048,"OA229",0,14,0},
+ {0x3022f00,"Super Armlets(7ÀÏ)","OA231",44,22,"Accessory",2048,"oa231",0,14,0},
+ {0x3023000,"Super Armlets(30ÀÏ)","OA232",44,22,"Accessory",2048,"oa232",0,14,0},
+ {0x3023200,"Super Armlets(1½Ã°£)","OA234",44,22,"Accessory",2048,"oa234",0,14,0},
+ {0x30a0100,"¾ÆÀ£ÀÇ ±Í°ÉÀÌ(1ÀÏ)","OE101",22,22,"Accessory",196608,"oe101",0,15,0},
+ {0x30a0200,"¾ÆÀ£ÀÇ ±Í°ÉÀÌ(7ÀÏ)","OE102",22,22,"Accessory",196608,"oe102",0,15,0},
+ {0x30a0300,"¾ÆÀ£ÀÇ ±Í°ÉÀÌ(30ÀÏ)","OE103",22,22,"Accessory",196608,"oe103",0,15,0},
+ {0x3030100,"Pearl Beads","OM101",22,44,"Accessory",2,"om101",2,4,0},
+ {0x3030200,"Crystal Sphere","OM102",44,44,"Accessory",2,"om102",2,4,0},
+ {0x3030300,"Prizm Sphere","OM103",44,44,"Accessory",2,"om103",2,4,0},
+ {0x3030400,"Bone Beads","OM104",22,44,"Accessory",2,"om104",2,4,0},
+ {0x3030500,"Skull Beads","OM105",22,44,"Accessory",2,"om105",2,4,0},
+ {0x3030600,"Orb","OM106",44,44,"Accessory",2,"om106",2,4,0},
+ {0x3030700,"Holy Orb","OM107",44,44,"Accessory",2,"om107",2,4,0},
+ {0x3030800,"Arch Orb","OM108",44,44,"Accessory",2,"om108",2,4,0},
+ {0x3030900,"Dark Moon","OM109",44,44,"Accessory",2,"om109",2,4,0},
+ {0x3030a00,"Ceremonial Sphere","OM110",44,44,"Accessory",2,"om110",2,4,0},
+ {0x3030b00,"Orbital Beads","OM111",44,44,"Accessory",2,"om111",2,4,0},
+ {0x3030c00,"Harmony Sphere","OM112",44,44,"Accessory",2,"om112",2,4,0},
+ {0x3030d00,"Angel","OM113",44,44,"Accessory",2,"om113",2,4,0},
+ {0x3030e00,"Lucifer","OM114",22,44,"Accessory",2,"om114",2,4,0},
+ {0x3030f00,"Astral Orb","OM115",44,44,"Accessory",2,"om115",2,4,0},
+ {0x3031000,"Rune Beads","OM116",44,44,"Accessory",2,"om116",2,4,0},
+ {0x3031100,"Creation Orb","OM117",44,44,"Accessory",2,"om117",2,4,0},
+ {0x3031200,"Mundane","OM118",44,44,"Accessory",2,"om118",2,4,0},
+ {0x3031300,"Salamander Beads","OM119",44,44,"Accessory",2,"om119",2,4,0},
+ {0x3031400,"Cosmos","OM120",44,44,"Accessory",2,"om120",2,4,0},
+ {0x3031500,"Wyvern Orb","OM121",44,44,"Accessory",2,"om121",2,4,0},
+ {0x3031600,"Ebony Manes","OM122",44,44,"Accessory",2,"om122",2,4,0},
+ {0x3031700,"Avernus Beads","OM123",44,44,"Accessory",2,"om123",2,4,0},
+ {0x3031800,"Malice Rosary","OM124",44,44,"Accessory",2,"om124",2,4,0},
+ {0x3031900,"Freyja Orb","OM125",44,44,"Accessory",2,"om125",2,4,0},
+ { sinOM1 | sin26, "Malice115", "OM126", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om126", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+ { sinOM1 | sin27, "Malice118", "OM127", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om127", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+ { sinOM1 | sin28, "Malice120", "OM128", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om128", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+
+ { sinOM1 | sin29, "Malice125", "OM129", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om129", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+ { sinOM1 | sin30, "Malice130", "OM130", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om130", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+ { sinOM1 | sin31, "Malice135", "OM131", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om131", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+ {0x3041200,"Sealed Ring #1","OR118",22,22,"Accessory",192,"or118",0,15,0},
+ {0x3041300,"Sealed Ring #2","OR119",22,22,"Accessory",192,"or119",0,15,0},
+ {0x3041400,"Sealed Ring #3","OR120",22,22,"Accessory",192,"or120",0,15,0},
+ {0x3041500,"Mystic Ring","OR121",22,22,"Accessory",192,"or121",0,15,0},
+ {0x3041600,"Mystic Ring +1","OR122",22,22,"Accessory",192,"or122",0,15,0},
+ {0x3041700,"Mystic Ring +2","OR123",22,22,"Accessory",192,"or123",0,15,0},
+ {0x3041800,"Mystic Ring +3","OR124",22,22,"Accessory",192,"or124",0,15,0},
+ {0x3041900,"Guidance Ring","OR125",22,22,"Accessory",192,"or125",0,15,0},
+ {0x3042a00,"°¡ÀÌ´ø½º ¸µ+1","OR126",22,22,"Accessory",192,"or126",0,15,0},
+ {0x3042d00,"º£·ç½º ¸µ","OR129",22,22,"Accessory",192,"or129",0,15,0},
+ {0x2350100,"Lucidy","OS101",22,22,"Accessory",256,"os101",0,16,0},
+ {0x2350200,"Sereno","OS102",22,22,"Accessory",256,"os102",0,16,0},
+ {0x2350300,"Fadeo","OS103",22,22,"Accessory",256,"os103",0,16,0},
+ {0x2350400,"Sparky","OS104",22,22,"Accessory",256,"os104",0,16,0},
+ {0x2350500,"Raident","OS105",22,22,"Accessory",256,"os105",0,16,0},
+ {0x2350600,"Transparo","OS106",22,22,"Accessory",256,"os106",0,16,0},
+ {0x2350700,"Murky","OS107",22,22,"Accessory",256,"os107",0,16,0},
+ {0x2350800,"Devine","OS108",22,22,"Accessory",256,"os108",0,16,0},
+ {0x2350900,"Celesto","OS109",22,22,"Accessory",256,"os109",0,16,0},
+ {0x2350a00,"Mirage","OS110",22,22,"Accessory",256,"os110",0,16,0},
+ {0x2350b00,"Inferna","OS111",22,22,"Accessory",256,"os111",0,16,0},
+ {0x2350c00,"Enigma","OS112",22,22,"Accessory",256,"os112",0,16,0},
+ {0x2350d00,"Bellum","OS113",22,22,"Accessory",256,"os113",0,16,0},
+ {0x2350e00,"Ordo","OS114",22,22,"Accessory",256,"os114",0,16,0},
+ {sinOS1 | sin18 ,"Umbrella Shelton","OS118",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os118" ,0,SIN_SOUND_SHELTOM },
+ {sinOS1 | sin19 ,"Craft Shelton","OS119",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os119" ,0,SIN_SOUND_SHELTOM },
+ { sinOS1 | sin20 ,"Craft Shelton","OS120",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os120" ,0,SIN_SOUND_SHELTOM },
+ { sinOS1 | sin21 ,"Craft Shelton","OS121",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os122" ,0,SIN_SOUND_SHELTOM },
+ { sinOS1 | sin22 ,"Craft Shelton","OS122",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os121" ,0,SIN_SOUND_SHELTOM },
+ {0x2350f00,"Áª¸¶","OS115",22,22,"Accessory",256,"os115",0,16,0},
+ {0x2351000,"Çª¸£½º","OS116",22,22,"Accessory",256,"os116",0,16,0},
+ {0x2351100,"º£¸®Å¸½º","OS117",22,22,"Accessory",256,"os117",0,16,0},
+ {0x2351500,"Magic Lucidy","OS121",22,22,"Accessory",256,"os101",0,16,0},
+ {0x2351600,"Magic Sereno","OS122",22,22,"Accessory",256,"os102",0,16,0},
+ {0x2351700,"Magic Fadeo","OS123",22,22,"Accessory",256,"os103",0,16,0},
+ {0x2351800,"Magic Sparky","OS124",22,22,"Accessory",256,"os104",0,16,0},
+ {0x2351900,"Magic Raident","OS125",22,22,"Accessory",256,"os105",0,16,0},
+ {0x2352a00,"Magic Transparo","OS126",22,22,"Accessory",256,"os106",0,16,0},
+ {0x2352b00,"Magic Murky","OS127",22,22,"Accessory",256,"os107",0,16,0},
+ {0x2352c00,"Magic Devine","OS128",22,22,"Accessory",256,"os108",0,16,0},
+ {0x2352d00,"Magic Celesto","OS129",22,22,"Accessory",256,"os109",0,16,0},
+ {0x2352e00,"Magic Mirage","OS130",22,22,"Accessory",256,"os110",0,16,0},
+ {0x2352f00,"Magic Inferna","OS131",22,22,"Accessory",256,"os111",0,16,0},
+ {0x2353000,"Magic Enigma","OS132",22,22,"Accessory",256,"os112",0,16,0},
+ {0x2353100,"Magic Bellum","OS133",22,22,"Accessory",256,"os113",0,16,0},
+ {0x2353200,"Magic Ordo","OS134",22,22,"Accessory",256,"os114",0,16,0},
+ {0x3060100,"Lucidy Force","FO101",22,22,"Accessory",1,"os101",0,16,0},
+ {0x3060200,"Sereno Force","FO102",22,22,"Accessory",1,"os102",0,16,0},
+ {0x3060300,"Fadeo Force","FO103",22,22,"Accessory",1,"os103",0,16,0},
+ {0x3060400,"Sparky Force","FO104",22,22,"Accessory",1,"os104",0,16,0},
+ {0x3060500,"Raident Force","FO105",22,22,"Accessory",1,"os105",0,16,0},
+ {0x3060600,"Transparo Force","FO106",22,22,"Accessory",1,"os106",0,16,0},
+ {0x3060700,"Murky Force","FO107",22,22,"Accessory",1,"os107",0,16,0},
+ {0x3060800,"Devine Force","FO108",22,22,"Accessory",1,"os108",0,16,0},
+ {0x3060900,"Celesto Force","FO109",22,22,"Accessory",1,"os109",0,16,0},
+ {0x3060a00,"Mirage Force","FO110",22,22,"Accessory",1,"os110",0,16,0},
+ {0x3060b00,"Inferna Force","FO111",22,22,"Accessory",1,"os111",0,16,0},
+ {0x3060c00,"Enigma Force","FO112",22,22,"Accessory",1,"os112",0,16,0},
+ {0x3060d00,"Bellum Force","FO113",22,22,"Accessory",1,"os113",0,16,0},
+ {0x3060e00,"Ordo Force","FO114",22,22,"Accessory",1,"os114",0,16,0},
+ {0x3061500,"Magic Lucidy Force","FO121",22,22,"Accessory",1,"os101",0,16,0},
+ {0x3061600,"Magic Sereno Force","FO122",22,22,"Accessory",1,"os102",0,16,0},
+ {0x3061700,"Magic Fadeo Force","FO123",22,22,"Accessory",1,"os103",0,16,0},
+ {0x3061800,"Magic Sparky Force","FO124",22,22,"Accessory",1,"os104",0,16,0},
+ {0x3061900,"Magic Raident Force","FO125",22,22,"Accessory",1,"os105",0,16,0},
+ {0x3062a00,"Magic Transparo Force","FO126",22,22,"Accessory",1,"os106",0,16,0},
+ {0x3062b00,"Magic Murky Force","FO127",22,22,"Accessory",1,"os107",0,16,0},
+ {0x3062c00,"Magic Devine Force","FO128",22,22,"Accessory",1,"os108",0,16,0},
+ {0x3062d00,"Magic Celesto Force","FO129",22,22,"Accessory",1,"os109",0,16,0},
+ {0x3062e00,"Magic Mirage Force","FO130",22,22,"Accessory",1,"os110",0,16,0},
+ {0x3062f00,"Magic Inferna Force","FO131",22,22,"Accessory",1,"os111",0,16,0},
+ {0x3063000,"Magic Enigma Force","FO132",22,22,"Accessory",1,"os112",0,16,0},
+ {0x3063100,"Magic Bellum Force","FO133",22,22,"Accessory",1,"os113",0,16,0},
+ {0x3063200,"Magic Ordo Force","FO134",22,22,"Accessory",1,"os114",0,16,0},
+ {0x3063300,"Magic Force(1H)","FO135",22,22,"Accessory",1,"os135",0,16,0},
+ {0x3063400,"Magic Force(3H)","FO136",22,22,"Accessory",1,"os136",0,16,0},
+ {0x3063500,"Magic Force(1Day)","FO137",22,22,"Accessory",1,"os137",0,16,0},
+ {0x3064300,"ºñÅ¸ Æ÷½º","FO151",22,22,"Accessory",1,"os101",0,16,0},
+ {0x3064400,"ÀÌ¶ó Æ÷½º","FO152",22,22,"Accessory",1,"os101",0,16,0},
+ {0x3064500,"Å×¶ó Æ÷½º","FO153",22,22,"Accessory",1,"os101",0,16,0},
+ {0x3064700,"(E)Å×¶ó Æ÷½º","FO155",22,22,"Accessory",1,"os101",0,16,0},
+ {0x3064d00,"¸ÅÁ÷ ºñÅ¸ Æ÷½º","FO161",22,22,"Accessory",1,"os101",0,16,0},
+ {0x3064e00,"¸ÅÁ÷ ÀÌ¶ó Æ÷½º","FO162",22,22,"Accessory",1,"os101",0,16,0},
+ {0x3064f00,"¸ÅÁ÷ Å×¶ó Æ÷½º","FO163",22,22,"Accessory",1,"os101",0,16,0},
+ {0x3065100,"(E)¸ÅÁ÷ Å×¶ó Æ÷½º","FO165",22,22,"Accessory",1,"os101",0,16,0},
+ {0x3120900,"(P)½ì·¹½ºÅä Æ÷½º","FO209",22,22,"Accessory",1,"os109",0,16,0},
+ {0x3120a00,"(P)¹Ì¶óÁö Æ÷½º","FO210",22,22,"Accessory",1,"os110",0,16,0},
+ {0x3120b00,"(P)ÀÎÆä¸£³ª Æ÷½º","FO211",22,22,"Accessory",1,"os111",0,16,0},
+ {0x2010100,"Nude","DA101",0,0,"Defense",8,"da101",8,9,0},
+ {0x2011200,"Minotaur Armor","DA118",66,88,"Defense",8,"da118",8,9,0},
+ {0x2011300,"Doom Armor","DA119",66,88,"Defense",8,"da119",8,9,0},
+ {0x2011400,"Salamander Armor","DA120",66,88,"Defense",8,"da120",8,9,0},
+ {0x2011500,"Wyvern Armor","DA121",66,88,"Defense",8,"da121",8,9,0},
+ {0x2011600,"Dragon Armor","DA122",66,88,"Defense",8,"da122",8,9,0},
+ {0x2011700,"PhoeniX Armor","DA123",66,88,"Defense",8,"da123",8,9,0},
+ {0x2011800,"Frenzy Armor","DA124",66,88,"Defense",8,"da124",8,9,0},
+ {0x2011900,"HighLander Armor","DA125",66,88,"Defense",8,"da125",8,9,0},
+ {0x2012a00,"Magic Armor","DA126",66,88,"Defense",8,"da126",8,9,0},
+ {0x2012b00,"Cronus Armor","DA127",66,88,"Defense",8,"da127",8,9,0},
+ {0x2012c00,"Mythology Armor","DA128",66,88,"Defense",8,"da128",8,9,0},
+ {0x2012d00,"Deadly  Armor","DA129",66,88,"Defense",8,"da129",8,9,0},
+ {0x2050100,"Nude","DA201",66,88,"Defense",8,"da202",8,9,0},
+ {0x2051200,"Salvation Robe","DA218",66,88,"Defense",8,"da218",8,9,0},
+ {0x2051300,"Alchemist Robe","DA219",66,88,"Defense",8,"da219",8,9,0},
+ {0x2051400,"Astral Robe","DA220",66,88,"Defense",8,"da220",8,9,0},
+ {0x2051500,"Archon Robe","DA221",66,88,"Defense",8,"da221",8,9,0},
+ {0x2051600,"Angel Robe","DA222",66,88,"Defense",8,"da222",8,9,0},
+ {0x2051700,"Ruah Robe","DA223",66,88,"Defense",8,"da223",8,9,0},
+ {0x2051800,"Eternal Robe","DA224",66,88,"Defense",8,"da224",8,9,0},
+ {0x2051900,"Archangel Robe","DA225",66,88,"Defense",8,"da225",8,9,0},
+ {0x2052a00,"Magic Robe","DA226",66,88,"Defense",8,"da226",8,9,0},
+ {0x2052b00,"Freyja Robe","DA227",66,88,"Defense",8,"da227",8,9,0},
+ {0x2052c00,"Mythology Robe","DA228",66,88,"Defense",8,"da228",8,9,0},
+ {0x2052d00,"Deadly Robe","DA229",66,88,"Defense",8,"da229",8,9,0},
+ {0x2120100,"ÇÃ·¹ÀÓ ¾Æ¸Ó","DA301",66,88,"Defense",8,"da301",8,9,0},
+ {0x2120200,"º£·ç½º ¾Æ¸Ó","DA302",66,88,"Defense",8,"da302",8,9,0},
+ {0x2120300,"¾îºñ½º ¾Æ¸Ó","DA303",66,88,"Defense",8,"DA303",8,9,0},
+ {0x2130100,"ÇÃ·¹ÀÓ ·Îºê","DA401",66,88,"Defense",8,"da401",8,9,0},
+ {0x2130200,"º£·ç½º ·Îºê","DA402",66,88,"Defense",8,"da402",8,9,0},
+ {0x2130300,"¾îºñ½º ·Îºê","DA403",66,88,"Defense",8,"DA403",8,9,0},
+ { sinDB1 | sin21  ,"Inferno Boots" ,"DB121",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db121" ,0,SIN_SOUND_BOOTS },
+ {0x2021700,"Frenzy Boots","DB123",44,44,"Defense",16,"db123",0,10,0},
+ {0x2021800,"Cronus Boots","DB124",44,44,"Defense",16,"db124",0,10,0},
+ {0x2021900,"Mythology Boots","DB125",44,44,"Defense",16,"db125",0,10,0},
+ {0x2022a00,"Deadly Boots","DB126",44,44,"Defense",16,"db126",0,10,0},
+ {0x2022b00,"ÇÃ·¹ÀÓ ºÎÃ÷","DB127",44,44,"Defense",16,"db127",0,10,0},
+ {0x2022c00,"º£·ç½º ºÎÃ÷","DB128",44,44,"Defense",16,"db128",0,10,0},
+ {0x2022d00,"Abyss Boots","DB129",44,44,"Defense",16,"DB129",0,10,0},
+ {0x2022e00,"Mokova Boots ","DB130",44,44,"Defense",16,"db130",0,10,0},
+ {0x2022f00,"Speed Boots(7ÀÏ)","DB131",44,44,"Defense",16,"db131",0,10,0},
+ {0x2023000,"Speed Boots(30ÀÏ)","DB132",44,44,"Defense",16,"db132",0,10,0},
+ {0x2023100,"Speed Boots(1ÀÏ)","DB133",44,44,"Defense",16,"db133",0,10,0},
+ {0x2023200,"Speed Boots(1½Ã°£)","DB134",44,44,"Defense",16,"db134",0,10,0},
+ //{0x2023300,"(P)Speed Boots(7ÀÏ)","DB135",44,44,"Defense",16,"db135",0,10,0},
+ {0x2023400,"(E)Speed Boots(7ÀÏ)","DB136",44,44,"Defense",16,"db136",0,10,0},
+ {0x2023500,"(P)Speed Boots(7ÀÏ)","DB137",44,44,"Defense",16,"db137",0,10,0},
+ {0x2023600,"ÇÁ¸®½ºÅæ ºÎÃ÷(3½Ã°£)","DB138",44,44,"Defense",16,"db138",0,10,0},
+ {0x2023700,"ÇÁ¸®½ºÅæ ºÎÃ÷(1ÀÏ)","DB139",44,44,"Defense",16,"db139",0,10,0},
+ {0x2023800,"ÇÁ¸®½ºÅæ ºÎÃ÷(7ÀÏ)","DB140",44,44,"Defense",16,"db140",0,10,0},
+ {0x2023900,"ÇÁ¸®½ºÅæ ºÎÃ÷(30ÀÏ)","DB141",44,44,"Defense",16,"db141",0,10,0},
+ {0x2023a00,"Ã»¸¶ÀÇ ºÎÃ÷","DB142",44,44,"Defense",16,"db142",0,10,0},
+ {0x2023b00,"ÀüÅõÈ­(1ÀÏ)","DB143",44,44,"Defense",16,"db143",0,10,0},
+ { sinDB1 | sin35  ,"INferno Gauntlets"			,"DB150" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"DB150" ,0,SIN_SOUND_GLOVES },
+ { sinDG1 | sin21  ,"INferno Gauntlets"			,"DG121" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg121" ,0,SIN_SOUND_GLOVES },
+ {0x2031700,"Frenzy Gauntlets","DG123",44,44,"Defense",32,"dg123",0,11,0},
+ {0x2031800,"Cronus Gauntlets","DG124",44,44,"Defense",32,"dg124",0,11,0},
+ {0x2031900,"Mythology Gauntlets","DG125",44,44,"Defense",32,"dg125",0,11,0},
+ {0x2032a00,"Deadly Gauntlets","DG126",44,44,"Defense",32,"dg126",0,11,0},
+ {0x2032b00,"ÇÃ·¹ÀÓ °ÇÆ²¸´","DG127",44,44,"Defense",32,"dg127",0,11,0},
+ {0x2032c00,"º£·ç½º °ÇÆ²¸´","DG128",44,44,"Defense",32,"dg128",0,11,0},
+ {0x2032d00,"Abyss Gauntlets","DG129",44,44,"Defense",32,"DG129",0,11,0},
+ {0x2032e00,"Greedy Gauntlets","DG130",44,44,"Defense",32,"dg130",0,11,0},
+ {0x2040100,"Wood Shield","DS101",44,44,"Defense",2,"ds101",2,12,0},
+ {0x2040800,"Great Shield","DS108",44,88,"Defense",2,"ds108",2,12,0},
+ {0x2041300,"Vampire Shield","DS119",44,88,"Defense",2,"ds119",2,12,0},
+ {0x2041400,"Dragon Shield","DS120",44,88,"Defense",2,"ds120",2,12,0},
+ {0x2041500,"Phoenix Shield","DS121",44,88,"Defense",2,"ds121",2,12,0},
+ {0x2041600,"Dreadnaught Shield","DS122",44,88,"Defense",2,"ds122",2,12,0},
+ {0x2041700,"Inferno Shield","DS123",44,88,"Defense",2,"ds123",2,12,0},
+ {0x2041800,"Cronus Shield","DS124",44,88,"Defense",2,"ds124",2,12,0},
+ {0x2041900,"Mythology Shield","DS125",44,88,"Defense",2,"ds125",2,12,0},
+ {0x2042a00,"Deadly Shield","DS126",44,88,"Defense",2,"ds126",2,12,0},
+ {0x2042b00,"ÇÃ·¹ÀÓ ½¯µå","DS127",44,88,"Defense",2,"ds127",2,12,0},
+ {0x2042c00,"Abyss Shield","DS128",44,88,"Defense",2,"DS128",2,12,0},
+ {0x3050100,"Àý´ë¹ÝÁö-_-","OR201",22,22,"Accessory",192,"or201",0,15,0},
+ {0x3050200,"¾ÆÄÉÀÎ ¸µ","OR202",22,22,"Accessory",192,"or202",0,15,0},
+ {0x3050300,"¿¥Æä·¯ ¸µ","OR203",22,22,"Accessory",192,"or203",0,15,0},
+ {0x3050400,"Æ÷Ä¿½º ¸µ","OR204",22,22,"Accessory",192,"or204",0,15,0},
+ {0x3050500,"¹ß·»Åä ¸µ","OR205",22,22,"Accessory",192,"or205",0,15,0},
+ {0x3050600,"Â¯ÇÇ ¸µ","OR206",22,22,"Accessory",192,"or206",0,15,0},
+ {0x3050700,"¸ÞÅ°½ºÆ® ¸µ","OR207",22,22,"Accessory",192,"or207",0,15,0},
+ {0x3050800,"ÀÌµå ¸µ    ","OR208",22,22,"Accessory",192,"or208",0,15,0},
+ {0x3050900,"ÇÃ·¡Æ¾ ¸¶ºê ¸µ","OR209",22,22,"Accessory",192,"or209",0,15,0},
+ {0x3050a00,"±×·¹ÀÌºê »þÅ²½º ¸µ","OR210",22,22,"Accessory",192,"or210",0,15,0},
+ {0x3050b00,"½ÎÀÌÅ¬·Ð ¸µ","OR211",22,22,"Accessory",192,"or211",0,15,0},
+ {0x3050c00,"¹Ù¿ìÅæ ¸µ","OR212",22,22,"Accessory",192,"or212",0,15,0},
+ {0x3050d00,"±æÆ¼ °íµç ¸µ","OR213",22,22,"Accessory",192,"or213",0,15,0},
+ {0x3050e00,"¿¤ ¶ó½Ã Äï ¸µ","OR214",22,22,"Accessory",192,"or214",0,15,0},
+ {0x3050f00,"ÇÁ¶óÀÌÆ® ³×¹Ã ¸µ","OR215",22,22,"Accessory",192,"or215",0,15,0},
+ {0x3051000,"¾îÆÄ½ºÅÍ½Ã ¸µ","OR216",22,22,"Accessory",192,"or216",0,15,0},
+ {0x3051100,"¾ðÈ¦¸® ³ªÀÌÆ® ¸µ","OR217",22,22,"Accessory",192,"or217",0,15,0},
+ {0x3051200,"º£°¡ µå¹Ì¸£ ¸µ","OR218",22,22,"Accessory",192,"or218",0,15,0},
+ {0x3051300,"º£°¡ µå¹ÌÆ®¸® ¸µ","OR219",22,22,"Accessory",192,"or219",0,15,0},
+ {0x3051400,"½½·¹ÀÌ¿Â ¸µ","OR220",22,22,"Accessory",192,"or220",0,15,0},
+ {0x3051500,"ºí·¯µð ·ÎÁî ¸µ","OR221",22,22,"Accessory",192,"or221",0,15,0},
+ {0x3051600,"Çï½Ì ¸µ","OR222",22,22,"Accessory",192,"or222",0,15,0},
+ {0x3051700,"º£¸£¹® ¾ÇÅ¸·é ¸µ","OR223",22,22,"Accessory",192,"or223",0,15,0},
+ {0x3051800,"½ºÆ½½º ¾Æ¸£Ä­ ¸µ","OR224",22,22,"Accessory",192,"or224",0,15,0},
+ {0x3051900,"¶ó»þ'½º ¸µ","OR225",22,22,"Accessory",192,"or225",0,15,0},
+ {0x3052a00,"Songpyon Ring","OR226",22,22,"Accessory",192,"or226",0,15,0},
+ {0x3052b00,"Santa Ring","OR227",22,22,"Accessory",192,"or227",0,15,0},
+ {0x3052c00,"Event Ring","OR228",22,22,"Accessory",192,"or228",0,15,0},
+ {0x3052f00,"Babel Ring","OR231",22,22,"Accessory",192,"or231",0,15,0},
+ {0x3053000,"Fury Ring","OR232",22,22,"Accessory",192,"or232",0,15,0},
+ {0x3053200,"ÈÄ¶óÀÌµå Ä¡Å² ¸µ","OR234",22,22,"Accessory",192,"or234",0,15,0},
+ {0x3053300,"¾ç³ä Ä¡Å² ¸µ","OR235",22,22,"Accessory",192,"or235",0,15,0},
+ {0x3053900,"È£ÇÇ ¸µ","OR241",22,22,"Accessory",192,"or241",0,15,0},
+ {0x3053a00,"º¢²É ¸µ","OR242",22,22,"Accessory",192,"or242",0,15,0},
+ {0x3053b00,"Morgonia Ring","OR243",22,22,"Accessory",192,"or243",0,15,0},
+ {0x3053c00,"Bluemountain Ring","OR244",22,22,"Accessory",192,"or244",0,15,0},
+ {0x3053d00,"Redeye Ring","OR245",22,22,"Accessory",192,"or245",0,15,0},
+ {0x3053e00,"Turtledragon Ring","OR246",22,22,"Accessory",192,"or246",0,15,0},
+ {0x3053f00,"Bonehound Ring","OR247",22,22,"Accessory",192,"or247",0,15,0},
+ {0x3054000,"µ¥ºô »þÀÌ ¸µ","OR248",22,22,"Accessory",192,"or248",0,15,0},
+ {0x3054300,"¼¿¶óÀÓ ¸µ","OR251",22,22,"Accessory",192,"or251",0,15,0},
+ {0x3054400,"(P)¼¿¶óÀÓ ¸µ(1ÀÏ)","OR252",22,22,"Accessory",192,"or252",0,13,0},
+ {0x3054500,"(P)½Ç¶óÆä ¸µ(1ÀÏ)","OR253",22,22,"Accessory",192,"or253",0,13,0},
+ {0x3054800,"ÇÁ¸®½ºÅæ ¸µ(3½Ã°£)","OR256",22,22,"Accessory",192,"or256",0,15,0},
+ {0x3054900,"ÇÁ¸®½ºÅæ ¸µ(1ÀÏ)","OR257",22,22,"Accessory",192,"or257",0,15,0},
+ {0x3054a00,"ÇÁ¸®½ºÅæ ¸µ(7ÀÏ)","OR258",22,22,"Accessory",192,"or258",0,15,0},
+ {0x3054b00,"ÇÁ¸®½ºÅæ ¸µ(30ÀÏ)","OR259",22,22,"Accessory",192,"or259",0,15,0},
+ {0x3054c00,"(P)¹ß·»Åä ¸µ","OR260",22,22,"Accessory",192,"or260",0,15,0},
+ {0x4010100,"Small  Mana Potion","PM101",22,22,"Potion",8192,"pm101",0,17,0},
+ {0x4010200,"Middle Mana Potion","PM102",22,22,"Potion",8192,"pm101",0,17,0},
+ {0x4010300,"High   Mana Potion","PM103",22,22,"Potion",8192,"pm101",0,17,0},
+ {0x4010400,"Greate Mana Potion","PM104",22,22,"Potion",8192,"pm101",0,17,0},
+ {0x4010500,"±â·Â¾à(Æ¯)","PM105",22,22,"Potion",8192,"pm101",0,17,0},
+ {0x4020100,"Small  Life Potion","PL101",22,22,"Potion",8192,"pl101",0,17,0},
+ {0x4020200,"Middle Life Potion","PL102",22,22,"Potion",8192,"pl101",0,17,0},
+ {0x4020300,"High   Life Potion","PL103",22,22,"Potion",8192,"pl101",0,17,0},
+ {0x4020400,"Greate Life Potion","PL104",22,22,"Potion",8192,"pl101",0,17,0},
+ {0x4020500,"»ý¸í¼ö(Æ¯)","PL105",22,22,"Potion",8192,"pl101",0,17,0},
+ {0x4030100,"Small  Stamina Potion","PS101",22,22,"Potion",8192,"ps101",0,17,0},
+ {0x4030200,"Middle Stamina Potion","PS102",22,22,"Potion",8192,"ps101",0,17,0},
+ {0x4030300,"High   Stamina Potion","PS103",22,22,"Potion",8192,"ps101",0,17,0},
+ {0x4030400,"Greate Stamina Potion","PS104",22,22,"Potion",8192,"ps101",0,17,0},
+ {0x4030500,"±Ù·Â¾à(Æ¯)","PS105",22,22,"Potion",8192,"ps101",0,17,0},
+ {0x6010100,"¸®Ä«¸£ÅÙ ±ÍÈ¯","EC101",44,22,"Potion",1,"ec101",0,14,0},
+ {0x6010200,"³×ºñ½ºÄÚ ±ÍÈ¯","EC102",44,22,"Potion",1,"ec102",0,14,0},
+ {0x6010300,"·çÀÌ³Ù   ±ÍÈ¯","EC103",44,22,"Potion",1,"ec102",0,14,0},
+ {0x6010400,"ÇÊ¶óÀÌ   ±ÍÈ¯","EC104",44,22,"Potion",1,"ec102",0,14,0},
+ {0x6010500,"À¯´Ï¿Â ½ºÆ½ ÄÚ¾î","EC105",44,22,"Potion",1,"ec105",0,14,0},
+ {0x6010600,"À¯´Ï¿Â ¼­¸Õ ÄÚ¾î","EC106",44,22,"Potion",1,"ec106",0,14,0},
+ {0x6010700,"½ºÆ½ ÄÚ¾î","EC107",44,22,"Potion",1,"ec107",0,14,0},
+ {0x7010100,"Àü¾÷¾ÆÀÌÅÛ","QT101",44,44,"Quest",1,"QT101",0,14,0},
+ {0x7010200,"Àü¾÷¾ÆÀÌÅÛ","QT102",44,44,"Quest",1,"QT102",0,14,0},
+ {0x7010300,"Àü¾÷¾ÆÀÌÅÛ","QT103",44,44,"Quest",1,"QT103",0,14,0},
+ {0x7010400,"·Î¾âÁ¦¸®","QT104",44,44,"Make",1,"QT104",0,4,0},
+ {0x7010500,"¹ß¸ðÁ¦","QT105",44,44,"Make",1,"QT105",0,4,0},
+ {0x7010600,"¹ìÇÁ½©ÅÒ  ","QT106",22,22,"Quest",1,"QT106",0,16,0},
+ {0x7010700,"·ÎÀÌÆ®¶ó","QT107",44,44,"Quest",1,"QT107",0,4,0},
+ {0x7010800,"Ä®¸®¾ÆÀÇ´«¹°","QT108",44,44,"Quest",1,"QT108",0,4,0},
+ {0x7010900,"°ñµ§ ¹ìÇÁ","QT109",22,22,"Quest",1,"QT109",0,16,0},
+ {0x7010a00,"½Ç¹ö ¹ìÇÁ","QT110",22,22,"Quest",1,"QT110",0,16,0},
+ {0x7010b00,"ºê·ÐÁî ¹ìÇÁ","QT111",22,22,"Quest",1,"QT111",0,16,0},
+ {0x7010c00,"ÃßÃµ¼­","QT112",44,44,"Quest",1,"QT112",0,14,0},
+ {0x7010d00,"·Î¿­¾Æ¹Ä·¿","QT113",22,22,"Quest",1,"QT113",0,15,0},
+ {0x7010e00,"¸·´ë»çÅÁ","QT114",22,44,"Quest",1,"QT114",0,16,0},
+ {0x7010f00,"»ýÅ©¸² ÄÉÀÍ","QT115",44,44,"Quest",1,"QT115",0,14,0},
+ {0x7011000,"¾öÇÁÀÇ ¸ÁÄ¡","QT116",44,44,"Quest",1,"QT116",0,15,0},
+ {0x7011100,"°á°è¼®ÀÇ ÆÄÆí","QT117",22,22,"Quest",1,"QT117",0,16,0},
+ {0x7011200,"°á°è¼®","QT118",44,44,"Quest",1,"QT118",0,16,0},
+ {0x7011300,"¸¶¹° Ã³Ä¡ÀÇ Áõ°Å","QT119",22,22,"Quest",1,"QT119",0,16,0},
+ {0x7011400,"ºí·ç¸¶¿îÆ¾ÀÇ Ç¥º»","QT120",22,22,"Quest",1,"QT120",0,16,0},
+ {0x7011500,"¸ð¸£°í´Ï¾ÆÀÇ Ç¥º»","QT121",22,22,"Quest",1,"QT121",0,16,0},
+ {0x7011600,"·¹µå¾ÆÀÌÀÇ Ç¥º»","QT122",22,22,"Quest",1,"QT122",0,16,0},
+ {0x7011700,"ÅÍÆ²µå·¡°ïÀÇ Ç¥º»","QT123",22,22,"Quest",1,"QT123",0,16,0},
+ {0x7011800,"º» ÇÏ¿îµåÀÇ Ç¥º»","QT124",22,22,"Quest",1,"QT124",0,16,0},
+ {0x7011900,"¹®½ºÅæ","QT125",44,44,"Quest",1,"QT125",0,15,0},
+ {0x7012a00,"Çì½ºÆ¼¾ÈÀÇ º¸¼®","QT126",44,44,"Quest",1,"QT126",0,15,0},
+ {0x7012b00,"ÀúÁÖ¹ÞÀº ¹ÝÁö","QT127",44,44,"Quest",1,"QT127",0,15,0},
+ {0x7012c00,"ÀÀÁýµÈ ¸¶·Â °áÁ¤Ã¼","QT128",44,44,"Quest",1,"QT128",0,15,0},
+ {0x7012d00,"Á¤È­µÈ ¾àÈ¥¹ÝÁö","QT129",44,44,"Quest",1,"QT129",0,15,0},
+ {0x7012e00,"¼ö»óÇÑ ¹®¼­","QT130",44,44,"Quest",1,"QT130",0,15,0},
+ {0x7012f00,"¼£·ÐÀÇ º¸°í¼­","QT131",44,44,"Quest",1,"QT131",0,15,0},
+ {0x7013000,"ºÒ¾ÈÁ¤ÇÑ ¸¶·Â ¼öÁ¤","QT132",44,44,"Quest",1,"QT132",0,15,0},
+ {0x7013100,"¼Ò¸ê ÆøÅº","QT133",44,44,"Quest",1,"QT133",0,15,0},
+ {0x7013200,"À½»êÇÑ »À","QT134",44,44,"Quest",1,"QT134",0,15,0},
+ {0x7013300,"°ñµå Å©¸®½ºÅ»","QT135",44,44,"Quest",1,"QT135",0,15,0},
+ {0x7013400,"¿µÈ¥ ÀÀÁýÃ¼","QT136",44,44,"Quest",1,"QT136",0,15,0},
+ {0x7013500,"¾Ç¸¶ÀÇ ¿µÈ¥ °áÁ¤","QT137",44,44,"Quest",1,"QT137",0,15,0},
+ {0x7013600,"¾Ç¸¶ÀÇ ¿µÈ¥ °áÁ¤","QT138",44,44,"Quest",1,"QT138",0,15,0},
+ {0x7013700,"¾Ç¸¶ÀÇ ¿µÈ¥ °áÁ¤","QT139",44,44,"Quest",1,"QT139",0,15,0},
+ {0x7013800,"¾Ç¸¶ÀÇ ¿µÈ¥ °áÁ¤","QT140",44,44,"Quest",1,"QT140",0,15,0},
+ {0x7013900,"¾Ç¸¶ÀÇ ¿µÈ¥ ÀÀÁýÃ¼","QT141",44,44,"Quest",1,"QT141",0,15,0},
+ {0x7013a00,"¸¶·Â °¨¿Á","QT142",44,44,"Quest",1,"QT142",0,15,0},
+ {0x7013b00,"ÀÏ±Þ ºñ¹Ð ¹®¼­","QT143",44,44,"Quest",1,"QT143",0,15,0},
+ {0x8010100,"ÀÛÀº ¼ÛÆí","SP101",22,22,"Event",1,"SP101",0,14,0},
+ {0x8010200,"Å«   ¼ÛÆí","SP102",22,22,"Event",1,"SP102",0,14,0},
+ {0x8010300,"»ï°èÅÁ","SP103",22,22,"Event",1,"SP103",0,14,0},
+ {0x8010500,"¼±¹°»óÀÚ1","SP105",44,44,"Event",1,"SP105",0,14,0},
+ {0x8010600,"¼±¹°»óÀÚ2","SP106",44,44,"Event",1,"SP105",0,14,0},
+ {0x8010700,"¼±¹°»óÀÚ3","SP107",44,44,"Event",1,"SP105",0,14,0},
+ {0x8010800,"¼±¹°»óÀÚ4","SP108",44,44,"Event",1,"SP105",0,14,0},
+ {0x8010900,"¼±¹°»óÀÚ5","SP109",44,44,"Event",1,"SP105",0,14,0},
+ {0x8010a00,"¼±¹°»óÀÚ6","SP110",44,44,"Event",1,"SP105",0,14,0},
+ {0x8010b00,"·¹µå Ä¸½¶","SP111",22,22,"Event",1,"SP111",0,14,0},
+ {0x8010c00,"ºí·ç Ä¸½¶","SP112",22,22,"Event",1,"SP112",0,14,0},
+ {0x8010d00,"¿¤·Î¿ì Ä¸½¶","SP113",22,22,"Event",1,"SP113",0,14,0},
+ {0x8010e00,"È²¼Ò Ä¸½¶","SP114",44,44,"Event",1,"SP114",0,14,0},
+ {0x8010f00,"È£¹Ú","SP115",22,22,"Event",1,"SP115",0,14,0},
+ {0x8011100,"È£ÇÇÀÇ ¼±¹°","SP117",44,44,"Event",1,"SP117",0,14,0},
+ {0x8011200,"ºÎ¸¶ÀÇ ¼±¹°","SP118",44,44,"Event",1,"SP118",0,14,0},
+ {0x8011300,"ÇëÅ°ÀÇ ¼±¹°","SP119",44,44,"Event",1,"SP119",0,14,0},
+ {0x8011400,"À§Ä¡ÀÇ ¼±¹°","SP120",44,44,"Event",1,"SP120",0,14,0},
+ {0x8011500,"¶óÅõÀÇ ¼±¹°","SP121",44,44,"Event",1,"SP121",0,14,0},
+ {0x8011600,"¹Ùº§ÀÇ ¼±¹°","SP122",44,44,"Event",1,"SP122",0,14,0},
+ {0x8011700,"±Ý","SP123",22,22,"Event",1,"SP123",0,14,0},
+ {0x8011800,"Àº","SP124",22,22,"Event",1,"SP124",0,14,0},
+ {0x8011900,"µ¿","SP125",22,22,"Event",1,"SP125",0,14,0},
+ {0x8012b00,"P","SP127",22,22,"Event",1,"SP127",0,14,0},
+ {0x8012c00,"R","SP128",22,22,"Event",1,"SP128",0,14,0},
+ {0x8012d00,"I","SP129",22,22,"Event",1,"SP129",0,14,0},
+ {0x8012e00,"S","SP130",22,22,"Event",1,"SP130",0,14,0},
+ {0x8012f00,"T","SP131",22,22,"Event",1,"SP131",0,14,0},
+ {0x8013000,"O","SP132",22,22,"Event",1,"SP132",0,14,0},
+ {0x8013100,"N","SP133",22,22,"Event",1,"SP133",0,14,0},
+ {0x8013200,"È£¶ûÀÌ Ä¸½¶","SP134",44,44,"Event",1,"SP134",0,14,0},
+ {0x8013800,"Ãà±¸°ø Æ÷¼Ç","SP140",22,22,"Event",1,"SP140",0,14,0},
+ {0x8013900,"Ãà±¸°ø","SP141",22,22,"Event",1,"SP141",0,14,0},
+ {0x8013a00,"¼ö¹Ú","SP142",22,22,"Event",1,"SP142",0,14,0},
+ {0x8013b00,"·çµ¹ÇÁÀÇ »Ô","SP143",22,22,"Event",1,"SP143",0,14,0},
+ {0x8013c00,"¸ñµµ¸®","SP144",22,22,"Event",1,"SP144",0,14,0},
+ {0x8013d00,"±Ý¹æ¿ï","SP145",22,22,"Event",1,"SP145",0,14,0},
+ {0x8013e00,"¼Ø","SP146",22,22,"Event",1,"SP146",0,14,0},
+ {0x8013f00,"´ÜÃß","SP147",22,22,"Event",1,"SP147",0,14,0},
+ {0x8014000,"¼±¹° ÁÖ¸Ó´Ï","SP148",22,22,"Event",1,"SP148",0,14,0},
+ {0x8014100,"»¡°£ ¿Ê°¨","SP149",22,22,"Event",1,"SP149",0,14,0},
+ {0x8014200,"80Lv ¹«±â »óÀÚ","SP150",44,44,"Event",1,"SP105",0,14,0},
+ {0x8014300,"90Lv ¹«±â »óÀÚ","SP151",44,44,"Event",1,"SP105",0,14,0},
+ {0x8014400,"100Lv ¹«±â »óÀÚ","SP152",44,44,"Event",1,"SP105",0,14,0},
+ {0x8014500,"µ· »óÇ°±Ç(5,000)","SP153",44,44,"Event",1,"SP153",0,14,0},
+ {0x8014600,"µ· »óÇ°±Ç(10,000)","SP154",44,44,"Event",1,"SP154",0,14,0},
+ {0x8014700,"µ· »óÇ°±Ç(50,000)","SP155",44,44,"Event",1,"SP155",0,14,0},
+ {0x8014800,"µ· »óÇ°±Ç(100,000)","SP156",44,44,"Event",1,"SP156",0,14,0},
+ {0x8014900,"µ· »óÇ°±Ç(500,000)","SP157",44,44,"Event",1,"SP157",0,14,0},
+ {0x8014a00,"µ· »óÇ°±Ç(1,000,000)","SP158",44,44,"Event",1,"SP158",0,14,0},
+ {0x8014b00,"Åä³¢ Ä¸½¶","SP159",44,44,"Event",1,"SP159",0,14,0},
+ {0x8014c00,"ÈÆ","SP160",22,22,"Event",1,"SP160",0,14,0},
+ {0x8014d00,"¹Î","SP161",22,22,"Event",1,"SP161",0,14,0},
+ {0x8014e00,"Á¤","SP162",22,22,"Event",1,"SP162",0,14,0},
+ {0x8014f00,"À½","SP163",22,22,"Event",1,"SP163",0,14,0},
+ {0x8015f00,"¼ö»óÇÑ ¿­¼è","SP179",22,22,"Event",1,"SP179",0,14,0},
+ {0x8016000,"±×¸° Ä¸½¶","SP180",22,22,"Event",1,"SP180",0,14,0},
+ {0x8016100,"ºí·¢ Ä¸½¶","SP181",22,22,"Event",1,"SP181",0,14,0},
+ {0x8016200,"µþ±âÄÉÀÌÅ©","SP182",22,22,"Event",1,"SP182",0,14,0},
+ {0x8016300,"°­¾ÆÁö Ä¸½¶","SP183",44,44,"Event",1,"SP183",0,14,0},
+ {0x8016400,"ÀÛ½É Ä¸½¶","SP184",22,22,"Event",1,"SP184",0,14,0},
+ {0x8016500,"´ëÇÑ¹Î±¹ ½Â¸® Ä¸½¶","SP185",22,22,"Event",1,"SP185",0,14,0},
+ {0x8016600,"(P)¹æ¾î±¸ »óÀÚ(5½Ã°£)","SP186",44,44,"Event",1,"SP105",0,14,0},
+ {0x8016700,"(E)20Â÷ ¹æ¾î±¸ »óÀÚ(5½Ã°£)","SP187",44,44,"Event",1,"SP187",0,14,0},
+ {0x8016800,"(E)100LV ¹«±â »óÀÚ(5½Ã°£)","SP188",44,44,"Event",1,"SP105",0,14,0},
+ {0x8016a00,"Å×¸®(1ÀÏ)","SP190",22,22,"Event",1,"SP190",0,17,0},
+ {0x8016b00,"³Ü½Ã½º(1ÀÏ)","SP191",22,22,"Event",1,"SP191",0,17,0},
+ {0x8016c00,"ÀÌ¿À(1ÀÏ)","SP192",22,22,"Event",1,"SP192",0,17,0},
+ {0x8016d00,"ÆøÁ×","SP193",22,22,"Event",1,"SP193",0,17,0},
+ {0x8016e00,"ÅÚ·¹Æ÷Æ® ÄÚ¾î","SP194",44,22,"Event",1,"SP194",0,17,0},
+ {0x8016f00,"¾óÅ«ÀÌ ¹°¾à","SP195",22,22,"Event",1,"SP195",0,17,0},
+ {0x8017000,"È£¹Ú","SP196",22,22,"Event",1,"SP196",0,17,0},
+ {0x8017100,"À¯·ÉÀÇ Á¤¼ö","SP197",22,22,"Event",1,"SP197",0,17,0},
+ {0x80e0100,"·ç½Ã Ä­ÀÇ º¸¹°","SP201",66,44,"Event",1,"SP201",0,14,0},
+ {0x80e0200,"³ì½º Ä­ÀÇ º¸¹°","SP202",66,44,"Event",1,"SP202",0,14,0},
+ {0x80e0300,"ÄÉ·ë Ä­ÀÇ º¸¹°","SP203",66,44,"Event",1,"SP203",0,14,0},
+ {0x80e0400,"ÀÌ¶ó Ä­ÀÇ º¸¹°","SP204",66,44,"Event",1,"SP204",0,14,0},
+ {0x80e0500,"ºñ¸£ Ä­ÀÇ º¸¹°","SP205",66,44,"Event",1,"SP205",0,14,0},
+ {0x80e0600,"Çì¾îÆ¾Æ® Æ÷¼Ç(AÇü)","SP206",22,22,"Event",1,"SP206",0,17,0},
+ {0x80e0700,"Çì¾îÆ¾Æ® Æ÷¼Ç(BÇü)","SP207",22,22,"Event",1,"SP207",0,17,0},
+ {0x80e0800,"Çì¾îÆ¾Æ® Æ÷¼Ç(CÇü)","SP208",22,22,"Event",1,"SP208",0,17,0},
+ {0x80e0900,"Çì¾îÆ¾Æ® Æ÷¼Ç(DÇü)","SP209",22,22,"Event",1,"SP209",0,17,0},
+ {0x80e0a00,"Çì¾îÆ¾Æ® Æ÷¼Ç(EÇü)","SP210",22,22,"Event",1,"SP210",0,17,0},
+ {0x80e0b00,"Çì¾îÆ¾Æ® Æ÷¼Ç(FÇü)","SP211",22,22,"Event",1,"SP211",0,17,0},
+ {0x80e0c00,"Çì¾îÆ¾Æ® Æ÷¼Ç(GÇü)","SP212",22,22,"Event",1,"SP212",0,17,0},
+ {0x80e0d00,"Çì¾îÆ¾Æ® Æ÷¼Ç(HÇü)","SP213",22,22,"Event",1,"SP213",0,17,0},
+ {0x80e0e00,"Çì¾îÆ¾Æ® Æ÷¼Ç(IÇü)","SP214",22,22,"Event",1,"SP214",0,17,0},
+ {0x80e0f00,"Çì¾îÆ¾Æ® Æ÷¼Ç(JÇü)","SP215",22,22,"Event",1,"SP215",0,17,0},
+ {0x80e1000,"Çì¾îÆ¾Æ® Æ÷¼Ç(KÇü)","SP216",22,22,"Event",1,"SP216",0,17,0},
+ {0x80e1100,"Çì¾îÆ¾Æ® Æ÷¼Ç(LÇü)","SP217",22,22,"Event",1,"SP217",0,17,0},
+ {0x80e1200,"Çì¾îÆ¾Æ® Æ÷¼Ç(MÇü)","SP218",22,22,"Event",1,"SP218",0,17,0},
+ {0x80e1300,"10ÁÖ³â ÄÉŸå","SP219",22,22,"Event",1,"SP219",0,14,0},
+ {0x80e1400,"105LV ¹«±â »óÀÚ","SP220",44,44,"Event",1,"SP220",0,14,0},
+ {0x80e1500,"105LV ¹æ¾î±¸ »óÀÚ","SP221",44,44,"Event",1,"SP221",0,14,0},
+ {0x80e1600,"108LV ¹«±â »óÀÚ","SP222",44,44,"Event",1,"SP222",0,14,0},
+ {0x80e1700,"108LV ¹æ¾î±¸ »óÀÚ","SP223",44,44,"Event",1,"SP223",0,14,0},
+ {0x80e1800,"½´ÆÛ ¾Ï¸´(7ÀÏ) »óÀÚ","SP224",22,22,"Event",1,"SP224",0,16,0},
+ {0x80e1900,"½Ç¶óÆä ¾Æ¹Ä·¿(1ÀÏ) »óÀÚ","SP225",22,22,"Event",1,"SP225",0,16,0},
+ {0x80e2a00,"ÇÁ¸®½ºÅæ ºÎÃ÷(7ÀÏ) »óÀÚ","SP226",22,22,"Event",1,"SP226",0,16,0},
+ {0x80e2b00,"Å©¸®½º¸¶½º ÄÉŸå","SP227",22,22,"Event",1,"SP227",0,14,0},
+ {0x80e2c00,"10ÁÖ³â ±â³ä »óÀÚ","SP228",22,22,"Event",1,"SP228",0,14,0},
+ {0x80e2d00,"ÄíÆù","SP229",22,22,"Event",1,"SP229",0,17,0},
+ {0x80e2e00,"ÇÒ·ÎÀ© ¸¶·Â»óÀÚ","SP230",44,44,"Event",1,"SP230",0,17,0},
+ {0x80e3100,"Å©¸®½º¸¶½º ¼±¹°»óÀÚ","SP233",44,44,"Event",1,"SP233",0,17,0},
+ {0x80e3200,"110LV ¹«±â »óÀÚ","SP234",44,44,"Event",1,"SP234",0,14,0},
+ {0x80e3300,"110LV ¹æ¾î±¸ »óÀÚ","SP235",44,44,"Event",1,"SP235",0,14,0},
+ {0x80e3400,"Ä¿ÇÃ ¸µ","SP236",22,22,"Event",1,"OR241",0,17,0},
+ {0x80e3500,"Ä¿ÇÃ ¾Æ¹Ä·¿","SP237",22,22,"Event",1,"OA143",0,17,0},
+ {0x80e3600,"ÀÚµå Ä­ÀÇ º¸¹°»óÀÚ","SP238",66,44,"Event",1,"SP238",0,14,0},
+ {0x80e3700,"¸Þ¼Ò Ä­ÀÇ º¸¹°»óÀÚ","SP239",66,44,"Event",1,"SP239",0,14,0},
+ {0x80e3800,"Å©·Î Ä­ÀÇ º¸¹°»óÀÚ","SP240",66,44,"Event",1,"SP240",0,14,0},
+ {0x80e3900,"·¦ÅÍ Ä­ÀÇ º¸¹°»óÀÚ","SP241",66,44,"Event",1,"SP241",0,14,0},
+ {0x80e3a00,"Äí¸± Ä­ÀÇ º¸¹°»óÀÚ","SP242",66,44,"Event",1,"SP242",0,14,0},
+ {0x80e3b00,"¾Ù¸® Ä­ÀÇ º¸¹°»óÀÚ","SP243",66,44,"Event",1,"SP243",0,14,0},
+ {0x80e3c00,"ÀÚµå Ä­ÀÇ È²±Ý º¸¹°»óÀÚ","SP244",66,44,"Event",1,"SP244",0,14,0},
+ {0x80e3d00,"¸Þ¼Ò Ä­ÀÇ È²±Ý º¸¹°»óÀÚ","SP245",66,44,"Event",1,"SP245",0,14,0},
+ {0x80e3e00,"Å©·Î Ä­ÀÇ È²±Ý º¸¹°»óÀÚ","SP246",66,44,"Event",1,"SP246",0,14,0},
+ {0x80e3f00,"·¦ÅÍ Ä­ÀÇ È²±Ý º¸¹°»óÀÚ","SP247",66,44,"Event",1,"SP247",0,14,0},
+ {0x80e4000,"Äí¸± Ä­ÀÇ È²±Ý º¸¹°»óÀÚ","SP248",66,44,"Event",1,"SP248",0,14,0},
+ {0x80e4100,"¾Ù¸® Ä­ÀÇ È²±Ý º¸¹°»óÀÚ","SP249",66,44,"Event",1,"SP249",0,14,0},
+ {0x80e4200,"13ÁÖ³â ±â³ä ÁÖÈ­","SP250",22,22,"Event",1,"SP250",0,14,0},
+ {0x80e4300,"¾ç Ä¸½¶","SP251",44,44,"Event",1,"SP251",0,14,0},
+ {0x80e4400,"ÇÏ±Þ ¸ðÇè°¡ÀÇ »óÀÚ","SP252",44,44,"Quest",1,"SP252",0,14,0},
+ {0x80e4500,"Áß±Þ ¸ðÇè°¡ÀÇ »óÀÚ","SP253",44,44,"Quest",1,"SP253",0,14,0},
+ {0x80e4d00,"ÄÌº£Áê ¼ÒÈ¯ ÁÖ¹®¼­","SP261",44,44,"Event",1,"SP261",0,14,0},
+ {0x80e4e00,"¸ðÄÚ¹Ù ¼ÒÈ¯ ÁÖ¹®¼­","SP262",44,44,"Event",1,"SP261",0,14,0},
+ {0x80e4f00,"±×¸®µð ¼ÒÈ¯ ÁÖ¹®¼­","SP263",44,44,"Event",1,"SP261",0,14,0},
+ {0x80e5000,"µ¥ºô »þÀÌ ¼ÒÈ¯ ÁÖ¹®¼­","SP264",44,44,"Event",1,"SP261",0,14,0},
+ {0x80e5100,"µå¶ô¼Ò½º ¼ÒÈ¯ ÁÖ¹®¼­","SP265",44,44,"Event",1,"SP261",0,14,0},
+ {0x80e5200,"¹Ìµå¶õ´Ù ¼ÒÈ¯ ÁÖ¹®¼­","SP266",44,44,"Event",1,"SP261",0,14,0},
+ {0x80e5300,"112LV ¹«±â »óÀÚ","SP267",44,44,"Event",1,"SP267",0,14,0},
+ {0x80e5400,"112LV ¹æ¾î±¸ »óÀÚ","SP268",44,44,"Event",1,"SP268",0,14,0},
+ {0x80e5500,"114LV ¹«±â »óÀÚ","SP269",44,44,"Event",1,"SP269",0,14,0},
+ {0x80e5600,"114LV ¹æ¾î±¸ »óÀÚ","SP270",44,44,"Event",1,"SP270",0,14,0},
+ {0x80e5900,"117LV ¹«±â »óÀÚ","SP273",44,44,"Event",1,"SP273",0,14,0},
+ {0x80e5a00,"117LV ¹æ¾î±¸ »óÀÚ","SP274",44,44,"Event",1,"SP274",0,14,0},
+ {0x80e5700,"ÇÑ°¡À§ »óÀÚ","SP271",22,22,"Event",1,"SP271",0,17,0},
+ {0x8020100,"È£ÇÇ	  ","GP101",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020200,"È©°íºí¸° ","GP102",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020300,"µðÄÚÀÌ   ","GP103",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020400,"¹Ù°ï     ","GP104",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020500,"ÇìµåÄ¿ÅÍ ","GP105",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020600,"ÆÄÀÌ°ï   ","GP106",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020700,"Å·È£ÇÇ   ","GP107",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020800,"ÇæÅ©     ","GP108",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020900,"·£´ý     ","GP109",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020a00,"Å¬·£     ","GP110",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020b00,"À¥       ","GP111",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020c00,"´ÙÅ©½ºÆÑÅÍ","GP112",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020d00,"¾ÆÀÌ¾ð°¡µå","GP113",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020e00,"¸®Ä«¸£µ§ ¹Îº´´ë","GP114",44,44,"Event",1,"GP101",0,4,0},
+ {0x8020f00,"¸®Ä«¸£µ§ °æºñ´ë","GP115",44,44,"Event",1,"GP101",0,4,0},
+ {0x8021000,"ºí·¹½º¿Õ±¹ ¼öºñ´ë","GP116",44,44,"Event",1,"GP101",0,4,0},
+ {0x8021100,"½ºÄÌ·¹Åæ Å©¸®½ºÅ»","GP117",44,44,"Event",1,"GP101",0,4,0},
+ {0x8021200,"°ÔÀÌ¾Æ½º Å©¸®½ºÅ»","GP118",44,44,"Event",1,"GP101",0,4,0},
+ {0x8021300,"ÀÎÆä¸£³ª Å©¸®½ºÅ»","GP119",44,44,"Event",1,"GP101",0,4,0},
+ {0x8021400,"ÀÍ½ºÆ®¸² Å©¸®½ºÅ»","GP120",44,44,"Event",1,"GP101",0,4,0},
+ {0x8021500,"¸¶º§ Å©¸®½ºÅ»","GP121",44,44,"Event",1,"GP101",0,4,0},
+ {0x8021600,"°¡µð¾È µð¹ÙÀÎ","GP122",44,44,"Event",1,"GP101",0,4,0},
+ {0x8021700,"ÀÌ´Ï±×¸¶ Å©¸®½ºÅ»","GP123",44,44,"Event",1,"GP101",0,4,0},
+ {0x8021800,"¹Ì·ÎÆ½ Å©¸®½ºÅ»","GP124",44,44,"Event",1,"GP101",0,4,0},
+ {0x8021900,"±âÇÁÆ® Å©¸®½ºÅ»","GP125",44,44,"Event",1,"GP101",0,4,0},
+ {0x8022a00,"ÆÐ¹Ð¸® Å©¸®½ºÅ»","GP126",44,44,"Event",1,"GP101",0,4,0},
+ {0x8022b00,"¹öµð Å©¸®½ºÅ»","GP127",44,44,"Event",1,"GP101",0,4,0},
+ {0x8022c00,"Å©·Î¿ì Å©¸®½ºÅ»","GP128",44,44,"Event",1,"GP101",0,4,0},
+ {0x8022e00,"¿ÍÀÌ¹ø Å©¸®½ºÅ»","GP130",44,44,"Event",1,"GP101",0,4,0},
+ {0x8022f00,"(P)¸¶º§ Å©¸®½ºÅ»","GP131",44,44,"Event",1,"GP101",0,4,0},
+ {0x8023000,"(P)¹Ì·ÎÆ½ Å©¸®½ºÅ»","GP132",44,44,"Event",1,"GP101",0,4,0},
+ {0x8023100,"(E)¸¶º§ Å©¸®½ºÅ»","GP133",44,44,"Event",1,"GP101",0,4,0},
+ {0x8023200,"(E)¹Ì·ÎÆ½ Å©¸®½ºÅ»","GP134",44,44,"Event",1,"GP101",0,4,0},
+ {0x8023300,"ÄÌº£Áê Å©¸®½ºÅ»","GP135",44,44,"Event",1,"GP135",0,4,0},
+ {0x8023400,"¹ß·»Åä Å©¸®½ºÅ»","GP136",44,44,"Event",1,"GP136",0,4,0},
+ {0x8023500,"Åø¶ó Å©¸®½ºÅ»","GP137",44,44,"Event",1,"GP137",0,4,0},
+ {0x8023600,"(P)ÄÌº£Áê Å©¸®½ºÅ»","GP138",44,44,"Event",1,"GP138",0,4,0},
+ {0x8023700,"(P)¹ß·»Åä Å©¸®½ºÅ»","GP139",44,44,"Event",1,"GP139",0,4,0},
+ {0x8023800,"(P)Åø¶ó Å©¸®½ºÅ»","GP140",44,44,"Event",1,"GP140",0,4,0},
+ {0x8023900,"µå·¡°ï Å©¸®½ºÅ»","GP141",44,44,"Event",1,"GP101",0,4,0},
+ {0x8023a00,"±¼°¡¸£ Å©¸®½ºÅ»","GP142",44,44,"Event",1,"GP101",0,4,0},
+ {0x8023b00,"Çï ÇÏ¿îµå Å©¸®½ºÅ»","GP143",44,44,"Event",1,"GP101",0,4,0},
+ {0x8023c00,"ÀÌ°ñ¶óÆ¼¿Â Å©¸®½ºÅ»","GP144",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050100,"Æ®¸®ÇÃ È£ÇÇ	  ","GP301",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050200,"Æ®¸®ÇÃ È©°íºí¸° ","GP302",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050300,"Æ®¸®ÇÃ µðÄÚÀÌ   ","GP303",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050400,"Æ®¸®ÇÃ ¹Ù°ï     ","GP304",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050500,"Æ®¸®ÇÃ ÇìµåÄ¿ÅÍ ","GP305",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050600,"Æ®¸®ÇÃ ÆÄÀÌ°ï   ","GP306",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050700,"Æ®¸®ÇÃ Å·È£ÇÇ   ","GP307",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050800,"Æ®¸®ÇÃ ÇæÅ©     ","GP308",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050900,"Æ®¸®ÇÃ ¹Ì½ºÆ½     ","GP309",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050a00,"Æ®¸®ÇÃ °¡µð¾È ¼¼ÀÎÆ®     ","GP310",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050b00,"Æ®¸®ÇÃ À¥ Å©¸®½ºÅ»       ","GP311",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050c00,"Æ®¸®ÇÃ ´ÙÅ©½ºÆÑÅÍ","GP312",44,44,"Event",1,"GP101",0,4,0},
+ {0x8050d00,"Æ®¸®ÇÃ ¾ÆÀÌ¾ð°¡µå","GP313",44,44,"Event",1,"GP101",0,4,0},
+ {0x8053a00,"Æ®¸®ÇÃ ±¼°¡¸£ Å©¸®½ºÅ»","GP342",44,44,"Event",1,"GP101",0,4,0},
+ {0x8053b00,"Æ®¸®ÇÃ Çï ÇÏ¿îµå Å©¸®½ºÅ»","GP343",44,44,"Event",1,"GP101",0,4,0},
+ {0x8053c00,"Æ®¸®ÇÃ ÀÌ°ñ¶óÆ¼¿Â Å©¸®½ºÅ»","GP344",44,44,"Event",1,"GP101",0,4,0},
+ {0x8030100,"À®1	          ","QW101",44,44,"Wing",1,"QW101",0,4,0},
+ {0x8030200,"À®2		      ","QW102",44,44,"Wing",1,"QW102",0,4,0},
+ {0x8030300,"À®3			  ","QW103",44,44,"Wing",1,"QW103",0,4,0},
+ {0x8030400,"À®4			  ","QW104",44,44,"Wing",1,"QW104",0,4,0},
+ {0x8030500,"À®5			  ","QW105",44,44,"Wing",1,"QW105",0,4,0},
+ {0x8030600,"À®6			  ","QW106",44,44,"Wing",1,"QW106",0,4,0},
+ {0x9010100,"À¯¸®º´           ","MA101",44,44,"Make",1,"MA101",0,4,0},
+ {0x9020100,"¹ú²Ü             ","MA201",22,22,"Make",1,"MA201",0,17,0},
+ {0x9020200,"°ËÀº±â¸§         ","MA202",22,22,"Make",1,"MA202",0,17,0},
+ {0x8040100,"º°»óÇ°±Ç","GF101",44,44,"Event",1,"GF101",0,14,0},
+ {0x8040300,"±¸¹ÌÈ£¸ñ°ÉÀÌ1","GF103",44,44,"Event",1,"GF103",0,14,0},
+ {0x8040400,"±¸¹ÌÈ£¸ñ°ÉÀÌ2","GF104",44,44,"Event",1,"GF104",0,14,0},
+ {0x8040500,"ºû³ª´Â °¡·ç","GF105",22,22,"Event",1,"GF105",0,14,0},
+ {0x8040600,"¹ÝÂ¦   °¡·ç","GF106",22,22,"Event",1,"GF106",0,14,0},
+ {0x8040200,"¿ª°Ü¿î Áø¾×","GF102",22,22,"Event",1,"GF102",0,17,0},
+ {0x8060000,"º¹ÁÖ¸Ó´Ï","PZ100",44,44,"Event",1,"PZ100",0,14,0},
+ {0x8090100,"ÆøÅº","SD201",22,22,"Event",1,"SD201",0,14,0},
+ {0x8090200,"½Ã°è","SD202",22,22,"Event",1,"SD202",0,14,0},
+ {0x8090300,"¾ÆÀÌ½ºÅ©¸²","SD203",22,22,"Event",1,"SD203",0,14,0},
+ {0x8090400,"Åä³¢ÀÎÇü","SD204",22,22,"Event",1,"SD204",0,14,0},
+ {0x8090500,"´ÞÀÇ ¼öÁ¤±¸","SD205",22,22,"Event",1,"SD205",0,14,0},
+ {0x8090600,"ÅÂ¾çÀÇ ¼öÁ¤±¸","SD206",22,22,"Event",1,"SD206",0,14,0},
+ {0x8090700,"Ãµ°øÀÇ ¼öÁ¤±¸","SD207",22,22,"Event",1,"SD207",0,14,0},
+ {0x8090800,"µ¥½º¼Òµå ¾Á","SD208",22,22,"Event",1,"SD208",0,14,0},
+ {0x8090900,"ºí¶óÀÎµå ¾Á","SD209",22,22,"Event",1,"SD209",0,14,0},
+ {0x8090a00,"ÆÄ¿ö ¾Á","SD210",22,22,"Event",1,"SD210",0,14,0},
+ {0x8090b00,"¾ÆÀÌ¾ð ¾Á","SD211",22,22,"Event",1,"SD211",0,14,0},
+ {0x8090c00,"·£´ý ¾Á","SD212",22,22,"Event",1,"SD212",0,14,0},
+ {0x5020100,"º§¶óÅä½ºÅæ(¼Ò)","BS101",22,22,"Event",1,"BS101",0,16,0},
+ {0x5020200,"º§¶óÅä½ºÅæ(Áß)","BS102",22,22,"Event",1,"BS102",0,16,0},
+ {0x5020300,"º§¶óÅä½ºÅæ(´ë)","BS103",22,22,"Event",1,"BS103",0,16,0},
+ {0x80a0100,"¾ÆÅ¸³ª½Ã¾Æ","BC101",22,22,"Event",1,"BC101",0,14,0},
+ {0x80a0200,"µ¥µé¸® ¿¡Áö","BC102",22,22,"Event",1,"BC102",0,14,0},
+ {0x80a0300,"¾îº£ÀÏ ¿Àºê ÀÌº£ÀÌµå","BC103",22,22,"Event",1,"BC103",0,14,0},
+ {0x80a0400,"º¼½ºÅÍ ¸®Ä¿¹ö¸®","BC104",22,22,"Event",1,"BC104",0,14,0},
+ {0x80a0500,"¸®½ºÅä·¹ÀÌ¼Ç","BC105",22,22,"Event",1,"BC105",0,14,0},
+ {0x80a0600,"µðÆÄÀÌ¾ð½º ½ºÅæ","BC106",22,22,"Event",1,"BC106",0,16,0},
+ {0x80a0700,"µðÆÄÀÌ¾ð½º ½ºÅæ","BC107",22,22,"Event",1,"BC107",0,16,0},
+ {0x80a0800,"µðÆÄÀÌ¾ð½º ½ºÅæ","BC108",22,22,"Event",1,"BC108",0,16,0},
+ {0x80a0900,"¸¶ÀÌÆ® ½ºÅæ","BC109",22,22,"Event",1,"BC109",0,16,0},
+ {0x80a0a00,"¸¶ÀÌÆ® ½ºÅæ","BC110",22,22,"Event",1,"BC110",0,16,0},
+ {0x80a0b00,"¸¶ÀÌÆ® ½ºÅæ","BC111",22,22,"Event",1,"BC111",0,16,0},
+ {0x80a0c00,"¸¶ÀÌÆ® ½ºÅæ","BC112",22,22,"Event",1,"BC112",0,16,0},
+ {0x80a0d00,"¸¶ÀÌÆ® ½ºÅæ","BC113",22,22,"Event",1,"BC113",0,16,0},
+ {0x80a0e00,"¸¶ÀÌÆ® ½ºÅæ","BC114",22,22,"Event",1,"BC114",0,16,0},
+ {0x80a0f00,"¸¶ÀÌÆ® ½ºÅæ","BC115",22,22,"Event",1,"BC115",0,16,0},
+ {0x80a1000,"¸¶ÀÌÆ® ½ºÅæ","BC116",22,22,"Event",1,"BC116",0,16,0},
+ {0x80a1100,"¸®º£¶ó","BC117",22,22,"Event",1,"BC117",0,16,0},
+ {0x80a1200,"¸¶ÀÌÆ® ½ºÅæ","BC118",22,22,"Event",1,"BC118",0,16,0},
+ {0x80a1300,"¸¶ÀÌÆ® ½ºÅæ","BC119",22,22,"Event",1,"BC119",0,16,0},
+ {0x80a1400,"¸¶ÀÌÆ® ½ºÅæ","BC120",22,22,"Event",1,"BC120",0,16,0},
+ {0x80a1500,"»ý¸í·Â ºÎ½ºÅÍ(1½Ã°£)","BC121",22,22,"Event",1,"BC121",0,16,0},
+ {0x80a1600,"»ý¸í·Â ºÎ½ºÅÍ(3½Ã°£)","BC122",22,22,"Event",1,"BC122",0,16,0},
+ {0x80a1700,"»ý¸í·Â ºÎ½ºÅÍ(1ÀÏ)","BC123",22,22,"Event",1,"BC123",0,16,0},
+ {0x80a1800,"±â·Â ºÎ½ºÅÍ(1½Ã°£)","BC124",22,22,"Event",1,"BC124",0,16,0},
+ {0x80a1900,"±â·Â ºÎ½ºÅÍ(3½Ã°£)","BC125",22,22,"Event",1,"BC125",0,16,0},
+ {0x80a2a00,"±â·Â ºÎ½ºÅÍ(1ÀÏ)","BC126",22,22,"Event",1,"BC126",0,16,0},
+ {0x80a2b00,"±Ù·Â ºÎ½ºÅÍ(1½Ã°£)","BC127",22,22,"Event",1,"BC127",0,16,0},
+ {0x80a2c00,"±Ù·Â ºÎ½ºÅÍ(3½Ã°£)","BC128",22,22,"Event",1,"BC128",0,16,0},
+ {0x80a2d00,"±Ù·Â ºÎ½ºÅÍ(1ÀÏ)","BC129",22,22,"Event",1,"BC129",0,16,0},
+ {0x80a2e00,"(P)¸ÖÆ¼ ºÎ½ºÅÍ(3½Ã°£)","BC130",22,22,"Event",1,"BC130",0,16,0},
+ {0x80a2f00,"(P)±â·Â ºÎ½ºÅÍ(1½Ã°£)","BC131",22,22,"Event",1,"BC131",0,16,0},
+ {0x80a3000,"(P)±Ù·Â ºÎ½ºÅÍ(1½Ã°£)","BC132",22,22,"Event",1,"BC132",0,16,0},
+ {0x80a3100,"(E)±â·Â ºÎ½ºÅÍ(3½Ã°£)","BC133",22,22,"Event",1,"BC133",0,16,0},
+ {0x80a3200,"(E)±Ù·Â ºÎ½ºÅÍ(3½Ã°£)","BC134",22,22,"Event",1,"BC134",0,16,0},
+ {0x80a3300,"Èæ»çÀÇ ±â¿î","BC135",22,22,"Event",1,"BC135",0,16,0},
+ {0x80a3400,"°¡µå Æ÷½º","BC136",22,22,"Event",1,"BC136",0,16,0},
+ {0x80a3500,"¸ÖÆ¼ Å×¶ó Æ÷½º","BC137",22,22,"Event",1,"BC137",0,16,0},
+ {0x80a3600,"(P)¸ÖÆ¼ Æ÷½º(3½Ã°£)","BC138",22,22,"Event",1,"BC138",0,16,0},
+ {0x80a3700,"Ã»¸¶ÀÇ ±â¿î","BC139",22,22,"Event",1,"BC139",0,16,0},
+ {0x80a3800,"(E)°¡µå Æ÷½º","BC140",22,22,"Event",1,"BC140",0,16,0},
+ {0x80a3900,"¾çÀÇ Ãàº¹","BC141",22,22,"Event",1,"BC141",0,16,0},
+ {0x80a3a00,"±Ý°ßÀÇ ±â¿î","BC142",22,22,"Event",1,"BC142",0,16,0},
+ {0x80a3b00,"Àº°ßÀÇ ±â¿î","BC143",22,22,"Event",1,"BC143",0,16,0},
+ {0x8201900,"(P)±â·Â ºÎ½ºÅÍ(3½Ã°£)","BC225",22,22,"Event",1,"BC225",0,16,0},
+ {0x8202a00,"(P)±â·Â ºÎ½ºÅÍ(1ÀÏ)","BC226",22,22,"Event",1,"BC226",0,16,0},
+ {0x8202c00,"(P)±Ù·Â ºÎ½ºÅÍ(3½Ã°£)","BC228",22,22,"Event",1,"BC228",0,16,0},
+ {0x8202d00,"(P)±Ù·Â ºÎ½ºÅÍ(1ÀÏ)","BC229",22,22,"Event",1,"BC229",0,16,0},
+ {0x80b0100,"ºí·ç ½ºÅæ","BI101",44,22,"Premium",1,"BI101",0,16,0},
+ {0x80b0200,"·¹µå ½ºÅæ","BI102",44,22,"Premium",1,"BI102",0,16,0},
+ {0x80b0300,"±×¸° ½ºÅæ","BI103",44,22,"Premium",1,"BI103",0,16,0},
+ {0x80b0400,"ºÎÈ°ÁÖ¹®¼­","BI104",44,22,"Premium",1,"BI104",0,16,0},
+ {0x80b0500,"ÀÌÅÍ³Î ¶óÀÌÇÁ","BI105",44,22,"Premium",1,"BI105",0,16,0},
+ {0x80b0600,"ÆäÀÌÆ² ¿¡Áö","BI106",44,22,"Premium",1,"BI106",0,16,0},
+ {0x80b0700,"¾î¹öÆ® ½ºÅ©·Ñ","BI107",44,22,"Premium",1,"BI107",0,16,0},
+ { sinBI1 | sin08 ,"ÅÚ·¹Æ÷Æ® ÄÚ¾î"   ,"BI108",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI108",0,SIN_SOUND_SHELTOM },
+ {0x80b0900,"¾óÅ«ÀÌ ¹°¾à","BI109",22,22,"Premium",1,"BI109",0,17,0},
+ {0x80b0a00,"¿¡ÀÌÂ¡ ½ºÅæ","BI110",22,22,"Premium",1,"BI110",0,16,0},
+ {0x80b0b00,"ÄÚÆÛ ¿À¾î","BI111",22,22,"Premium",1,"BI111",0,16,0},
+ {0x80b0c00,"½áµå ¾ÆÀÌÁî(1ÀÏ)","BI112",22,22,"Premium",1,"BI112",0,16,0},
+ {0x80b0d00,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(1ÀÏ)","BI113",22,22,"Premium",1,"BI113",0,17,0},
+ {0x80b0e00,"½áµå ¾ÆÀÌÁî(7ÀÏ)","BI114",22,22,"Premium",1,"BI114",0,16,0},
+ {0x80b0f00,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(7ÀÏ)","BI115",22,22,"Premium",1,"BI115",0,17,0},
+ {0x80b1000,"Çì¾îÆ¾Æ® Æ÷¼Ç(AÇü)","BI116",22,22,"Premium",1,"BI116",0,17,0},
+ {0x80b1100,"Çì¾îÆ¾Æ® Æ÷¼Ç(BÇü)","BI117",22,22,"Premium",1,"BI117",0,17,0},
+ {0x80b1200,"Çì¾îÆ¾Æ® Æ÷¼Ç(CÇü)","BI118",22,22,"Premium",1,"BI118",0,17,0},
+ {0x80b1300,"¹ìÇÇ¸¯ Ä¿½ºÇÍ(3½Ã°£)","BI119",22,22,"Premium",1,"BI119",0,17,0},
+ {0x80b1400,"¹ìÇÇ¸¯ Ä¿½ºÇÍ(1ÀÏ)","BI120",22,22,"Premium",1,"BI120",0,17,0},
+ {0x80b1500,"¸¶³ª ¸®Â÷Â¡ Æ÷¼Ç(15ºÐ)","BI121",22,22,"Premium",1,"BI121",0,17,0},
+ {0x80b1600,"¸¶³ª ¸®Â÷Â¡ Æ÷¼Ç(30ºÐ)","BI122",22,22,"Premium",1,"BI122",0,17,0},
+ {0x80b1700,"Æø Á×","BI123",22,22,"Premium",1,"BI123",0,17,0},
+ {0x80b1800,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(50% 1ÀÏ)","BI124",22,22,"Premium",1,"BI124",0,17,0},
+ {0x80b1900,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(50% 7ÀÏ)","BI125",22,22,"Premium",1,"BI125",0,17,0},
+ {0x80b2a00,"¸¶ÀÌÆ® ¿Àºê ¾ÆÀ£(7ÀÏ)","BI126",22,22,"Premium",1,"BI126",0,17,0},
+ {0x80b2b00,"¸¶ÀÌÆ® ¿Àºê ¾ÆÀ£(30ÀÏ)","BI127",22,22,"Premium",1,"BI127",0,17,0},
+ {0x80b2c00,"¸¶³ª ¸®µà½º Æ÷¼Ç(1ÀÏ)","BI128",22,22,"Premium",1,"BI128",0,17,0},
+ {0x80b2d00,"¸¶³ª ¸®µà½º Æ÷¼Ç(7ÀÏ)","BI129",22,22,"Premium",1,"BI129",0,17,0},
+ {0x80b2e00,"¸¶ÀÌÆ® ¿Àºê ¾ÆÀ£2(7ÀÏ)","BI130",22,22,"Premium",1,"BI130",0,17,0},
+ {0x80b2f00,"¸¶ÀÌÆ® ¿Àºê ¾ÆÀ£2(30ÀÏ)","BI131",22,22,"Premium",1,"BI131",0,17,0},
+ {0x80b3400,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(A)","BI136",22,22,"Premium",1,"BI136",0,17,0},
+ {0x80b3500,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(B)","BI137",22,22,"Premium",1,"BI137",0,17,0},
+ {0x80b3600,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(C)","BI138",22,22,"Premium",1,"BI138",0,17,0},
+ {0x80b3700,"½ºÅ³ ¸¶½ºÅÍ(1Â÷)","BI139",22,22,"Premium",1,"BI139",0,17,0},
+ {0x80b3800,"½ºÅ³ ¸¶½ºÅÍ(2Â÷)","BI140",22,22,"Premium",1,"BI140",0,17,0},
+ {0x80b3900,"½ºÅ³ ¸¶½ºÅÍ(3Â÷)","BI141",22,22,"Premium",1,"BI141",0,17,0},
+ {0x80b3a00,"ÀÌµ¿ »óÁ¡","BI142",22,22,"Premium",1,"BI142",0,17,0},
+ {0x80b3b00,"°æÇèÄ¡100% Áõ°¡ Æ÷¼Ç(1ÀÏ)","BI143",22,22,"Premium",1,"BI143",0,17,0},
+ {0x80b3c00,"°æÇèÄ¡100% Áõ°¡ Æ÷¼Ç(7ÀÏ)","BI144",22,22,"Premium",1,"BI144",0,17,0},
+ {0x80b3d00,"Èû ½ºÅæ","BI145",44,22,"Premium",1,"BI145",0,16,0},
+ {0x80b3e00,"Á¤½Å ½ºÅæ","BI146",44,22,"Premium",1,"BI146",0,16,0},
+ {0x80b3f00,"Àç´É ½ºÅæ","BI147",44,22,"Premium",1,"BI147",0,16,0},
+ {0x80b4000,"¹ÎÃ¸¼º ½ºÅæ","BI148",44,22,"Premium",1,"BI148",0,16,0},
+ {0x80b4100,"°Ç°­ ½ºÅæ","BI149",44,22,"Premium",1,"BI149",0,16,0},
+ {0x80b4200,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(100% 30ÀÏ)","BI150",22,22,"Premium",1,"BI150",0,17,0},
+ {0x80b4400,"Å×¸®(30ÀÏ)","BI152",22,22,"Premium",1,"BI152",0,17,0},
+ {0x80b4500,"³Ü½Ã½º(30ÀÏ)","BI153",22,22,"Premium",1,"BI153",0,17,0},
+ {0x80b4600,"ÀÌ¿À(30ÀÏ)","BI154",22,22,"Premium",1,"BI154",0,17,0},
+ {0x80b4700,"¹«Æ®(30ÀÏ)","BI155",22,22,"Premium",1,"BI155",0,17,0},
+ {0x80b4c00,"¿¤´õ ÄÚÆÛ ¿À¾î","BI160",22,22,"Premium",1,"BI160",0,16,0},
+ {0x80b4D00,"BI161","BI161",22,22,"Premium",1,"BI161",0,17,0 },
+ {0x80b4e00,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(D)","BI162",22,22,"Premium",1,"BI162",0,17,0},
+ {0x80b4f00,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(E)","BI163",22,22,"Premium",1,"BI163",0,17,0},
+ {0x80b5000,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(F)","BI164",22,22,"Premium",1,"BI164",0,17,0},
+ {0x80b5100,"Å×¸®(7ÀÏ)","BI165",22,22,"Premium",1,"BI165",0,17,0},
+ {0x80b5200,"³Ü½Ã½º(7ÀÏ)","BI166",22,22,"Premium",1,"BI166",0,17,0},
+ {0x80b5300,"ÀÌ¿À(7ÀÏ)","BI167",22,22,"Premium",1,"BI167",0,17,0},
+ {0x80b5400,"¹«Æ®(7ÀÏ)","BI168",22,22,"Premium",1,"BI168",0,17,0},
+ {0x80b5e00,"½áµå ¾ÆÀÌÁî(1½Ã°£)","BI178",22,22,"Premium",1,"BI178",0,16,0},
+ {0x80b5f00,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(1½Ã°£)","BI179",22,22,"Premium",1,"BI179",0,17,0},
+ {0x80b6000,"°æÇèÄ¡100%Áõ°¡Æ÷¼Ç(1½Ã°£)","BI180",22,22,"Premium",1,"BI180",0,17,0},
+ {0x80b6100,"¹ìÇÇ¸¯ Ä¿½ºÇÍ(1½Ã°£)","BI181",22,22,"Premium",1,"BI181",0,17,0},
+ {0x80b6200,"¸¶³ª ¸®Â÷Â¡ Æ÷¼Ç(1½Ã°£)","BI182",22,22,"Premium",1,"BI182",0,17,0},
+ {0x80b6300,"¸¶³ª ¸®µà½º Æ÷¼Ç(1½Ã°£)","BI183",22,22,"Premium",1,"BI183",0,17,0},
+ { sinBI1 | sin84 ,"±×¶óºñÆ¼ ½ºÅæ"   ,"BI184",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI184",0,SIN_SOUND_POTION },
+ {0x80b6500,"½´Æä¸®¾î ÄÚÆÛ¿À¾î","BI185",22,22,"Premium",1,"BI185",0,16,0},
+ {0x80b6600,"½´ÆÛ ¹ìÇÇ¸¯ Ä¿½ºÇÍ(1½Ã°£)","BI186",22,22,"Premium",1,"BI186",0,17,0},
+ {0x80b6700,"½´ÆÛ ¹ìÇÇ¸¯ Ä¿½ºÇÍ(3½Ã°£)","BI187",22,22,"Premium",1,"BI187",0,17,0},
+ {0x80b6900,"¹Í½ºÃÄ ¸®¼Â ½ºÅæ","BI189",22,22,"Premium",1,"BI189",0,16,0},
+ {0x80b6a00,"¸®½ºÆå ½ºÅæ","BI190",22,22,"Premium",1,"BI190",0,17,0},
+ {0x80b6b00,"±Ù·Â ¸®µà½º Æ÷¼Ç(1ÀÏ)","BI191",22,22,"Premium",1,"BI191",0,17,0},
+ {0x80b6c00,"±Ù·Â ¸®µà½º Æ÷¼Ç(7ÀÏ)","BI192",22,22,"Premium",1,"BI192",0,17,0},
+ {0x80b6f00,"¾óÅ«ÀÌ ¹æ±ß Æ÷¼Ç","BI195",22,22,"Premium",1,"BI195",0,17,0},
+ {0x80b7000,"¾óÅ«ÀÌ ·¯ºê Æ÷¼Ç","BI196",22,22,"Premium",1,"BI196",0,17,0},
+ {0x80b7100,"¾óÅ«ÀÌ ¿ïº¸ Æ÷¼Ç","BI197",22,22,"Premium",1,"BI197",0,17,0},
+ {0x80b7200,"¾óÅ«ÀÌ ¹ÝÂ¦ Æ÷¼Ç","BI198",22,22,"Premium",1,"BI198",0,17,0},
+ {0x80b7300,"¸®¹ö½º ½ºÅæ","BI199",44,44,"Premium",1,"BI199",0,16,0},
+ {0x80c0100,"Bronze Package(3½Ã°£)","BI201",22,22,"Premium",1,"BI201",0,16,0},
+ {0x80c0200,"Bronze Package(1ÀÏ)","BI202",22,22,"Premium",1,"BI202",0,16,0},
+ {0x80c0300,"Bronze Package(7ÀÏ)","BI203",22,22,"Premium",1,"BI203",0,16,0},
+ {0x80c0400,"Bronze Package(30ÀÏ)","BI204",22,22,"Premium",1,"BI204",0,16,0},
+ {0x80c0500,"Siver Package(3½Ã°£)","BI205",22,22,"Premium",1,"BI205",0,16,0},
+ {0x80c0600,"Siver Package(1ÀÏ)","BI206",22,22,"Premium",1,"BI206",0,16,0},
+ {0x80c0700,"Siver Package(7ÀÏ)","BI207",22,22,"Premium",1,"BI207",0,16,0},
+ {0x80c0800,"Siver Package(30ÀÏ)","BI208",22,22,"Premium",1,"BI208",0,16,0},
+ {0x80c0900,"Gold Package(3½Ã°£)","BI209",22,22,"Premium",1,"BI209",0,16,0},
+ {0x80c0a00,"Gold Package(1ÀÏ)","BI210",22,22,"Premium",1,"BI210",0,16,0},
+ {0x80c0b00,"Gold Package(7ÀÏ)","BI211",22,22,"Premium",1,"BI211",0,16,0},
+ {0x80c0c00,"Gold Package(30ÀÏ)","BI212",22,22,"Premium",1,"BI212",0,16,0},
+ {0x80c0d00,"Çì¾îÆ¾Æ® Æ÷¼Ç(DÇü)","BI213",22,22,"Premium",1,"BI213",0,17,0},
+ {0x80c0e00,"Çì¾îÆ¾Æ® Æ÷¼Ç(EÇü)","BI214",22,22,"Premium",1,"BI214",0,17,0},
+ {0x80c0f00,"Çì¾îÆ¾Æ® Æ÷¼Ç(FÇü)","BI215",22,22,"Premium",1,"BI215",0,17,0},
+ {0x80c1000,"Çì¾îÆ¾Æ® Æ÷¼Ç(GÇü)","BI216",22,22,"Premium",1,"BI216",0,17,0},
+ {0x80c1100,"Çì¾îÆ¾Æ® Æ÷¼Ç(HÇü)","BI217",22,22,"Premium",1,"BI217",0,17,0},
+ {0x80c1200,"Çì¾îÆ¾Æ® Æ÷¼Ç(IÇü)","BI218",22,22,"Premium",1,"BI218",0,17,0},
+ {0x80c1300,"Çì¾îÆ¾Æ® Æ÷¼Ç(JÇü)","BI219",22,22,"Premium",1,"BI219",0,17,0},
+ {0x80c1400,"Çì¾îÆ¾Æ® Æ÷¼Ç(KÇü)","BI220",22,22,"Premium",1,"BI220",0,17,0},
+ {0x80c1500,"Çì¾îÆ¾Æ® Æ÷¼Ç(LÇü)","BI221",22,22,"Premium",1,"BI221",0,17,0},
+ {0x80c1600,"Çì¾îÆ¾Æ® Æ÷¼Ç(MÇü)","BI222",22,22,"Premium",1,"BI222",0,17,0},
+ {0x80c1700,"Superior Package(3½Ã°£)","BI223",22,22,"Premium",1,"BI223",0,16,0},
+ {0x80c1800,"Superior Package(1ÀÏ)","BI224",22,22,"Premium",1,"BI224",0,16,0},
+ {0x80c1900,"Superior Package(7ÀÏ)","BI225",22,22,"Premium",1,"BI225",0,16,0},
+ {0x80c2a00,"Bronze Package2(3½Ã°£)","BI226",22,22,"Premium",1,"BI226",0,16,0},
+ {0x80c2b00,"Bronze Package2(1ÀÏ)","BI227",22,22,"Premium",1,"BI227",0,16,0},
+ {0x80c2c00,"Bronze Package2(7ÀÏ)","BI228",22,22,"Premium",1,"BI228",0,16,0},
+ {0x80c2d00,"Siver Package2(3½Ã°£)","BI229",22,22,"Premium",1,"BI229",0,16,0},
+ {0x80c2e00,"Siver Package2(1ÀÏ)","BI230",22,22,"Premium",1,"BI230",0,16,0},
+ {0x80c2f00,"Siver Package2(7ÀÏ)","BI231",22,22,"Premium",1,"BI231",0,16,0},
+ {0x80c3000,"Gold Package2(3½Ã°£)","BI232",22,22,"Premium",1,"BI232",0,16,0},
+ {0x80c3100,"Gold Package2(1ÀÏ)","BI233",22,22,"Premium",1,"BI233",0,16,0},
+ {0x80c3200,"Gold Package2(7ÀÏ)","BI234",22,22,"Premium",1,"BI234",0,16,0},
+ {0x80c3300,"Superior Package2(3½Ã°£)","BI235",22,22,"Premium",1,"BI235",0,16,0},
+ {0x80c3400,"Superior Package2(1ÀÏ)","BI236",22,22,"Premium",1,"BI236",0,16,0},
+ {0x80c3500,"Superior Package2(7ÀÏ)","BI237",22,22,"Premium",1,"BI237",0,16,0},
+
+ { sinBI2 | sin38 ,"VALE13X"  ,"BI238",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI238",0,SIN_SOUND_POTION },
+ { sinBI2 | sin39 ,"VALE14X"  ,"BI239",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI239",0,SIN_SOUND_POTION },
+ { sinBI2 | sin40 ,"VALE15X"  ,"BI240",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI240",0,SIN_SOUND_POTION },
+ { sinBI2 | sin41 ,"VALE15X"  ,"BI241",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI241",0,SIN_SOUND_POTION },
+ { sinBI2 | sin42 ,"VALE16X"  ,"BI242",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI242",0,SIN_SOUND_POTION },
+ { sinBI2 | sin43 ,"VALE16X"  ,"BI243",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI243",0,SIN_SOUND_POTION },
+ { sinBI2 | sin44 ,"VALE16X"  ,"BI244",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI244",0,SIN_SOUND_POTION },
+ { sinBI2 | sin45 ,"VALE17X"  ,"BI2*45",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI245",0,SIN_SOUND_POTION },
+
+ { sinBI2 | sin46 ,"Fighter Stone"                ,"BI246",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI246",0,SIN_SOUND_POTION },
+ { sinBI2 | sin47 ,"Mechanician Stone"            ,"BI247",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI247",0,SIN_SOUND_POTION },
+ { sinBI2 | sin48 ,"Archer Stone"                 ,"BI248",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI248",0,SIN_SOUND_POTION },
+ { sinBI2 | sin49 ,"Pikeman Stone"                ,"BI249",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI249",0,SIN_SOUND_POTION },
+ { sinBI2 | sin50 ,"Atalanta Stone"               ,"BI250",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI250",0,SIN_SOUND_POTION },
+ { sinBI2 | sin51 ,"Knight Stone"                 ,"BI251",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI251",0,SIN_SOUND_POTION },
+ { sinBI2 | sin52 ,"Magician Stone"               ,"BI252",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI252",0,SIN_SOUND_POTION },
+ { sinBI2 | sin53 ,"Priestess Stone"              ,"BI253",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI253",0,SIN_SOUND_POTION },
+ { sinBI2 | sin54 ,"Assassin Stone"               ,"BI254",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI254",0,SIN_SOUND_POTION },
+ { sinBI2 | sin55 ,"Shaman Stone"                 ,"BI255",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI255",0,SIN_SOUND_POTION },
+ { sinBI2 | sin56 ,"Martial Stone"                ,"BI256",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI256",0,SIN_SOUND_POTION },
+ { sinBI2 | sin57 ,"Safe Stone"                   ,"BI257",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI257",0,SIN_SOUND_POTION },
+ { sinBI2 | sin58 ,"Plus Stone"                   ,"BI258",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI258",0,SIN_SOUND_POTION },
+ { sinBI2 | sin59 ,"Ultra Plus Stone"             ,"BI259",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI259",0,SIN_SOUND_POTION },
+ { sinBI2 | sin60 ,"Warehouse 1 Day"              ,"BI260",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI260",0,SIN_SOUND_POTION },
+ { sinBI2 | sin61 ,"Warehouse 7 Day"              ,"BI261",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI261",0,SIN_SOUND_POTION },
+ { sinBI2 | sin62 ,"Warehouse 30 Day"             ,"BI262",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI262",0,SIN_SOUND_POTION },
+ { sinBI2 | sin66 ,"Artefato Comum"               ,"BI266",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI266",0,SIN_SOUND_POTION },
+ { sinBI2 | sin67 ,"Artefato Superior"            ,"BI267",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI267",0,SIN_SOUND_POTION },
+ { sinBI2 | sin68 ,"Safe Stone Gold"              ,"BI268",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI268",0,SIN_SOUND_POTION },
+ { sinBI2 | sin69 ,"Safe Stone Gold"              ,"BI269",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI269",0,SIN_SOUND_POTION },
+ { sinBI2 | sin70 ,"Safe Stone Gold"              ,"BI270",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI270",0,SIN_SOUND_POTION },
+
+ { sinEV1 | sin01 ,"Novas Pedras Evento"              ,"EV101",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV101",0,SIN_SOUND_POTION },
+ { sinEV1 | sin02 ,"Novas Pedras Evento"              ,"EV102",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV102",0,SIN_SOUND_POTION },
+ { sinEV1 | sin03 ,"Novas Pedras Evento"              ,"EV103",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV103",0,SIN_SOUND_POTION },
+ { sinEV1 | sin04 ,"Novas Pedras Evento"              ,"EV104",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV104",0,SIN_SOUND_POTION },
+ { sinEV1 | sin05 ,"Novas Pedras Evento"              ,"EV105",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV105",0,SIN_SOUND_POTION },
+ { sinEV1 | sin06 ,"Novas Pedras Evento"              ,"EV106",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV106",0,SIN_SOUND_POTION },
+ { sinEV1 | sin07 ,"Novas Pedras Evento"              ,"EV107",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV107",0,SIN_SOUND_POTION },
+ { sinEV1 | sin08 ,"Novas Pedras Evento"              ,"EV108",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV108",0,SIN_SOUND_POTION },
+
+ { sinEV2 | sin01 ,"Novas Pedras Evento"              ,"SP231",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"SP231",0,SIN_SOUND_POTION },
+ { sinEV2 | sin02 ,"Novas Pedras Evento"              ,"SP232",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"SP232",0,SIN_SOUND_POTION },
+
+ {0x80c4f00,"·é µå¸±","BI263",22,44,"Premium",1,"BI263",0,16,0},
+ {0x80c5000,"·¹µå ·é µå¸±","BI264",22,44,"Premium",1,"BI264",0,16,0},
+ {0x80c5100,"¿»·Î¿ì ·é µå¸±","BI265",22,44,"Premium",1,"BI265",0,16,0},
+ {0x80c5500,"Ç®¸µÅøÅ¶(1st)","BI269",22,22,"Premium",1,"BI269",0,16,0},
+ {0x80c5600,"¼Ö´õ¸µ¾ÆÀÌ¾ð(1st)","BI270",22,22,"Premium",1,"BI270",0,16,0},
+ {0x80c5700,"½ÃÅ©¸´ ¹Ú½º2","BI271",22,22,"Premium",1,"BI271",0,16,0},
+ {0x80c5800,"¿¡ÀÌÂ¡ÀÇ Á¤¼ö(Áß±Þ)","BI272",22,22,"Premium",1,"BI272",0,16,0},
+ {0x80c5900,"¿¡ÀÌÂ¡ÀÇ Á¤¼ö(»ó±Þ)","BI273",22,22,"Premium",1,"BI273",0,16,0},
+ {0x80c5a00,"¿¡ÀÌÂ¡ÀÇ Á¤¼ö(°í±Þ)","BI274",22,22,"Premium",1,"BI274",0,16,0},
+ {0x80c5b00,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(70% 1ÀÏ)","BI275",22,22,"Premium",1,"BI275",0,17,0},
+ {0x80c5c00,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(70% 7ÀÏ)","BI276",22,22,"Premium",1,"BI276",0,17,0},
+ {0x80c5d00,"À¯·ÉÀÇ Èû","BI277",22,22,"Premium",1,"BI277",0,17,0},
+ {0x80c5e00,"º¸½ºÀÇ ¿µÈ¥ ´ÜÁö","BI278",22,22,"Premium",1,"BI278",0,16,0},
+ {0x80c5f00,"TOP ½ÃÅ©¸´ ¹Ú½º","BI279",22,22,"Premium",1,"BI279",0,16,0},
+ {0x80c6000,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(70% 1½Ã°£)","BI280",22,22,"Premium",1,"BI280",0,17,0},
+ {0x80c6100,"È£¹Ú ÆÄÀÌ(1½Ã°£)","BI281",22,22,"Premium",1,"BI281",0,16,0},
+ {0x80c6200,"°í½ºÆ® Æ¼ÄÏ","BI282",22,22,"Premium",1,"BI282",0,16,0},
+ {0x80c6300,"TOP ½ÃÅ©¸´ ¹Ú½º2","BI283",22,22,"Premium",1,"BI283",0,16,0},
+ {0x80c6600,"±â·ÂÀÇ »óÀÚ","BI286",22,22,"Premium",1,"BI286",0,16,0},
+ {0x80c6700,"½ºÆä¼È ¹öÇÁ","BI287",22,22,"Premium",1,"BI287",0,16,0},
+ {0x80c6800,"°í½ºÆ® Æ¼ÄÏ(S)","BI288",22,22,"Premium",1,"BI288",0,16,0},
+ {0x80c6900,"º¸¸§´Þ(1½Ã°£)","BI289",22,22,"Premium",1,"BI289",0,16,0},
+ {0x80c6a00,"TOP ½ÃÅ©¸´ ¹Ú½º3","BI290",22,22,"Premium",1,"BI290",0,16,0},
+ {0x80c6b00,"¿µ±¤ÀÇ »óÀÚ","BI291",22,22,"Premium",1,"BI291",0,16,0},
+ {0x80c6c00,"¹ìÆÄÀÌ¾î ¾Æ¸Ó »óÀÚ","BI292",44,44,"Premium",1,"BI292",0,16,0},
+ {0x80c6d00,"¹ìÆÄÀÌ¾î ·Îºê »óÀÚ","BI293",44,44,"Premium",1,"BI293",0,16,0},
+ {0x80c6e00,"¼­Å¥¹ö½º ¾Æ¸Ó »óÀÚ","BI294",44,44,"Premium",1,"BI294",0,16,0},
+ {0x80c6f00,"½áÅ¥¹ö½º ·Îºê »óÀÚ","BI295",44,44,"Premium",1,"BI295",0,16,0},
+ {0x80c7000,"Ç®¸µÅøÅ¶(2nd)","BI296",22,22,"Premium",1,"BI296",0,16,0},
+ {0x80c7100,"¼Ö´õ¸µ¾ÆÀÌ¾ð(2nd)","BI297",22,22,"Premium",1,"BI297",0,16,0},
+ {0x80c7200,"È÷µç ½ÃÅ©¸´ ¹Ú½º","BI298",22,22,"Premium",1,"BI298",0,16,0},
+ {0x3050500,"¹ß·»Åä ¸µ","OR205",22,22,"Accessory",192,"or205",0,15,0},
+ {0x8060100,"¼³³¯ ÆÛÁñ1","PZ101",44,22,"Event",1,"PZ101",0,14,0},
+ {0x8060200,"¼³³¯ ÆÛÁñ2","PZ102",44,22,"Event",1,"PZ101",0,14,0},
+ {0x8060300,"¼³³¯ ÆÛÁñ3","PZ103",22,44,"Event",1,"PZ101",0,14,0},
+ {0x8060400,"¼³³¯ ÆÛÁñ4","PZ104",44,22,"Event",1,"PZ101",0,14,0},
+ {0x8060500,"¼³³¯ ÆÛÁñ5","PZ105",44,22,"Event",1,"PZ101",0,14,0},
+ {0x8060600,"¼³³¯ ÆÛÁñ6","PZ106",22,44,"Event",1,"PZ101",0,14,0},
+ {0x8060700,"¼³³¯ ÆÛÁñ7","PZ107",44,22,"Event",1,"PZ101",0,14,0},
+ {0x8060800,"¼³³¯ ÆÛÁñ8","PZ108",44,22,"Event",1,"PZ101",0,14,0},
+ {0x8070100,"»õÇØ ÆÛÁñ1","PZ201",44,22,"Event",1,"PZ101",0,14,0},
+ {0x8070200,"»õÇØ ÆÛÁñ2","PZ202",44,22,"Event",1,"PZ101",0,14,0},
+ {0x8070300,"»õÇØ ÆÛÁñ3","PZ203",22,44,"Event",1,"PZ101",0,14,0},
+ {0x8070400,"»õÇØ ÆÛÁñ4","PZ204",22,44,"Event",1,"PZ101",0,14,0},
+ {0x8070500,"»õÇØ ÆÛÁñ5","PZ205",22,44,"Event",1,"PZ101",0,14,0},
+ {0x8070600,"»õÇØ ÆÛÁñ6","PZ206",22,44,"Event",1,"PZ101",0,14,0},
+ {0x8070700,"»õÇØ ÆÛÁñ7","PZ207",44,22,"Event",1,"PZ101",0,14,0},
+ {0x8070800,"»õÇØ ÆÛÁñ8","PZ208",44,22,"Event",1,"PZ101",0,14,0},
+ {0x8080100,"ÃÊÄÝ·¿1","CH101",22,22,"Event",1,"CH101",0,14,0},
+ {0x8080200,"ÃÊÄÝ·¿2","CH102",22,22,"Event",1,"CH102",0,14,0},
+ {0x8080300,"»çÅÁ1","CH103",22,22,"Event",1,"CH103",0,14,0},
+ {0x8080400,"»çÅÁ2","CH104",22,22,"Event",1,"CH104",0,14,0},
+ {0x3070100,"Á¦¶ó","SE101",22,22,"Accessory",1,"SE101",0,16,0},
+ {0x3070200,"´ÏÀÌµå","SE102",22,22,"Accessory",1,"SE102",0,16,0},
+ {0x3070300,"ÁöÇª","SE103",22,22,"Accessory",1,"SE103",0,16,0},
+ {0x3070400,"Å×ÀÌ¿ÍÁî","SE104",22,22,"Accessory",1,"SE104",0,16,0},
+ {0x3070500,"¼Ö","SE105",22,22,"Accessory",1,"SE105",0,16,0},
+ {0x3070b00,"(P)Á¦¶ó","SE111",22,22,"Accessory",1,"SE101",0,16,0},
+ {0x3070c00,"(E)¼Ö","SE112",22,22,"Accessory",1,"SE105",0,16,0},
+ {0x3070f00,"ÀÌµ¥Å¸½º Á¶°¢","SE115",22,22,"Event",1,"SE115",0,16,0},
+ {0x3071000,"ÀÌµ¥Å¸½º","SE116",44,44,"Event",1,"SE116",0,16,0},
+ {0x3071100,"(P)ÀÌµ¥Å¸½º","SE117",44,44,"Event",1,"SE117",0,16,0},
+ {0x3080100,"º¸¶óºû ±¤¼®","PR101",22,22,"Event",1,"PR101",0,16,0},
+ {0x3080200,"Àººû ±¤¼®","PR102",22,22,"Event",1,"PR102",0,16,0},
+ {0x3080300,"±Ýºû ±¤¼®","PR103",22,22,"Event",1,"PR103",0,16,0},
+ {0x3080400,"ÇÏ´Ãºû ±¤¼®","PR104",22,22,"Event",1,"PR104",0,16,0},
+ {0x3080500,"³²ºû ±¤¼®","PR105",22,22,"Event",1,"PR105",0,16,0},
+ {0x3080600,"ÁÖÈ²ºû ±¤¼®","PR106",22,22,"Event",1,"PR106",0,16,0},
+ {0x3080700,"ºÓÀººû ±¤¼®","PR107",22,22,"Event",1,"PR107",0,16,0},
+ {0x3080800,"ÃÊ·Ïºû ±¤¼®","PR108",22,22,"Event",1,"PR108",0,16,0},
+ {0x3090100,"º¸¶óºû ¼öÁ¤","PR201",22,22,"Event",1,"PR201",0,16,0},
+ {0x3090200,"Àººû ¼öÁ¤","PR202",22,22,"Event",1,"PR202",0,16,0},
+ {0x3090300,"±Ýºû ¼öÁ¤","PR203",22,22,"Event",1,"PR203",0,16,0},
+ {0x3090400,"ÇÏ´Ãºû ¼öÁ¤","PR204",22,22,"Event",1,"PR204",0,16,0},
+ {0x3090500,"³²ºû ¼öÁ¤","PR205",22,22,"Event",1,"PR205",0,16,0},
+ {0x3090600,"ÁÖÈ²ºû ¼öÁ¤","PR206",22,22,"Event",1,"PR206",0,16,0},
+ {0x3090700,"ºÓÀººû ¼öÁ¤","PR207",22,22,"Event",1,"PR207",0,16,0},
+ {0x3090800,"ÃÊ·Ïºû ¼öÁ¤","PR208",22,22,"Event",1,"PR208",0,16,0},
+ {0x3090900,"´«ÀÇ °áÁ¤","PR209",22,22,"Event",1,"PR209",0,16,0},
+ {0x3090a00,"½º³ë¿ìÇÃ¶ó¿ö","PR210",22,22,"Event",1,"PR210",0,16,0},
+ {0x3090b00,"ÇÏ¾á ´«¹°","PR211",22,22,"Event",1,"PR211",0,16,0},
+ {0x3090c00,"³ì½¼ ¼öÁ¤","PR212",22,22,"Event",1,"PR212",0,16,0},
+ {0x3090d00,"¿ø¼® Á¶°¢","PR213",22,22,"Event",1,"PR213",0,16,0},
+ {0x3090e00,"°ËÀººû ¼öÁ¤","PR214",22,22,"Event",1,"PR214",0,16,0},
+ {0x3100100,"º¸¶óºû ·é(A)","PR301",22,22,"Event",1,"PR301",0,16,0},
+ {0x3100200,"Àººû ·é(A)","PR302",22,22,"Event",1,"PR302",0,16,0},
+ {0x3100300,"±Ýºû ·é(A)","PR303",22,22,"Event",1,"PR303",0,16,0},
+ {0x3100400,"ÇÏ´Ãºû ·é(A)","PR304",22,22,"Event",1,"PR304",0,16,0},
+ {0x3100500,"³²ºû ·é(A)","PR305",22,22,"Event",1,"PR305",0,16,0},
+ {0x3100600,"ÁÖÈ²ºû ·é(A)","PR306",22,22,"Event",1,"PR306",0,16,0},
+ {0x3100700,"ºÓÀººû ·é(A)","PR307",22,22,"Event",1,"PR307",0,16,0},
+ {0x3100800,"ÃÊ·Ïºû ·é(A)","PR308",22,22,"Event",1,"PR308",0,16,0},
+ {0x3100900,"½º³ë¿ì ·é(A)","PR309",22,22,"Event",1,"PR309",0,16,0},
+ {0x3100a00,"ÇÃ¶ó¿ö ·é(A)","PR310",22,22,"Event",1,"PR310",0,16,0},
+ {0x3100b00,"È­ÀÌÆ® ·é(A)","PR311",22,22,"Event",1,"PR311",0,16,0},
+ {0x3100c00,"ÀÏ·çÁ¯ ·é(A)","PR312",22,22,"Event",1,"PR312",0,16,0},
+ {0x3100d00,"¾ÆÀÌµð¾ó ·é(A)","PR313",22,22,"Event",1,"PR313",0,16,0},
+ {0x3100e00,"ºê·¹ÀÌÅ© ·é(A)","PR314",22,22,"Event",1,"PR314",0,16,0},
+ {0x3110100,"º¸¶óºû ·é(B)","PR401",22,22,"Event",1,"PR401",0,16,0},
+ {0x3110200,"Àººû ·é(B)","PR402",22,22,"Event",1,"PR402",0,16,0},
+ {0x3110300,"±Ýºû ·é(B)","PR403",22,22,"Event",1,"PR403",0,16,0},
+ {0x3110400,"ÇÏ´Ãºû ·é(B)","PR404",22,22,"Event",1,"PR404",0,16,0},
+ {0x3110500,"³²ºû ·é(B)","PR405",22,22,"Event",1,"PR405",0,16,0},
+ {0x3110600,"ÁÖÈ²ºû ·é(B)","PR406",22,22,"Event",1,"PR406",0,16,0},
+ {0x3110700,"ºÓÀººû ·é(B)","PR407",22,22,"Event",1,"PR407",0,16,0},
+ {0x3110800,"ÃÊ·Ïºû ·é(B)","PR408",22,22,"Event",1,"PR408",0,16,0},
+ {0x3110900,"½º³ë¿ì ·é(B)","PR409",22,22,"Event",1,"PR409",0,16,0},
+ {0x3110a00,"ÇÃ¶ó¿ö ·é(B)","PR410",22,22,"Event",1,"PR410",0,16,0},
+ {0x3110b00,"È­ÀÌÆ® ·é(B)","PR411",22,22,"Event",1,"PR411",0,16,0},
+ {0x3110c00,"ÀÏ·çÁ¯ ·é(B)","PR412",22,22,"Event",1,"PR412",0,16,0},
+ {0x3110d00,"¾ÆÀÌµð¾ó ·é(B)","PR413",22,22,"Event",1,"PR413",0,16,0},
+ {0x3110e00,"ºê·¹ÀÌÅ© ·é(B)","PR414",22,22,"Event",1,"PR414",0,16,0},
+ {0x3130100,"ÇÏ±Þ ·¹µå ·é½ºÅæ","PR501",22,22,"Event",1,"PR501",0,16,0},
+ {0x3130200,"Áß±Þ ·¹µå ·é½ºÅæ","PR502",22,22,"Event",1,"PR502",0,16,0},
+ {0x3130300,"»ó±Þ ·¹µå ·é½ºÅæ","PR503",22,22,"Event",1,"PR503",0,16,0},
+ {0x3130400,"ÇÏ±Þ ¿»·Î¿ì ·é½ºÅæ","PR504",22,22,"Event",1,"PR504",0,16,0},
+ {0x3130500,"Áß±Þ ¿»·Î¿ì ·é½ºÅæ","PR505",22,22,"Event",1,"PR505",0,16,0},
+ {0x3130600,"»ó±Þ ¿»·Î¿ì ·é½ºÅæ","PR506",22,22,"Event",1,"PR506",0,16,0},
+ {0x3130700,"ÇÏ±Þ ±×¸° ·é½ºÅæ","PR507",22,22,"Event",1,"PR507",0,16,0},
+ {0x3130800,"Áß±Þ ±×¸° ·é½ºÅæ","PR508",22,22,"Event",1,"PR508",0,16,0},
+ {0x3130900,"»ó±Þ ±×¸° ·é½ºÅæ","PR509",22,22,"Event",1,"PR509",0,16,0},
+ {0x3130a00,"ÇÏ±Þ ºí·ç ·é½ºÅæ","PR510",22,22,"Event",1,"PR510",0,16,0},
+ {0x3130b00,"Áß±Þ ºí·ç ·é½ºÅæ","PR511",22,22,"Event",1,"PR511",0,16,0},
+ {0x3130c00,"»ó±Þ ºí·ç ·é½ºÅæ","PR512",22,22,"Event",1,"PR512",0,16,0},
+ {0x3130d00,"ÇÏ±Þ ÆÛÇÃ ·é½ºÅæ","PR513",22,22,"Event",1,"PR513",0,16,0},
+ {0x3130e00,"Áß±Þ ÆÛÇÃ ·é½ºÅæ","PR514",22,22,"Event",1,"PR514",0,16,0},
+ {0x3130f00,"»ó±Þ ÆÛÇÃ ·é½ºÅæ","PR515",22,22,"Event",1,"PR515",0,16,0},
+ {0x3131000,"ÃÖ»ó±Þ ·¹µå ·é½ºÅæ","PR516",22,22,"Event",1,"PR516",0,16,0},
+ {0x3131100,"ÃÖ»ó±Þ ¿»·Î ·é½ºÅæ","PR517",22,22,"Event",1,"PR517",0,16,0},
+ {0x3131200,"ÃÖ»ó±Þ ±×¸° ·é½ºÅæ","PR518",22,22,"Event",1,"PR518",0,16,0},
+ {0x3131300,"ÃÖ»ó±Þ ºí·ç ·é½ºÅæ","PR519",22,22,"Event",1,"PR519",0,16,0},
+ {0x3131400,"ÃÖ»ó±Þ ÆÛÇÃ ·é½ºÅæ","PR520",22,22,"Event",1,"PR520",0,16,0},
+ {0xa010100,"ÀØÇôÁø ¹«±â Á¦ÀÛ¼­","WR101",22,44,"Event",1,"WR101",0,16,0},
+ {0xa010200,"°í´ëÀÇ ¹«±â Á¦ÀÛ¼­","WR102",22,44,"Event",1,"WR102",0,16,0},
+ {0xa010300,"´ëÁöÀÇ ¹«±â Á¦ÀÛ¼­","WR103",22,44,"Event",1,"WR103",0,16,0},
+ {0xa010400,"¾îµÒÀÇ ¹«±â Á¦ÀÛ¼­","WR104",22,44,"Event",1,"WR104",0,16,0},
+ {0xa010500,"È­¿°ÀÇ ¹«±â Á¦ÀÛ¼­","WR105",22,44,"Event",1,"WR105",0,16,0},
+ {0xa010600,"¹Ù¶÷ÀÇ ¹«±â Á¦ÀÛ¼­","WR106",22,44,"Event",1,"WR106",0,16,0},
+ {0xa010700,"ÅÂ¾çÀÇ ¹«±â Á¦ÀÛ¼­","WR107",22,44,"Event",1,"WR107",0,16,0},
+ {0xa010800,"±¤Æ÷ÇÑ ¹«±â Á¦ÀÛ¼­","WR108",22,44,"Event",1,"WR108",0,16,0},
+ {0xa010900,"Ãµ»óÀÇ ¹«±â Á¦ÀÛ¼­","WR109",22,44,"Event",1,"WR109",0,16,0},
+ {0xa010c00,"½Ã·ÃÀÇ ¹«±â Á¦ÀÛ¼­(80Lv)","WR112",22,44,"Event",1,"WR109",0,16,0},
+ {0xa010d00,"½Ã·ÃÀÇ ¹«±â Á¦ÀÛ¼­(102Lv)","WR113",22,44,"Event",1,"WR109",0,16,0},
+ {0xa010e00,"½Ã·ÃÀÇ ¹«±â Á¦ÀÛ¼­(108Lv)","WR114",22,44,"Event",1,"WR109",0,16,0},
+ {0xa030600,"¿Ïº®ÇÑ ¹Ù¶÷ ¹«±â Á¦ÀÛ¼­","WR206",22,44,"Event",1,"WR206",0,16,0},
+ {0xa030700,"¿Ïº®ÇÑ ÅÂ¾ç ¹«±â Á¦ÀÛ¼­","WR207",22,44,"Event",1,"WR207",0,16,0},
+ {0xa030800,"¿Ïº®ÇÑ ±¤Æ÷ ¹«±â Á¦ÀÛ¼­","WR208",22,44,"Event",1,"WR208",0,16,0},
+ {0xa020100,"ÀØÇôÁø ¹æ¾î±¸ Á¦ÀÛ¼­","DR101",22,44,"Event",1,"DR101",0,16,0},
+ {0xa020200,"°í´ëÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­","DR102",22,44,"Event",1,"DR102",0,16,0},
+ {0xa020300,"´ëÁöÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­","DR103",22,44,"Event",1,"DR103",0,16,0},
+ {0xa020400,"¾îµÒÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­","DR104",22,44,"Event",1,"DR104",0,16,0},
+ {0xa020500,"È­¿°ÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­","DR105",22,44,"Event",1,"DR105",0,16,0},
+ {0xa020600,"¹Ù¶÷ÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­","DR106",22,44,"Event",1,"DR106",0,16,0},
+ {0xa020700,"ÅÂ¾çÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­","DR107",22,44,"Event",1,"DR107",0,16,0},
+ {0xa020800,"±¤Æ÷ÇÑ ¹æ¾î±¸ Á¦ÀÛ¼­","DR108",22,44,"Event",1,"DR108",0,16,0},
+ {0xa020900,"Ãµ»óÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­","DR109",22,44,"Event",1,"DR109",0,16,0},
+ {0xa020a00,"Æ÷¼³ÀÇ Á¦ÀÛ¼­","DR110",22,44,"Event",1,"DR110",0,16,0},
+ {0xa020b00,"±â¾ïÀÇ Á¦ÀÛ¼­","DR111",22,44,"Event",1,"DR111",0,16,0},
+ {0xa040600,"¿Ïº®ÇÑ ¹Ù¶÷ ¹æ¾î±¸ Á¦ÀÛ¼­","DR206",22,44,"Event",1,"DR206",0,16,0},
+ {0xa040700,"¿Ïº®ÇÑ ÅÂ¾ç ¹æ¾î±¸ Á¦ÀÛ¼­","DR207",22,44,"Event",1,"DR207",0,16,0},
+ {0xa040800,"¿Ïº®ÇÑ ±¤Æ÷ ¹æ¾î±¸ Á¦ÀÛ¼­","DR208",22,44,"Event",1,"DR208",0,16,0},
+ { sinCA1 | sin31, "", "CA131", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA131", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin33, "", "CA133", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA133", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin35, "", "CA135", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA135", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin37, "", "CA137", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA137", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin43, "", "CA143", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA143", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin45, "", "CA145", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA145", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin54, "", "CA154", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA154", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin55, "", "CA155", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA155", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin66, "", "CA166", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA166", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin67, "", "CA167", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA167", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin68, "", "CA168", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA168", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin69, "", "CA169", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA169", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin85, "", "CA185", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA185", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin86, "", "CA186", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA186", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin87, "", "CA187", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA187", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin88, "", "CA188", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA188", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin89, "", "CA189", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA189", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin90, "", "CA190", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA190", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin91, "", "CA191", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA191", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin92, "", "CA192", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA192", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin93, "", "CA193", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA193", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin94, "", "CA194", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA194", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin95, "", "CA195", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA195", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA1 | sin96, "", "CA196", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA196", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+ { sinCA2 | sin32, "", "CA232", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA232", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin34, "", "CA234", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA234", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin35, "", "CA235", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA235", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin37, "", "CA237", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA237", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin43, "", "CA243", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA243", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin45, "", "CA245", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA245", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin54, "", "CA254", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA254", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin55, "", "CA255", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA255", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin66, "", "CA266", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA266", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin67, "", "CA267", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA267", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin68, "", "CA268", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA268", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin69, "", "CA269", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA269", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin85, "", "CA285", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA285", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin86, "", "CA286", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA286", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin87, "", "CA287", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA287", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin88, "", "CA288", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA288", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin89, "", "CA289", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA289", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin90, "", "CA290", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA290", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin91, "", "CA291", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA291", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin92, "", "CA292", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA292", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin93, "", "CA293", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA293", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin94, "", "CA294", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA294", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin95, "", "CA295", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA295", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ { sinCA2 | sin96, "", "CA296", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA296", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+ {0x2100100,"³² ´Ü¾ÆÇÑ ÇÑº¹(1ÀÏ)","CA501",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100200,"¿© ´Ü¾ÆÇÑ ÇÑº¹(1ÀÏ)","CA502",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100300,"³² ¼ö·ÁÇÑ ÇÑº¹(1ÀÏ)","CA503",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100400,"³² ¼ö·ÁÇÑ ÇÑº¹(7ÀÏ)","CA504",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100500,"¿© ¼ö·ÁÇÑ ÇÑº¹(1ÀÏ)","CA505",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100600,"¿© ¼ö·ÁÇÑ ÇÑº¹(7ÀÏ)","CA506",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100700,"ºí·¢ ÅÎ½Ãµµ(1ÀÏ)","CA507",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100800,"ºí·¢ µå·¹½º(1ÀÏ)","CA508",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100900,"¹ìÆÄÀÌ¾î ¾Æ¸Ó(7ÀÏ)","CA509",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100a00,"¹ìÆÄÀÌ¾î ¾Æ¸Ó(30ÀÏ)","CA510",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100b00,"½áÅ¥¹ö½º ¾Æ¸Ó(7ÀÏ)","CA511",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100c00,"½áÅ¥¹ö½º ¾Æ¸Ó(30ÀÏ)","CA512",66,88,"Defense",16384,"",16384,9,0},
+ {0x2100f00,"³²Àü»ç ´íµð »êÅ¸º¹","CA515",66,88,"Defense",16384,"",16384,9,0},
+ {0x2101000,"¿©Àü»ç ¼½½Ã »êÅ¸º¹","CA516",66,88,"Defense",16384,"",16384,9,0},
+ {0x2101100,"·Î¸ÇÆ½ ÅÎ½Ãµµ","CA517",66,88,"Defense",16384,"",16384,9,0},
+ {0x2101200,"·Î¸ÇÆ½ ÅÎ½Ãµµ","CA518",66,88,"Defense",16384,"",16384,9,0},
+ {0x2101300,"·Î¸ÇÆ½ µå·¹½º","CA519",66,88,"Defense",16384,"",16384,9,0},
+ {0x2101400,"·Î¸ÇÆ½ µå·¹½º","CA520",66,88,"Defense",16384,"",16384,9,0},
+ {0x2101500,"³² ¸ÞÄ«´Ð ¾Æ¸Ó(7ÀÏ)","CA521",66,88,"Defense",16384,"",16384,9,0},
+ {0x2101600,"³² ¸ÞÄ«´Ð ¾Æ¸Ó(30ÀÏ)","CA522",66,88,"Defense",16384,"",16384,9,0},
+ {0x2101700,"¿© ¸ÞÄ«´Ð ¾Æ¸Ó(7ÀÏ)","CA523",66,88,"Defense",16384,"",16384,9,0},
+ {0x2101800,"¿© ¸ÞÄ«´Ð ¾Æ¸Ó(30ÀÏ)","CA524",66,88,"Defense",16384,"",16384,9,0},
+ {0x2101900,"³² ÅõÈ¥ ¾Æ¸Ó(3ÀÏ)","CA525",66,88,"Defense",16384,"",16384,9,0},
+ {0x2102a00,"³² ÅõÈ¥ ¾Æ¸Ó(30ÀÏ)","CA526",66,88,"Defense",16384,"",16384,9,0},
+ {0x2102b00,"¿© ÅõÈ¥ ¾Æ¸Ó(3ÀÏ)","CA527",66,88,"Defense",16384,"",16384,9,0},
+ {0x2102c00,"¿© ÅõÈ¥ ¾Æ¸Ó(30ÀÏ)","CA528",66,88,"Defense",16384,"",16384,9,0},
+ {0x2102f00,"³² ½ºÄð·è ¾Æ¸Ó(7ÀÏ)","CA531",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103000,"³² ½ºÄð·è ¾Æ¸Ó(30ÀÏ)","CA532",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103100,"¿© ½ºÄð·è ¾Æ¸Ó(7ÀÏ)","CA533",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103200,"¿© ½ºÄð·è ¾Æ¸Ó(30ÀÏ)","CA534",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103300,"³² ¿Ãµå ½ºÄð·è ¾Æ¸Ó(7ÀÏ)","CA535",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103400,"³² ¿Ãµå ½ºÄð·è ¾Æ¸Ó(30ÀÏ)","CA536",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103500,"¿© ¿Ãµå ½ºÄð·è ¾Æ¸Ó(7ÀÏ)","CA537",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103600,"³² ¿Ãµå ½ºÄð·è ¾Æ¸Ó(30ÀÏ)","CA538",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103700,"³² ÀüÅõº¹ ¾Æ¸Ó(7ÀÏ)","CA539",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103800,"³² ÀüÅõº¹ ¾Æ¸Ó(30ÀÏ)","CA540",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103900,"¿© ÀüÅõº¹ ¾Æ¸Ó(7ÀÏ)","CA541",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103a00,"¿© ÀüÅõº¹ ¾Æ¸Ó(30ÀÏ)","CA542",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103b00,"³² Á¤º¹ ¾Æ¸Ó(7ÀÏ)","CA543",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103c00,"³² Á¤º¹ ¾Æ¸Ó(30ÀÏ)","CA544",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103d00,"¿© Á¤º¹ ¾Æ¸Ó(7ÀÏ)","CA545",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103e00,"¿© Á¤º¹ ¾Æ¸Ó(30ÀÏ)","CA546",66,88,"Defense",16384,"",16384,9,0},
+ {0x2103f00,"È£ÇÇ ÄÚ½ºÆ¬(1ÀÏ)","CA547",66,88,"Defense",16384,"",16384,9,0},
+ {0x2104000,"Å¥ÇÇ ÄÚ½ºÆ¬(1ÀÏ)","CA548",66,88,"Defense",16384,"",16384,9,0},
+ {0x2104100,"È£ÇÇ ÄÚ½ºÆ¬(30ÀÏ)","CA549",66,88,"Defense",16384,"",16384,9,0},
+ {0x2104200,"Å¥ÇÇ ÄÚ½ºÆ¬(30ÀÏ)","CA550",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110100,"³² ´Ü¾ÆÇÑ ÇÑº¹(1ÀÏ)","CA601",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110200,"¿© ´Ü¾ÆÇÑ ÇÑº¹(1ÀÏ)","CA602",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110300,"³² ¼ö·ÁÇÑ ÇÑº¹(1ÀÏ)","CA603",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110400,"³² ¼ö·ÁÇÑ ÇÑº¹(7ÀÏ)","CA604",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110500,"¿© ¼ö·ÁÇÑ ÇÑº¹(1ÀÏ)","CA605",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110600,"¿© ¼ö·ÁÇÑ ÇÑº¹(7ÀÏ)","CA606",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110700,"ºí·¢ ÅÎ½Ãµµ(1ÀÏ)","CA607",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110800,"ºí·¢ µå·¹½º(1ÀÏ)","CA608",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110900,"¹ìÆÄÀÌ¾î ·Îºê(7ÀÏ)","CA609",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110a00,"¹ìÆÄÀÌ¾î ·Îºê(30ÀÏ)","CA610",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110b00,"½áÅ¥¹ö½º ·Îºê(7ÀÏ)","CA611",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110c00,"½áÅ¥¹ö½º ·Îºê(30ÀÏ)","CA612",66,88,"Defense",16384,"",16384,9,0},
+ {0x2110f00,"³²¹ý»ç ´íµð »êÅ¸º¹","CA615",66,88,"Defense",16384,"",16384,9,0},
+ {0x2111000,"¿©¹ý»ç ¼½½Ã »êÅ¸º¹","CA616",66,88,"Defense",16384,"",16384,9,0},
+ {0x2111100,"·Î¸ÇÆ½ ÅÎ½Ãµµ","CA617",66,88,"Defense",16384,"",16384,9,0},
+ {0x2111200,"·Î¸ÇÆ½ ÅÎ½Ãµµ","CA618",66,88,"Defense",16384,"",16384,9,0},
+ {0x2111300,"·Î¸ÇÆ½ µå·¹½º","CA619",66,88,"Defense",16384,"",16384,9,0},
+ {0x2111400,"·Î¸ÇÆ½ µå·¹½º","CA620",66,88,"Defense",16384,"",16384,9,0},
+ {0x2111500,"³² ¸ÞÄ«´Ð ·Îºê(7ÀÏ)","CA621",66,88,"Defense",16384,"",16384,9,0},
+ {0x2111600,"³² ¸ÞÄ«´Ð ·Îºê(30ÀÏ)","CA622",66,88,"Defense",16384,"",16384,9,0},
+ {0x2111700,"¿© ¸ÞÄ«´Ð ·Îºê(7ÀÏ)","CA623",66,88,"Defense",16384,"",16384,9,0},
+ {0x2111800,"¿© ¸ÞÄ«´Ð ·Îºê(30ÀÏ)","CA624",66,88,"Defense",16384,"",16384,9,0},
+ {0x2111900,"³² ÅõÈ¥ ·Îºê(3ÀÏ)","CA625",66,88,"Defense",16384,"",16384,9,0},
+ {0x2112a00,"³² ÅõÈ¥ ·Îºê(30ÀÏ)","CA626",66,88,"Defense",16384,"",16384,9,0},
+ {0x2112b00,"¿© ÅõÈ¥ ·Îºê(3ÀÏ)","CA627",66,88,"Defense",16384,"",16384,9,0},
+ {0x2112c00,"¿© ÅõÈ¥ ·Îºê(30ÀÏ)","CA628",66,88,"Defense",16384,"",16384,9,0},
+ {0x2112f00,"³² ½ºÄð·è ·Îºê(7ÀÏ)","CA631",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113000,"³² ½ºÄð·è ·Îºê(30ÀÏ)","CA632",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113100,"¿© ½ºÄð·è ·Îºê(7ÀÏ)","CA633",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113200,"¿© ½ºÄð·è ·Îºê(30ÀÏ)","CA634",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113300,"³² ¿Ãµå ½ºÄð·è ·Îºê(7ÀÏ)","CA635",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113400,"³² ¿Ãµå ½ºÄð·è ·Îºê(30ÀÏ)","CA636",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113500,"¿© ¿Ãµå ½ºÄð·è ·Îºê(7ÀÏ)","CA637",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113600,"³² ¿Ãµå ½ºÄð·è ·Îºê(30ÀÏ)","CA638",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113700,"³² ÀüÅõº¹ ·Îºê(7ÀÏ)","CA639",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113800,"³² ÀüÅõº¹ ·Îºê(30ÀÏ)","CA640",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113900,"¿© ÀüÅõº¹ ·Îºê(7ÀÏ)","CA641",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113a00,"¿© ÀüÅõº¹ ·Îºê(30ÀÏ)","CA642",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113b00,"³² Á¤º¹ ·Îºê(7ÀÏ)","CA643",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113c00,"³² Á¤º¹ ·Îºê(30ÀÏ)","CA644",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113d00,"¿© Á¤º¹ ·Îºê(7ÀÏ)","CA645",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113e00,"¿© Á¤º¹ ·Îºê(30ÀÏ)","CA646",66,88,"Defense",16384,"",16384,9,0},
+ {0x2113f00,"È£ÇÇ ÄÚ½ºÆ¬(1ÀÏ)","CA647",66,88,"Defense",16384,"",16384,9,0},
+ {0x2114000,"Å¥ÇÇ ÄÚ½ºÆ¬(1ÀÏ)","CA648",66,88,"Defense",16384,"",16384,9,0},
+ {0x2114100,"È£ÇÇ ÄÚ½ºÆ¬(30ÀÏ)","CA649",66,88,"Defense",16384,"",16384,9,0},
+ {0x2114200,"Å¥ÇÇ ÄÚ½ºÆ¬(30ÀÏ)","CA650",66,88,"Defense",16384,"",16384,9,0},
+ {0x5010100,"Gold","GG101",22,22,"Gold",0,"DRCOIN",0,18,0},
+ {0x5010200,"Exp","GG102",22,22,"Exp",0,"DRExp",0,4,0},
+
+ { sinGG1 | sin03 ,"Coin" ,"GG103", 240, 160,"Coin", 0 ,"Coins" , 0 ,SIN_SOUND_COIN },
+
+ { sinBI3 | sin01 ,"Skin1"	,"BI301",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI301",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin02 ,"Skin2"	,"BI302",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI302",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin03 ,"Skin3"	,"BI303",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI303",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin04 ,"Skin4"	,"BI304",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI304",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin05 ,"Skin5"	,"BI305",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI305",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin06 ,"Skin6"	,"BI306",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI306",0,SIN_SOUND_SHELTOM },
+
+ { sinBI3 | sin07 ,"Skin7"	,"BI307",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI307",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin08 ,"Skin8"	,"BI308",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI308",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin09 ,"Skin9"	,"BI309",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI309",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin10 ,"Skin10"	,"BI310",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI310",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin11 ,"Skin11"	,"BI311",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI311",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin12 ,"Skin12"	,"BI312",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI312",0,SIN_SOUND_SHELTOM },
+
+ { sinBI3 | sin13 ,"Skin13"	,"BI313",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI313",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin14 ,"Skin14"	,"BI314",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI314",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin15 ,"Skin15"	,"BI315",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI315",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin16 ,"Skin16"	,"BI316",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI316",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin17 ,"Skin17"	,"BI317",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI317",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin18 ,"Skin18"	,"BI318",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI318",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin19 ,"ClearSkin"	,"BI319",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI319",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin20 ,"ClearSkin"	,"BI320",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI320",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin21 ,"ClearSkin"	,"BI321",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI321",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin22 ,"ClearSkin"	,"BI322",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI322",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin23 ,"ClearSkin"	,"BI323",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI323",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin24 ,"ClearSkin"	,"BI324",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI324",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin25 ,"ClearSkin"	,"BI325",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI325",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin26 ,"ClearSkin"	,"BI326",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI326",0,SIN_SOUND_SHELTOM },
+
+ // ESCUDOS
+{ sinBI3 | sin30 ,"ClearSkin"	,"BI330",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI330",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin31 ,"ClearSkin"	,"BI331",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI331",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin32 ,"ClearSkin"	,"BI332",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI332",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin33 ,"ClearSkin"	,"BI333",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI333",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin34 ,"ClearSkin"	,"BI334",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI334",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin35 ,"ClearSkin"	,"BI335",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI335",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin36 ,"ClearSkin"	,"BI336",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI336",0,SIN_SOUND_SHELTOM },
+
+//ARMADURAS E ROBES
+{ sinBI3 | sin40 ,"ClearSkin"	,"BI340",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI340",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin41 ,"ClearSkin"	,"BI341",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI341",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin42 ,"ClearSkin"	,"BI342",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI342",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin43 ,"ClearSkin"	,"BI343",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI343",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin44 ,"ClearSkin"	,"BI344",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI344",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin45 ,"ClearSkin"	,"BI345",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI345",0,SIN_SOUND_SHELTOM },
+
+//NOVOS POTES CAPILARES
+{ sinBI3 | sin80 ,"Hair" ,"BI380",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI380",0, SIN_SOUND_POTION },
+{ sinBI3 | sin81 ,"Hair" ,"BI381",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI381",0, SIN_SOUND_POTION },
+{ sinBI3 | sin82 ,"Hair" ,"BI382",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI382",0, SIN_SOUND_POTION },
+{ sinBI3 | sin83 ,"Hair" ,"BI383",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI383",0, SIN_SOUND_POTION },
+{ sinBI3 | sin84 ,"Hair" ,"BI384",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI384",0, SIN_SOUND_POTION },
+{ sinBI3 | sin85 ,"Hair" ,"BI385",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI385",0, SIN_SOUND_POTION },
+{ sinBI3 | sin86 ,"Hair" ,"BI386",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI386",0, SIN_SOUND_POTION },
+{ sinBI3 | sin87 ,"Hair" ,"BI387",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI387",0, SIN_SOUND_POTION },
+{ sinBI3 | sin88 ,"Hair" ,"BI388",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI388",0, SIN_SOUND_POTION },
+{ sinBI3 | sin89 ,"Hair" ,"BI389",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI389",0, SIN_SOUND_POTION },
+{ sinBI3 | sin90 ,"Hair" ,"BI390",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI390",0, SIN_SOUND_POTION },
+{ sinBI3 | sin91 ,"Hair" ,"BI391",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI391",0, SIN_SOUND_POTION },
+{ sinBI3 | sin92 ,"Hair" ,"BI392",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI392",0, SIN_SOUND_POTION },
+{ sinBI3 | sin93 ,"Hair" ,"BI393",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI393",0, SIN_SOUND_POTION },
+
+{ sinDA3 | sin04, "DA500", "DA500", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA500", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA3 | sin05, "DA501", "DA501", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA501", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA3 | sin06, "DA502", "DA502", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA502", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA3 | sin07, "DA503", "DA503", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA503", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA3 | sin08, "DA504", "DA504", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA504", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA3 | sin09, "DA505", "DA505", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA505", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+{ sinDA4 | sin04, "DA600", "DA600", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA600", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA4 | sin05, "DA601", "DA601", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA601", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA4 | sin06, "DA602", "DA602", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA602", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA4 | sin07, "DA603", "DA603", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA603", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA4 | sin08, "DA604", "DA604", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA604", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA4 | sin09, "DA605", "DA605", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA605", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+{ sinDS1 | sin31  ,"DS300"   ,"DS300",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds300" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+{ sinDS1 | sin32  ,"DS301"   ,"DS301",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds301" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+{ sinDS1 | sin33  ,"DS302"   ,"DS302",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds302" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+{ sinDS1 | sin34  ,"DS303"   ,"DS303",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds303" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+{ sinDS1 | sin35  ,"DS304"   ,"DS304",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds304" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+{ sinDS1 | sin36  ,"DS305"   ,"DS305",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds305" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+
+{ sinWA1 | sin32  ,"WA300" ,"WA300",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA300" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWA1 | sin33  ,"WA301" ,"WA301",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA301" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWA1 | sin34  ,"WA302" ,"WA302",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA302" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWA1 | sin35  ,"WA303" ,"WA303",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA303" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWA1 | sin36  ,"WA304" ,"WA304",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA304" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWA1 | sin37  ,"WA305" ,"WA305",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA305" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+{ sinWC1 | sin31  ,"WC300"		,"WC300",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC300" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWC1 | sin32  ,"WC301"		,"WC301",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC301" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWC1 | sin33  ,"WC302"		,"WC302",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC302" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWC1 | sin34  ,"WC303"		,"WC303",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC303" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWC1 | sin35  ,"WC304"		,"WC304",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC304" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWC1 | sin36  ,"WC305"		,"WC305",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC305" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+{ sinWH1 | sin34  ,"WH300" ,"WH300",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH300" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWH1 | sin35  ,"WH301" ,"WH301",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH301" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWH1 | sin36  ,"WH302" ,"WH302",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH302" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWH1 | sin37  ,"WH303" ,"WH303",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH303" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWH1 | sin38  ,"WH304" ,"WH304",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH304" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWH1 | sin39  ,"WH305" ,"WH305",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH305" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+{ sinWM1 | sin33  ,"WM300" ,"WM300",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM300" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL, ITEM_WEAPONCLASS_CASTING },
+{ sinWM1 | sin34  ,"WM301" ,"WM301",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM301" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL,ITEM_WEAPONCLASS_CASTING },
+{ sinWM1 | sin35  ,"WM302" ,"WM302",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM302" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL,ITEM_WEAPONCLASS_CASTING },
+{ sinWM1 | sin36  ,"WM303" ,"WM303",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM303" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL,ITEM_WEAPONCLASS_CASTING },
+{ sinWM1 | sin37  ,"WM304" ,"WM304",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM304" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL,ITEM_WEAPONCLASS_CASTING },
+{ sinWM1 | sin38  ,"WM305" ,"WM305",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM305" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL,ITEM_WEAPONCLASS_CASTING },
+
+{ sinWP1 | sin32  ,"WP300" ,"WP300",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP300" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWP1 | sin33  ,"WP301" ,"WP301",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP301" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWP1 | sin34  ,"WP302" ,"WP302",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP302" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWP1 | sin35  ,"WP303" ,"WP303",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP303" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWP1 | sin36  ,"WP304" ,"WP304",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP304" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWP1 | sin37  ,"WP305" ,"WP305",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP305" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+{ sinWS1 | sin33  ,"WS300"	,"WS300", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS300" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWS1 | sin34  ,"WS301"	,"WS301", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS301" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWS1 | sin35  ,"WS302"	,"WS302", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS302" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWS1 | sin36  ,"WS303"	,"WS303", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS303" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWS1 | sin37  ,"WS304"	,"WS304", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS304" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWS1 | sin38  ,"WS305" ,"WS305", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS305" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+
+{ sinWS2 | sin35  ,"WS400"	,"WS400", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS400" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWS2 | sin41  ,"WS406"	,"WS406", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS406" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWS2 | sin42  ,"WS407"	,"WS407", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS407" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWS2 | sin38  ,"WS403"	,"WS403", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS403" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWS2 | sin39  ,"WS404"	,"WS404", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS404" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWS2 | sin40  ,"WS405"	,"WS405", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS405" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+{ sinWT1 | sin32  ,"WT300","WT300", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT300" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWT1 | sin33  ,"WT301","WT301", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT301" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWT1 | sin34  ,"WT302","WT302", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT302" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWT1 | sin35  ,"WT303","WT303", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT303" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWT1 | sin36  ,"WT304","WT304", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT304" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWT1 | sin37  ,"WT305","WT305", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT305" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+
+{ sinWA1 | sin38,"Machado Morghulis","WA186",44,88,"Weapon",6,"WA186",4,1,1 },
+{ sinWA1 | sin39,"Machado Morghulis","WA188",44,88,"Weapon",4,"WA188",4,1,1 },
+{ sinWC1 | sin37,"Garra Morghulis","WC186",44,66,"Weapon",4,"WC186",4,2,1 },
+{ sinWH1 | sin40,"Martelo Morghulis","WH186",44,88,"Weapon",6,"WH186",4,3,1 },
+{ sinWH1 | sin41,"Martelo Morghulis","WH188",44,88,"Weapon",4,"WH188",4,3,1 },
+{ sinWP1 | sin38,"Foice Morghulis","WP186",44,88,"Weapon",6,"WP186",4,5,1 },
+{ sinWS1 | sin39,"Arco Morghulis","WS186",44,88,"Weapon",6,"WS186",2,6,2 },
+{ sinWS2 | sin43,"Espada Morghulis","WS286",44,88,"Weapon",6,"WS286",4,7,1 },
+{ sinWS2 | sin44,"Espada Morghulis","WS288",44,88,"Weapon",4,"WS288",4,7,1 },
+{ sinWM1 | sin39,"Cajado Morghulis","WM186",44,88,"Weapon",6,"WM186",4,19,3 },
+{ sinWM1 | sin40,"Varinha Morghulis","WM188",44,88,"Weapon",4,"WM188",4,19,3 },
+{ 0x10a2f00,"Adaga Morghulis","WD186",44,88,"Weapon",6,"WD186",4,7,1 },
+{ 0x10b2f00,"Punhos Morghulis","WV186",44,88,"Weapon",6,"WV186",4,2,1 },
+{ 0x1092f00,"Fanstama Morghulis","WN186",66,44,"Weapon",4,"WN186",4,19,3 },
+{ sinWT1 | sin38,"Lança Morghulis","WT186",22,88,"Weapon",4,"WT186",4,8,2 },
+{ sinDG1 | sin86,"Luvas Morghulis","DG186",44,44,"Defense",32,"dg186",0,11,0 },
+{ sinDB1 | sin86,"Botas Morghulis","DB186",44,44,"Defense",16,"db186",0,10,0 },
+{ sinOA2 | sin86,"Bracelete Morghulis","OA286",44,44,"Accessory",2048,"OA286",0,14,0 },
+{ sinDS1 | sin29,"Escudo Morghulis","DS186",44,88,"Defense",2,"DS186",2,12,0 },
+{ sinDA3 | sin10,"Armadura Morghulis","DA307",66,88,"Defense",8,"DA307",8,9,0 },
+{ sinDA4 | sin10,"Roupão Morghulis","DA407",66,88,"Defense",8,"DA407",8,9,0 },
+};
+#endif
+
+#ifndef _W_SERVER
+
+sITEM sItem[MAX_ITEM] = {
+	{ sinWA1 | sin01, "Stone Axe", "WA101", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WA101", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin02, "Steel Axe", "WA102", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WA102", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin03, "Battle Axe", "WA103", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WA103", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin04, "War Axe", "WA104", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WA104", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin05, "DoubleSidedWarAxe", "WA105", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA105", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin06, "Bat Axe", "WA106", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WA106", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin07, "Mechanic Axe", "WA107", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WA107", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin08, "Double Head Axe", "WA108", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA108", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin09, "Great Axe", "WA109", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA109", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin10, "Diamond Axe", "WA110", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA110", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin11, "Jagged Axe", "WA111", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WA111", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin12, "Cleaver", "WA112", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA112", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin13, "Gigantifc Axe", "WA113", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA113", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin14, "ChaosAxe", "WA114", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WA114", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin15, "SinBaRam Axe", "WA115", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA115", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWC1 | sin01, "Eagle Claw", "WC101", ITEMSIZE * 1, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC101", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin02, "Tiger Claw", "WC102", ITEMSIZE * 1, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC102", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin03, "Griffin Claw", "WC103", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC103", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin04, "Eagle Claw", "WC104", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC104", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin05, "Eagle Claw", "WC105", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC105", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin06, "Fingered Edge", "WC106", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC106", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin07, "Hand Blade", "WC107", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC107", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin08, "Pharaoh", "WC108", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC108", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin09, "Brutal Claw", "WC109", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC109", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin10, "Hydra Claw", "WC110", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC110", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin11, "Leviathan", "WC111", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC111", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin12, "Wyvern Claw", "WC112", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC112", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin13, "Chaos Claw", "WC113", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC113", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin14, "Titan Claw", "WC114", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC114", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin15, "SinBaRam Claw", "WC115", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC115", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWH1 | sin01, "Club", "WH101", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH101", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin02, "War Mac", "WH102", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH102", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin03, "Pole Mace", "WH103", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH103", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin04, "Gothic Mace", "WH104", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH104", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin05, "War Hammer", "WH105", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH105", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin06, "Metal Hammer", "WH106", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH106", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin07, "Cross Hammer", "WH107", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH107", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin08, "Holy Hammer", "WH108", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH108", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin09, "Star", "WH109", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH109", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin10, "Maximum", "WH110", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH110", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin11, "Meditaition", "WH111", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH111", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin12, "Rune Hammer", "WH112", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH112", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin13, "Solar", "WH113", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH113", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin14, "War Maul", "WH114", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH114", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin15, "Titan Maul", "WH115", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH115", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin16, "SinBaRam Mace", "WH116", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH116", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWM1 | sin01, "Wand", "WM101", ITEMSIZE * 1, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM101", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin02, "Sphere Wand", "WM102", ITEMSIZE * 1, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM102", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin03, "Obi Wand", "WM103", ITEMSIZE * 1, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM103", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin04, "Root Staff", "WM104", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM104", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin05, "Poly Staff", "WM105", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM105", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin06, "Elven Wand", "WM106", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM106", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin07, "Dryad Wand", "WM107", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM107", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin08, "Meditaion Staff", "WM108", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM108", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin09, "Skull Staff", "WM109", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM109", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin10, "Mage Staff", "WM110", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM110", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin11, "Faith Wand", "WM111", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM111", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin12, "Lofty Staff", "WM112", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM112", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin13, "Arch Wand", "WM113", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM113", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin14, "Chaos Staff", "WM114", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM114", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin15, "Dragon Staff", "WM115", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM115", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin16, "SinBaRam Staff", "WM116", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM116", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+
+	{ sinWP1 | sin01, "Pole", "WP101", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WP101", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin02, "Spear", "WP102", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WP102", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin03, "Bill", "WP103", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WP103", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin04, "Halberd", "WP104", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP104", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin05, "Horn Scythe", "WP105", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP105", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin06, "Trident", "WP106", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP106", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin07, "Enriched Scythe", "WP107", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP107", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin08, "Double Scythe", "WP108", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP108", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin09, "Evil Scythe", "WP109", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP109", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin10, "Silver Bird", "WP110", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP110", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin11, "Chaos Spear", "WP111", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP111", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin12, "Titan Spear", "WP112", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP112", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin13, "Styx Scythe", "WP113", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP113", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin14, "Dragon's Wing", "WP114", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP114", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin15, "Rage", "WP115", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP115", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin16, "SinBaRam Darkness", "WP116", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP116", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWS1 | sin01, "Short Bow", "WS101", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS101", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin02, "Horned Bow", "WS102", ITEMSIZE * 2, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS102", INVENTORY_POS_RHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin03, "Hand CrossBow", "WS103", ITEMSIZE * 2, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS103", INVENTORY_POS_RHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin04, "CrossBow", "WS104", ITEMSIZE * 3, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS104", INVENTORY_POS_RHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin05, "Battle Bow", "WS105", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS105", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin06, "Great Bow", "WS106", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS106", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin07, "War Bow", "WS107", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS107", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin08, "Great CrossBow", "WS108", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS108", INVENTORY_POS_RHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin09, "MetalHandCrossBow", "WS109", ITEMSIZE * 2, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS109", INVENTORY_POS_RHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin10, "Double CrossBow", "WS110", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS110", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin11, "Bone Bow", "WS111", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS111", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin12, "Sagittarius", "WS112", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS112", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin13, "Ancient CrossBow", "WS113", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS113", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin14, "Titan Bow", "WS114", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS114", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin15, "Chaos Bow", "WS115", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS115", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin16, "Dragon Bow", "WS116", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS116", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin17, "SinBaRam CrossBow", "WS117", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS117", INVENTORY_POS_RHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWS2 | sin01, "Dagger", "WS201", ITEMSIZE * 1, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS201", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin02, "Celtic Dagger", "WS202", ITEMSIZE * 1, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS202", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin03, "SwordBreaker", "WS203", ITEMSIZE * 1, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS203", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin04, "Short Sword", "WS204", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS204", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin05, "Long Sword", "WS205", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS205", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin06, "Broad Sword", "WS206", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS206", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin07, "Blade", "WS207", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS207", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin08, "Templar Sword", "WS208", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS208", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin09, "Shield Sword", "WS209", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS209", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin10, "Plated Sword", "WS210", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS210", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin11, "Claymore", "WS211", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS211", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin12, "Slayer", "WS212", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS212", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin13, "Gigantic Sword", "WS213", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS213", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin14, "HighLander", "WS214", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS214", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin15, "Bastard Sword", "WS215", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS215", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin16, "TItan Sword", "WS216", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS216", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin17, "Chaos Sword", "WS217", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS217", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin18, "SinBaRam Sword", "WS218", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS218", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWT1 | sin01, "Javelin", "WT101", ITEMSIZE * 1, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT101", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin02, "War Javelin", "WT102", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT102", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin03, "Edged Javelin", "WT103", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT103", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin04, "Steel Javelin", "WT104", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT104", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin05, "Double Javelin", "WT105", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT105", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin06, "Elven Javelin", "WT106", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT106", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin07, "Fatal Javelin", "WT107", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT107", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin08, "Metal Javelin", "WT108", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT108", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin09, "Cobra", "WT109", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT109", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin10, "Winged Javelin", "WT110", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT110", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin11, "Holy Javelin", "WT111", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT111", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin12, "Throwing Trident", "WT112", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT112", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin13, "Wyvern Javelin", "WT113", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT113", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin14, "Twisted Javelin", "WT114", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT114", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin15, "Linked Javelin", "WT115", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT115", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin16, "SinBaRam Javelin", "WT116", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT116", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWA1 | sin16, "Fury Axe", "WA116", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA116", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin17, "Ancient Axe", "WA117", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA117", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin18, "Chaos Axe", "WA118", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WA118", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin19, "Relic Axe", "WA119", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA119", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWA1 | sin20, "Minotaur Axe", "WA120", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA120", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWA1 | sin21, "Wyvern Axe", "WA121", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA121", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWA1 | sin22, "Zecram Axe", "WA122", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA122", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWA1 | sin23, "Dragon Axe", "WA123", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA123", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWA1 | sin24, "Axe1082M", "WA124", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA124", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin25, "Axe1081M", "WA125", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WA125", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin26, "Axe115", "WA126", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA126", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin27, "Axe118", "WA127", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA127", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin28, "Axe120", "WA128", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA128", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWA1 | sin29, "Axe125", "WA129", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA129", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin30, "Axe130", "WA130", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA130", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWA1 | sin31, "Axe135", "WA131", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA131", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWC1 | sin16, "Titan Talon", "WC116", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC116", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin17, "Salamander Talon", "WC117", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC117", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin18, "Phoenix Talon", "WC118", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC118", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin19, "Chimera Talon", "WC119", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC119", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWC1 | sin20, "Extreme Talon", "WC120", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC120", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWC1 | sin21, "Viper Talon", "WC121", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC121", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWC1 | sin22, "Injustice Talon", "WC122", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC122", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin23, "Heretic Talon", "WC123", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC123", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWC1 | sin24, "Garra108", "WC124", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC124", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin25, "Garra115", "WC125", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC125", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin26, "Garra118", "WC126", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC126", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin27, "Garra120", "WC127", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC127", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWC1 | sin28, "Garra125", "WC128", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC128", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin29, "Garra130", "WC129", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC129", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWC1 | sin30, "Garra135", "WC130", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC130", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWH1 | sin17, "Brutal Hammer", "WH117", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH117", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin18, "Gladiator Hammer", "WH118", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH118", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin19, "Archon Hammer", "WH119", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH119", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin20, "Justice Hammer", "WH120", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH120", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWH1 | sin21, "Dragon Bone Hammer", "WH121", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH121", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWH1 | sin22, "Guardian Hammer", "WH122", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH122", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWH1 | sin23, "Bane Hammer", "WH123", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH123", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWH1 | sin24, "Dragon Hammer", "WH124", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH124", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWH1 | sin25, "Hammer1082M", "WH125", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH125", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin26, "Hammer1081M", "WH126", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WH126", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin27, "Hammer115", "WH127", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH127", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin28, "Hammer118", "WH128", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH128", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin29, "Hammer120", "WH129", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH129", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWH1 | sin30, "Hammer125", "WH130", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH130", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin31, "Hammer130", "WH131", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH131", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWH1 | sin32, "Hammer135", "WH132", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH132", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWM1 | sin17, "Apostle Wand", "WM117", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM117", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin18, "Relic Staff", "WM118", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM118", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin19, "Dragon Staff", "WM119", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM119", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin20, "Wyvern Wand", "WM120", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM120", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+
+	{ sinWM1 | sin21, "Gothic Staff", "WM121", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM121", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+
+	{ sinWM1 | sin22, "Oracle Wand", "WM122", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM122", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+
+	{ sinWM1 | sin23, "Celestial Staff", "WM123", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM123", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+
+	{ sinWM1 | sin24, "Astral Staff", "WM124", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM124", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+
+	{ sinWM1 | sin25, "Staff1082M", "WM125", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM125", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin26, "Staff1081M", "WM126", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WM126", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin27, "Staff105", "WM127", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM127", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin28, "Staff118", "WM128", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM128", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin29, "Staff120", "WM129", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM129", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+
+	{ sinWM1 | sin30, "Staff125", "WM130", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM130", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin31, "Staff130", "WM131", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM131", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	{ sinWM1 | sin32, "Staff135", "WM132", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM132", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+
+	{ sinWP1 | sin17, "Hyper Scythe", "WP117", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP117", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin18, "Oracle Spear", "WP118", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP118", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin19, "Immortal Scythe", "WP119", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP119", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin20, "Extreme Spear", "WP120", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP120", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWP1 | sin21, "Hellfire Scythe", "WP121", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP121", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWP1 | sin22, "Dreadnaught Spear", "WP122", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP122", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWP1 | sin23, "Reaper Scythe", "WP123", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP123", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWP1 | sin24, "Dragon Scythe", "WP124", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP124", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWP1 | sin25, "Scythe108", "WP125", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP125", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin26, "Scythe115", "WP126", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP126", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin27, "Scythe118", "WP127", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP127", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin28, "Scythe120", "WP128", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP128", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWP1 | sin29, "Scythe125", "WP129", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP129", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin30, "Scythe130", "WP130", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP130", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWP1 | sin31, "Scythe135", "WP131", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP131", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWS1 | sin18, "Minotaur Bow", "WS118", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS118", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin19, "Wave Bow", "WS119", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS119", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin20, "Grande Bow", "WS120", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS120", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin21, "Dragon Bow", "WS121", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS121", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWS1 | sin22, "Revenge Bow", "WS122", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS122", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWS1 | sin23, "Wyvern Bow", "WS123", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS123", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWS1 | sin24, "Immortal Bow", "WS124", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS124", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWS1 | sin25, "Salamander Bow", "WS125", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS125", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWS1 | sin26, "Bow108", "WS126", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS126", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin27, "Bow115", "WS127", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS127", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin28, "Bow118", "WS128", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS128", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin29, "Bow120", "WS129", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS129", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWS1 | sin30, "Bow125", "WS130", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS130", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin31, "Bow130", "WS131", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS131", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWS1 | sin32, "Bow135", "WS132", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS132", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWS2 | sin19, "Salamanger Sword", "WS219", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS219", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin20, "Avenger Sword", "WS220", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS220", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin21, "Titan Sword", "WS221", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS221", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin22, "Wyvern Sword", "WS222", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS222", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWS2 | sin23, "Immortal Sword", "WS223", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS223", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWS2 | sin24, "Justice Sword", "WS224", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS224", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWS2 | sin25, "Extreme Sword", "WS225", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS225", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWS2 | sin26, "Mirage Sword", "WS226", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS226", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWS2 | sin27, "Sword1082M", "WS227", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS227", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin28, "Sword1081M", "WS228", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS228", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin29, "Sword115", "WS229", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS229", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin30, "Sword118", "WS230", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS230", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin31, "Sword120", "WS231", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS231", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWS2 | sin32, "Sword125", "WS232", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS232", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin33, "Sword130", "WS233", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS233", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWS2 | sin34, "Sword135", "WS234", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS234", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWS2 | sin51, "XXX", "WS251", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WS251", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinWT1 | sin17, "Mystic Javelin", "WT117", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT117", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin18, "Extreme Javelin", "WT118", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT118", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin19, "Dragon Javelin", "WT119", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT119", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin20, "Spike Javelin", "WT120", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT120", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWT1 | sin21, "Salamander Javelin", "WT121", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT121", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWT1 | sin22, "Immortal Javelin", "WT122", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT122", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWT1 | sin23, "Heretic Javelin", "WT123", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT123", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWT1 | sin24, "Salamander Javelin", "WT124", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT124", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWT1 | sin25, "Javelin108", "WT125", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT125", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin26, "Javelin115", "WT126", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT126", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin27, "Javelin118", "WT127", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT127", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin28, "Javelin120", "WT128", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT128", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinWT1 | sin29, "Javelin125", "WT129", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT129", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin30, "Javelin130", "WT130", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT130", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	{ sinWT1 | sin31, "Javelin135", "WT131", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT131", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+
+	{ sinOA1 | sin01, "Round Amulet ", "OA101", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa101", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin02, "Round Amulet #1", "OA102", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa102", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin03, "Round Amulet #2", "OA103", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa103", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin04, "Round Amulet #3", "OA104", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa104", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin05, "Gem Amulet ", "OA105", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa105", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin06, "Gem Amulet #1", "OA106", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa106", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin07, "Gem Amulet #2", "OA107", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa107", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin08, "Gem Amulet #3", "OA108", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa108", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin09, "Magic Amulet ", "OA109", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa109", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin10, "Magic Amulet #1", "OA110", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa110", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin11, "Magic Amulet #2", "OA111", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa111", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin12, "Magic Amulet #3", "OA112", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa112", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin13, "Rune Amulet ", "OA113", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa113", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin14, "Rune Amulet #1", "OA114", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa114", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin15, "Rune Amulet #2", "OA115", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa115", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin16, "Rune Amulet #3", "OA116", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa116", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin17, "Sealed Amulet ", "OA117", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa117", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin18, "Sealed Amulet #1", "OA118", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa118", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin19, "Sealed Amulet #2", "OA119", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa119", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin20, "Sealed Amulet #3", "OA120", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa120", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin21, "Mystic Amulet", "OA121", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa121", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin22, "Mystic Amulet +1", "OA122", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa122", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin23, "Mystic Amulet +2", "OA123", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa123", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin24, "Mystic Amulet +2", "OA124", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa124", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin25, "AmuletBOSS1", "OA125", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa125", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin26, "AmuletBOSS2", "OA126", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa126", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin29, "AmuletBOSS3", "OA129", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa129", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin30, "Kelvezu", "OA130", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa130", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin31, "Mortal", "OA131", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa131", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin32, "Babel", "OA132", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa132", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin33, "Event Amulet", "OA133", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa133", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin34, "Event Amulet(1XXX)", "OA134", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa133", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin35, "Event Amulet(1XXX)", "OA135", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa133", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin36, "Snowflower Amulet(7XXX)", "OA136", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa136", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin37, "XXX", "OA137", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa137", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin38, "XXX", "OA138", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa138", 0, SIN_SOUND_AMULET },
+
+	{ sinOA1 | sin39, "XXX", "OA139", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa139", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin40, "XXX", "OA140", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa140", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin41, "XXX", "OA141", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa141", 0, SIN_SOUND_AMULET },
+	{ sinOA1 | sin42, "XXX", "OA142", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_AMULET, "oa142", 0, SIN_SOUND_AMULET },
+
+	{ sinOA2 | sin01, "Leather Armlets", "OA201", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa201", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin02, "Long Armlets", "OA202", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa202", 0, SIN_SOUND_Armlet },
+	{ 17367296, "XXX", "WN101", 44, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN101", 4, 19, 3 },
+	{ 17367552, "XXX", "WN102", 44, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN102", 4, 19, 3 },
+	{ 17367808, "XXX", "WN103", 44, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN103", 4, 19, 3 },
+	{ 17368064, "XXX", "WN104", 44, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN104", 4, 19, 3 },
+	{ 17368320, "XXX", "WN105", 44, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN105", 4, 19, 3 },
+	{ 17368576, "XXX", "WN106", 44, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN106", 4, 19, 3 },
+	{ 17368832, "XXX", "WN107", 44, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN107", 4, 19, 3 },
+	{ 17369088, "XXX", "WN108", 44, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN108", 4, 19, 3 },
+	{ 17369344, "XXX", "WN109", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN109", 4, 19, 3 },
+	{ 17369600, "XXX", "WN110", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN110", 4, 19, 3 },
+	{ 17369856, "XXX", "WN111", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN111", 4, 19, 3 },
+	{ 17370112, "XXX", "WN112", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN112", 4, 19, 3 },
+	{ 17370368, "XXX", "WN113", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN113", 4, 19, 3 },
+	{ 17370624, "XXX", "WN114", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN114", 4, 19, 3 },
+	{ 17370880, "XXX", "WN115", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN115", 4, 19, 3 },
+	{ 17371136, "XXX", "WN116", 44, 66, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN116", 4, 19, 3 },
+	{ 17371392, "XXX", "WN117", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN117", 4, 19, 3 },
+	{ 17371648, "XXX", "WN118", 44, 66, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN118", 4, 19, 3 },
+	{ 17371904, "XXX", "WN119", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN119", 4, 19, 3 },
+	{ 17372160, "XXX", "WN120", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN120", 4, 19, 3 },
+	{ 17372416, "XXX", "WN121", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN121", 4, 19, 3 },
+	{ 17372672, "XXX", "WN122", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN122", 4, 19, 3 },
+	{ 17372928, "XXX", "WN123", 44, 66, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN123", 4, 19, 3 },
+	{ 17373184, "XXX", "WN124", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN124", 4, 19, 3 },
+	{ 17373440, "XXX", "WN125", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN125", 4, 19, 3 },
+	{ 17377792, "XXX", "WN126", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN126", 4, 19, 3 },
+	{ 17378048, "XXX", "WN127", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN127", 4, 19, 3 },
+	{ 17378304, "XXX", "WN128", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN128", 4, 19, 3 },
+	{ 17378560, "XXX", "WN129", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN129", 4, 19, 3 },
+	{ 17378816, "XXX", "WN130", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN130", 4, 19, 3 },
+	{ 0x1092f00,"Fanstama Morghulis","WN186",66,44,"Weapon",4,"WN186",4,19,3 },
+	{ 17384448, "XXX", "WN152", 66, 44, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN122", 4, 19, 3 },
+	{ 17384704, "XXX", "WN153", 44, 66, "Weapon", 6, "WN123", 4, 19, 3 },
+	{ 17384960, "XXX", "WN154", 66, 44, "Weapon", 6, "WN154", 4, 19, 3 },
+	{ 17385216, "XXX", "WN155", 66, 44, "Weapon", 6, "WN154", 4, 19, 3 },
+	{ 17385472, "XXX", "WN156", 66, 44, "Weapon", 6, "WN154", 4, 19, 3 },
+	{ 17432832, "XXX", "WD101", 44, 44, "Weapon", 6, "WD101", 4, 7, 1 },
+	{ 17433088, "XXX", "WD102", 44, 44, "Weapon", 6, "WD102", 4, 7, 1 },
+	{ 17433344, "XXX", "WD103", 44, 44, "Weapon", 6, "WD103", 4, 7, 1 },
+	{ 17433600, "XXX", "WD104", 44, 44, "Weapon", 6, "WD104", 4, 7, 1 },
+	{ 17433856, "XXX", "WD105", 44, 66, "Weapon", 6, "WD105", 4, 7, 1 },
+	{ 17434112, "XXX", "WD106", 44, 66, "Weapon", 6, "WD106", 4, 7, 1 },
+	{ 17434368, "XXX", "WD107", 44, 88, "Weapon", 6, "WD107", 4, 7, 1 },
+	{ 17434624, "XXX", "WD108", 44, 88, "Weapon", 6, "WD108", 4, 7, 1 },
+	{ 17434880, "XXX", "WD109", 44, 88, "Weapon", 6, "WD109", 4, 7, 1 },
+	{ 17435136, "XXX", "WD110", 44, 88, "Weapon", 6, "WD110", 4, 7, 1 },
+	{ 17435392, "XXX", "WD111", 44, 88, "Weapon", 6, "WD111", 4, 7, 1 },
+	{ 17435648, "XXX", "WD112", 44, 88, "Weapon", 6, "WD112", 4, 7, 1 },
+	{ 17435904, "XXX", "WD113", 44, 88, "Weapon", 6, "WD113", 4, 7, 1 },
+	{ 17436160, "XXX", "WD114", 44, 88, "Weapon", 6, "WD114", 4, 7, 1 },
+	{ 17436416, "XXX", "WD115", 44, 88, "Weapon", 6, "WD115", 4, 7, 1 },
+	{ 17436672, "XXX", "WD116", 44, 88, "Weapon", 6, "WD116", 4, 7, 1 },
+	{ 17436928, "XXX", "WD117", 44, 88, "Weapon", 6, "WD117", 4, 7, 1 },
+	{ 17437184, "XXX", "WD118", 44, 88, "Weapon", 6, "WD118", 4, 7, 1 },
+	{ 17437440, "XXX", "WD119", 44, 88, "Weapon", 6, "WD119", 4, 7, 1 },
+	{ 17437696, "XXX", "WD120", 44, 88, "Weapon", 6, "WD120", 4, 7, 1 },
+	{ 17437952, "XXX", "WD121", 44, 88, "Weapon", 6, "WD121", 4, 7, 1 },
+	{ 17438208, "XXX", "WD122", 44, 88, "Weapon", 6, "WD122", 4, 7, 1 },
+	{ 17438464, "XXX", "WD123", 44, 88, "Weapon", 6, "WD123", 4, 7, 1 },
+	{ 17438720, "XXX", "WD124", 44, 88, "Weapon", 6, "WD124", 4, 7, 1 },
+	{ 17438976, "XXX", "WD125", 44, 88, "Weapon", 6, "WD125", 4, 7, 1 },
+	{ 17443328, "XXX", "WD126", 44, 88, "Weapon", 6, "WD126", 4, 7, 1 },
+	{ 17443584, "XXX", "WD127", 44, 88, "Weapon", 6, "WD127", 4, 7, 1 },
+	{ 17443840, "XXX", "WD128", 44, 88, "Weapon", 6, "WD128", 4, 7, 1 },
+	{ 17444096, "XXX", "WD129", 44, 88, "Weapon", 6, "WD129", 4, 7, 1 },
+	{ 17444352, "XXX", "WD130", 44, 88, "Weapon", 6, "WD130", 4, 7, 1 },
+	{ 0x10a2f00,"Adaga Morghulis","WD186",44,88,"Weapon",6,"WD186",4,7,1 },
+	{ 17449984, "XXX", "WD152", 44, 88, "Weapon", 6, "WD122", 4, 7, 1 },
+	{ 17450240, "XXX", "WD153", 44, 88, "Weapon", 6, "WD123", 4, 7, 1 },
+	{ 17450496, "XXX", "WD154", 44, 88, "Weapon", 6, "WD154", 4, 7, 1 },
+	{ 17450752, "XXX", "WD155", 44, 88, "Weapon", 6, "WD154", 4, 7, 1 },
+	{ 17451008, "XXX", "WD156", 44, 88, "Weapon", 6, "WD154", 4, 7, 1 },
+
+	{ sinWV1 | sin01, "Manopla", "WV101", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV101", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin02, "Manopla", "WV102", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV102", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin03, "Manopla", "WV103", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV103", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin04, "Manopla", "WV104", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV104", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin05, "Manopla", "WV105", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV105", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin06, "Manopla", "WV106", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV106", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin07, "Manopla", "WV107", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV107", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin08, "Manopla", "WV108", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV108", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin09, "Manopla", "WV109", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV109", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin10, "Manopla", "WV110", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV110", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin11, "Manopla", "WV111", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV111", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin12, "Manopla", "WV112", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV112", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin13, "Manopla", "WV113", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV113", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin14, "Manopla", "WV114", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV114", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin15, "Manopla", "WV115", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV115", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin16, "Manopla", "WV116", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV116", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin17, "Manopla", "WV117", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV117", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin18, "Manopla", "WV118", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV118", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin19, "Manopla", "WV119", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV119", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin20, "Manopla", "WV120", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV120", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin21, "Manopla", "WV121", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV121", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin22, "Manopla", "WV122", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV122", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin23, "Manopla", "WV123", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV123", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin24, "Manopla", "WV124", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV124", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin25, "Manopla", "WV125", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV125", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin26, "Manopla", "WV126", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV126", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin27, "Manopla", "WV127", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV127", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin28, "Manopla", "WV128", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV128", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin29, "Manopla", "WV129", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV129", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin30, "Manopla", "WV130", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV130", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	{ sinWV1 | sin31, "Manopla", "WV186", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV186", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	{ sinOA2 | sin03, "Wide Armlets", "OA203", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa203", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin04, "Fold Armlets", "OA204", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa204", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin05, "Scale Armlets", "OA205", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa205", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin06, "Elven Armlets", "OA206", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa206", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin07, "Solid Armlets", "OA207", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa207", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin08, "Mechanic Armlets", "OA208", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa208", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin09, "Winged Armlets", "OA209", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa209", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin10, "Great Bracelet", "OA210", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa210", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin11, "Steel Bracelet", "OA211", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa211", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin12, "Magicial Bracelet", "OA212", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa212", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin13, "Spiked Bracelet", "OA213", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa213", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin14, "Justice Bracelet", "OA214", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa214", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin15, "Minotaur Bracelet", "OA215", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa215", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin16, "Metal Bracelet", "OA216", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa216", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin17, "Titan Bracelet", "OA217", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa217", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin18, "Saint Bracelet", "OA218", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa218", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin19, "Wyvern Bracelet", "OA219", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa219", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin20, "Dragon Bracelet", "OA220", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa220", 0, SIN_SOUND_Armlet },
+
+	{ sinOA2 | sin21, "Inferno Bracelets", "OA221", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa221", 0, SIN_SOUND_Armlet },
+
+	{ sinOA2 | sin22, "Phoenix Bracelets", "OA222", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa222", 0, SIN_SOUND_Armlet },
+
+	{ sinOA2 | sin23, "Frenzy Bracelets", "OA223", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa223", 0, SIN_SOUND_Armlet },
+
+	{ sinOA2 | sin24, "Bracelets108", "OA224", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa224", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin25, "Bracelets118", "OA225", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa225", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin26, "Bracelets120", "OA226", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa226", 0, SIN_SOUND_Armlet },
+
+	{ sinOA2 | sin27, "Bracelets125", "OA227", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa227", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin28, "Bracelets130", "OA228", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa228", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin29, "Bracelets135", "OA229", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa229", 0, SIN_SOUND_Armlet },
+
+	{ sinOA2 | sin31, "Super Armlets(7D)", "OA231", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa231", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin32, "Super Armlets(30D)", "OA232", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa232", 0, SIN_SOUND_Armlet },
+
+	{ sinOA2 | sin33, "Super Armlets(1D)", "OA233", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa233", 0, SIN_SOUND_Armlet },
+	{ sinOA2 | sin34, "Super Armlets(1D)", "OA234", ITEMSIZE * 2, ITEMSIZE * 1, "Accessory", ITEM_CLASS_ARMLET, "oa234", 0, SIN_SOUND_Armlet },
+
+	{ sinOM1 | sin01, "Pearl Beads", "OM101", ITEMSIZE * 1, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om101", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin02, "Crystal Sphere", "OM102", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om102", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin03, "Prizm Sphere", "OM103", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om103", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin04, "Bone Beads", "OM104", ITEMSIZE * 1, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om104", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin05, "Skull Beads", "OM105", ITEMSIZE * 1, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om105", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin06, "Orb", "OM106", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om106", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin07, "Holy Orb", "OM107", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om107", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin08, "Arch Orb", "OM108", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om108", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin09, "Dark Moon", "OM109", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om109", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin10, "Ceremonial Sphere", "OM110", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om110", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin11, "Orbital Beads", "OM111", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om111", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin12, "Harmony Sphere", "OM112", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om112", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin13, "Angel", "OM113", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om113", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin14, "Lucifer", "OM114", ITEMSIZE * 1, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om114", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin15, "Astral Orb", "OM115", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om115", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin16, "Rune Beads", "OM116", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om116", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin17, "Creation Orb", "OM117", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om117", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin18, "Mundane", "OM118", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om118", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin19, "Salamander Beads", "OM119", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om119", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin20, "Cosmos", "OM120", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om120", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin21, "Wyvern Orb", "OM121", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om121", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+
+	{ sinOM1 | sin22, "Ebony Manes", "OM122", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om122", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+
+	{ sinOM1 | sin23, "Avernus Beads", "OM123", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om123", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+
+	{ sinOM1 | sin24, "Malice Rosary", "OM124", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om124", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+
+	{ sinOM1 | sin25, "Malice108", "OM125", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om125", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin26, "Malice115", "OM126", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om126", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin27, "Malice118", "OM127", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om127", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin28, "Malice120", "OM128", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om128", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+
+	{ sinOM1 | sin29, "Malice125", "OM129", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om129", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin30, "Malice130", "OM130", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om130", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+	{ sinOM1 | sin31, "Malice135", "OM131", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_MAGICIAL_STUFFS, "om131", INVENTORY_POS_LHAND, SIN_SOUND_MAGICIAL },
+
+	{ sinOR1 | sin01, "Round Ring ", "OR101", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or101", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin02, "Round Ring #1", "OR102", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or102", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin03, "Round Ring #2", "OR103", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or103", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin04, "ValeTroca", "OR104", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or104", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin05, "Gem RIng ", "OR105", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or105", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin06, "Gem RIng #1", "OR106", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or106", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin07, "Gem RIng #2", "OR107", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or107", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin08, "Gem RIng #3", "OR108", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or108", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin09, "Magic Ring ", "OR109", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or109", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin10, "Magic Ring #1", "OR110", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or110", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin11, "Magic Ring #2", "OR111", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or111", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin12, "Magic Ring #3", "OR112", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or112", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin13, "Rune Ring ", "OR113", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or113", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin14, "Rune Ring #1", "OR114", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or114", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin15, "Rune Ring #2", "OR115", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or115", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin16, "Rune Ring #3", "OR116", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or116", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin17, "Sealed Ring ", "OR117", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or117", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin18, "Sealed Ring #1", "OR118", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or118", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin19, "Sealed Ring #2", "OR119", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or119", 0, SIN_SOUND_RING },
+	{ sinOR1 | sin20, "Sealed Ring #3", "OR120", ITEMSIZE * 1, ITEMSIZE * 1, "Accessory", ITEM_CLASS_RING, "or120", 0, SIN_SOUND_RING },
+	// a partir daqui pode taca tudo q quiser xd
+	{sinOA1 | sin21  ,"Mystic Amulet",     "OA121",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa121" ,0,SIN_SOUND_AMULET},
+
+	{sinOA1 | sin22  ,"Mystic Amulet +1",  "OA122",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa122" ,0,SIN_SOUND_AMULET},
+	{sinOA1 | sin23  ,"Mystic Amulet +2",  "OA123",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa123" ,0,SIN_SOUND_AMULET},
+	{sinOA1 | sin24  ,"Mystic Amulet +2",  "OA124",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa124" ,0,SIN_SOUND_AMULET},
+
+	{sinOA1 | sin25  ,"AmuletBOSS1",  "OA125",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa125" ,0,SIN_SOUND_AMULET},
+	{sinOA1 | sin26  ,"AmuletBOSS2",  "OA126",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa126" ,0,SIN_SOUND_AMULET},
+	{sinOA1 | sin27  ,"AmuletBOSS3",  "OA129",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa129" ,0,SIN_SOUND_AMULET},
+
+	{sinOA1 | sin33  ,"Event Amulet",		 "OA133",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa133" ,0,SIN_SOUND_AMULET},
+
+	{sinOA1 | sin34  ,"Event Amulet(1½Ã°£)",	 "OA134",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa133" ,0,SIN_SOUND_AMULET},
+
+	{sinOA1 | sin35  ,"Event Amulet(1ÀÏ)",	 "OA135",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa133" ,0,SIN_SOUND_AMULET},
+
+	{sinOA1 | sin36  ,"Snowflower Amulet(7ÀÏ)",	 "OA136",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa136" ,0,SIN_SOUND_AMULET},
+
+	{sinOA1 | sin37  ,"ÇÏÆ®¾Æ¹Ä·¿(7ÀÏ)",	 "OA137",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa137" ,0,SIN_SOUND_AMULET},
+
+	{sinOA1 | sin38  ,"»ï°èÅÁ ¾Æ¹Ä·¿",		 "OA138",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa138" ,0,SIN_SOUND_AMULET},
+
+	{sinOA1 | sin39  ,"¸ÓÇÉ ¾Æ¹Ä·¿",	 "OA139",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa139" ,0,SIN_SOUND_AMULET},
+	{sinOA1 | sin40  ,"½½¸®¹ö ¾Æ¹Ä·¿",	 "OA140",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa140" ,0,SIN_SOUND_AMULET},
+	{sinOA1 | sin41  ,"¸ÞÆ®·Ð ¾Æ¹Ä·¿",	 "OA141",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa141" ,0,SIN_SOUND_AMULET},
+	{sinOA1 | sin42  ,"±×·ÎÅ×½ºÅ© ¾Æ¹Ä·¿",	 "OA142",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa142" ,0,SIN_SOUND_AMULET},
+
+	{sinOA1 | sin43  ,"AmuletoTulla",	 "OA144",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_AMULET,"oa142" ,0,SIN_SOUND_AMULET},
+
+	{sinOA2 | sin01  ,"Leather Armlets"	,"OA201",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa201" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin02  ,"Long Armlets"		,"OA202",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa202" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin03  ,"Wide Armlets"		,"OA203",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa203" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin04  ,"Fold Armlets"		,"OA204",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa204" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin05  ,"Scale Armlets"		,"OA205",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa205" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin06  ,"Elven Armlets"		,"OA206",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa206" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin07  ,"Solid Armlets"		,"OA207",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa207" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin08  ,"Mechanic Armlets"	,"OA208",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa208" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin09  ,"Winged Armlets"	,"OA209",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa209" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin10  ,"Great Bracelet"	,"OA210",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa210" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin11  ,"Steel Bracelet"	,"OA211",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa211" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin12  ,"Magicial Bracelet"	,"OA212",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa212" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin13  ,"Spiked Bracelet"	,"OA213",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa213" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin14  ,"Justice Bracelet"  ,"OA214",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa214" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin15  ,"Minotaur Bracelet"	,"OA215",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa215" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin16  ,"Metal Bracelet"	,"OA216",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa216" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin17  ,"Titan Bracelet"	,"OA217",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa217" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin18  ,"Saint Bracelet"	,"OA218",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa218" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin19  ,"Wyvern Bracelet"	,"OA219",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa219" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin20  ,"Dragon Bracelet"	,"OA220",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa220" ,0,SIN_SOUND_Armlet},
+
+	{sinOA2 | sin21  ,"Inferno Bracelets"	,"OA221",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa221" ,0,SIN_SOUND_Armlet},
+
+	{sinOA2 | sin22  ,"Phoenix Bracelets"	,"OA222",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa222" ,0,SIN_SOUND_Armlet},
+
+	{sinOA2 | sin23  ,"Frenzy Bracelets"	,"OA223",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa223" ,0,SIN_SOUND_Armlet},
+
+	{sinOA2 | sin24  ,"Bracelets108"	,"OA224",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa224" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin25  ,"Bracelets118"	,"OA225",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa225" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin26  ,"Bracelets120"	,"OA226",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa226" ,0,SIN_SOUND_Armlet},
+
+	{sinOA2 | sin27  ,"Bracelets125"	,"OA227",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa227" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin28  ,"Bracelets130"	,"OA228",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa228" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin29  ,"Bracelets135"	,"OA229",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_ARMLET,"oa229" ,0,SIN_SOUND_Armlet},
+
+	{sinOA2 | sin31  ,"Super Armlets(7ÀÏ)"	,"OA231",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa231" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin32  ,"Super Armlets(30ÀÏ)"	,"OA232",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa232" ,0,SIN_SOUND_Armlet},
+
+	{sinOA2 | sin33  ,"Super Armlets(1ÀÏ)"	,"OA233",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa233" ,0,SIN_SOUND_Armlet},
+	{sinOA2 | sin34  ,"Super Armlets(1½Ã°£)"	,"OA234",  ITEMSIZE * 2, ITEMSIZE * 1,"Accessory",ITEM_CLASS_ARMLET,"oa234" ,0,SIN_SOUND_Armlet},
+
+	{sinOM1 | sin01  ,"Pearl Beads"		,"OM101",  ITEMSIZE * 1, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om101" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin02  ,"Crystal Sphere"	,"OM102",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om102" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin03  ,"Prizm Sphere"		,"OM103",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om103" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin04  ,"Bone Beads"		,"OM104",  ITEMSIZE * 1, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om104" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin05  ,"Skull Beads"		,"OM105",  ITEMSIZE * 1, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om105" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin06  ,"Orb"				,"OM106",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om106" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin07  ,"Holy Orb"			,"OM107",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om107" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin08  ,"Arch Orb"			,"OM108",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om108" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin09  ,"Dark Moon"			,"OM109",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om109" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin10  ,"Ceremonial Sphere"	,"OM110",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om110" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin11  ,"Orbital Beads"		,"OM111",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om111" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin12  ,"Harmony Sphere"	,"OM112",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om112" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin13  ,"Angel"				,"OM113",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om113" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin14  ,"Lucifer"			,"OM114",  ITEMSIZE * 1, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om114" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin15  ,"Astral Orb"		,"OM115",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om115" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin16  ,"Rune Beads"		,"OM116",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om116" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin17  ,"Creation Orb"      ,"OM117",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om117" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin18  ,"Mundane"			,"OM118",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om118" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin19  ,"Salamander Beads"  ,"OM119",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om119" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin20  ,"Cosmos"			,"OM120",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om120" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin21  ,"Wyvern Orb"		,"OM121",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om121" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+
+	{sinOM1 | sin22  ,"Ebony Manes"		,"OM122",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om122" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+
+	{sinOM1 | sin23  ,"Avernus Beads"		,"OM123",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om123" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+
+	{sinOM1 | sin24  ,"Malice Rosary"		,"OM124",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om124" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+
+	{sinOM1 | sin26  ,"Malice115"		,"OM126",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om126" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin27  ,"Malice118"		,"OM127",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om127" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin28  ,"Malice120"		,"OM128",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om128" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+
+	{sinOM1 | sin29  ,"Malice125"		,"OM129",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om129" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin30  ,"Malice130"		,"OM130",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om130" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+	{sinOM1 | sin31  ,"Malice135"		,"OM131",  ITEMSIZE * 2, ITEMSIZE * 2,"Accessory",ITEM_CLASS_MAGICIAL_STUFFS,"om131" ,INVENTORY_POS_LHAND,SIN_SOUND_MAGICIAL},
+
+	{sinOR1 | sin01  ,"Round Ring "	  ,"OR101",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or101" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin02  ,"Round Ring #1"   ,"OR102",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or102" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin03  ,"Round Ring #2"   ,"OR103",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or103" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin04  ,"ValeTroca"   ,"OR104",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or104" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin05  ,"Gem RIng "       ,"OR105",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or105" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin06  ,"Gem RIng #1"     ,"OR106",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or106" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin07  ,"Gem RIng #2"     ,"OR107",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or107" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin08  ,"Gem RIng #3"     ,"OR108",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or108" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin09  ,"Magic Ring "     ,"OR109",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or109" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin10  ,"Magic Ring #1"   ,"OR110",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or110" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin11  ,"Magic Ring #2"   ,"OR111",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or111" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin12  ,"Magic Ring #3"   ,"OR112",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or112" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin13  ,"Rune Ring "      ,"OR113",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or113" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin14  ,"Rune Ring #1"    ,"OR114",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or114" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin15  ,"Rune Ring #2"    ,"OR115",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or115" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin16  ,"Rune Ring #3"    ,"OR116",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or116" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin17  ,"Sealed Ring "    ,"OR117",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or117" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin18  ,"Sealed Ring #1"  ,"OR118",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or118" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin19  ,"Sealed Ring #2"  ,"OR119",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or119" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin20  ,"Sealed Ring #3"  ,"OR120",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or120" ,0,SIN_SOUND_RING},
+
+	{sinOR1 | sin21  ,"Mystic Ring"	  ,"OR121",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or121" ,0,SIN_SOUND_RING},
+
+	{sinOR1 | sin22  ,"Mystic Ring +1"	  ,"OR122",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or122" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin23  ,"Mystic Ring +2"	  ,"OR123",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or123" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin24  ,"Mystic Ring +3"	  ,"OR124",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or124" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin25  ,"Guidans"	  ,"OR125",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or125" ,0,SIN_SOUND_RING},
+
+	{sinOR1 | sin23  ,"RINGBOSS1"	  ,"OR125",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"OR125" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin24  ,"RINGBOSS2"	  ,"OR126",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"OR126" ,0,SIN_SOUND_RING},
+	{sinOR1 | sin29  ,"RINGBOSS3"	  ,"OR129",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"OR129" ,0,SIN_SOUND_RING},
+
+	{sinOS1 | sin01  ,"Lucidy"	,"OS101",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os101" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin02  ,"Sereno"	,"OS102",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os102" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin03  ,"Fadeo"		,"OS103",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os103" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin04  ,"Sparky"	,"OS104",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os104" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin05  ,"Raident"	,"OS105",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os105" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin06  ,"Transparo"	,"OS106",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os106" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin07  ,"Murky"		,"OS107",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os107" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin08  ,"Devine"	,"OS108",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os108" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin09  ,"Celesto"	,"OS109",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os109" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin10  ,"Mirage"	,"OS110",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os110" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin11  ,"Inferna"	,"OS111",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os111" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin12  ,"Enigma"	,"OS112",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os112" ,0,SIN_SOUND_SHELTOM},
+
+	{sinOS1 | sin13  ,"Bellum"	,"OS113",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os113" ,0,SIN_SOUND_SHELTOM},
+
+	{sinOS1 | sin14  ,"Ordo"		,"OS114",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os114" ,0,SIN_SOUND_SHELTOM},
+
+	{sinOS1 | sin15  ,"Gema"		,"OS115",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os115" ,0,SIN_SOUND_SHELTOM},
+
+	{sinOS1 | sin16  ,"Purus"		,"OS116",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os116" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin17  ,"Pharao"		,"OS117",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os117" ,0,SIN_SOUND_SHELTOM },
+
+	{sinOS1 | sin21  ,"Magic Lucidy"		,"OS121",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os101" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin22  ,"Magic Sereno"		,"OS122",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os102" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin23  ,"Magic Fadeo"		,"OS123",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os103" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin24  ,"Magic Sparky"		,"OS124",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os104" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin25  ,"Magic Raident"		,"OS125",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os105" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin26  ,"Magic Transparo"	,"OS126",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os106" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin27  ,"Magic Murky"		,"OS127",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os107" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin28  ,"Magic Devine"		,"OS128",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os108" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin29  ,"Magic Celesto"		,"OS129",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os109" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin30  ,"Magic Mirage"		,"OS130",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os110" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin31  ,"Magic Inferna"		,"OS131",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os111" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin32  ,"Magic Enigma"		,"OS132",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os112" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin33  ,"Magic Bellum"		,"OS133",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os113" ,0,SIN_SOUND_SHELTOM},
+	{sinOS1 | sin34  ,"Magic Ordo"		,"OS134",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os114" ,0,SIN_SOUND_SHELTOM},
+
+	{sinFO1 | sin01  ,"Lucidy Force"		,"FO101",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os101" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin02  ,"Sereno Force"		,"FO102",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os102" ,0,SIN_SOUND_SHELTOM},
+
+	{sinFO1 | sin03  ,"Fadeo Force"		,"FO103",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os103" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin04  ,"Sparky Force"		,"FO104",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os104" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin05  ,"Raident Force"		,"FO105",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os105" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin06  ,"Transparo Force"	,"FO106",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os106" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin07  ,"Murky Force"		,"FO107",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os107" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin08  ,"Devine Force"		,"FO108",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os108" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin09  ,"Celesto Force"		,"FO109",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os109" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin10  ,"Mirage Force"		,"FO110",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os110" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin11  ,"Inferna Force"		,"FO111",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os111" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin12  ,"Enigma Force" 		,"FO112",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os112" ,0,SIN_SOUND_SHELTOM},
+
+	{sinFO1 | sin13  ,"Bellum Force"		,"FO113",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os113" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin14  ,"Ordo Force"		,"FO114",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os114" ,0,SIN_SOUND_SHELTOM},
+
+	{sinFO1 | sin21  ,"Magic Lucidy Force"	,"FO121",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os101" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin22  ,"Magic Sereno Force"	,"FO122",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os102" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin23  ,"Magic Fadeo Force"		,"FO123",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os103" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin24  ,"Magic Sparky Force"	,"FO124",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os104" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin25  ,"Magic Raident Force"	,"FO125",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os105" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin26  ,"Magic Transparo Force"	,"FO126",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os106" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin27  ,"Magic Murky Force"		,"FO127",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os107" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin28  ,"Magic Devine Force"	,"FO128",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os108" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin29  ,"Magic Celesto Force"	,"FO129",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os109" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin30  ,"Magic Mirage Force"	,"FO130",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os110" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin31  ,"Magic Inferna Force"	,"FO131",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os111" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin32  ,"Magic Enigma Force" 	,"FO132",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os112" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin33  ,"Magic Bellum Force"	,"FO133",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os113" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin34  ,"Magic Ordo Force"		,"FO134",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os114" ,0,SIN_SOUND_SHELTOM},
+
+	{sinFO1 | sin35  ,"Magic Force(1H)" 	,"FO135",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os135" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin36  ,"Magic Force(3H)" 	,"FO136",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os136" ,0,SIN_SOUND_SHELTOM},
+	{sinFO1 | sin37  ,"Magic Force(1Day)" ,"FO137",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_FORCEORB,"os137" ,0,SIN_SOUND_SHELTOM},
+
+	{sinDA1 | sin01  ,"Nude"				,"DA101",  ITEMSIZE * 0, ITEMSIZE * 0,"Defense",ITEM_CLASS_ARMOR,"da101", INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin02  ,"Battle Suit"		,"DA102",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da102" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin03  ,"Leather Armor"		,"DA103",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da103" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin04  ,"Brigandine"		,"DA104",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da104" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin05  ,"Steel Armor"		,"DA105",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da105" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin06  ,"Round Armor"		,"DA106",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da106" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin07  ,"Breast Plate Armor","DA107",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da107" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin08  ,"Ring Armor"		,"DA108",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da108" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin09  ,"Scale Armor"		,"DA109",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da109" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin10  ,"Synthethic Armor"	,"DA110",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da110" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin11  ,"Full Plate Armor"	,"DA111",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da111" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin12  ,"Full Metal Armor"	,"DA112",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da112" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin13  ,"Supreme Armor"		,"DA113",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da113" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin14  ,"Spiked Armor"		,"DA114",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da114" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin15  ,"Titan Armor"		,"DA115",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da115" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin16  ,"Extreme Armor"		,"DA116",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da116" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin17  ,"Ancient Armor"		,"DA117",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da117" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin18  ,"Minotaur Armor"	,"DA118",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da118" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin19  ,"Doom Armor"		,"DA119",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da119" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin20  ,"Salamander Armor"	,"DA120",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da120" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin21  ,"Wyvern Armor"		,"DA121",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da121" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin22  ,"Dragon Armor"		,"DA122",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da122" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin23  ,"PhoeniX Armor"		,"DA123",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da123" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin24  ,"Frenzy Armor"		,"DA124",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da124" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin25  ,"HighLander Armor"	,"DA125",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da125" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin26  ,"Armor103"	,"DA126",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da126" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin27  ,"Armor108"	,"DA127",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da127" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin28  ,"Armor118"	,"DA128",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da128" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin29  ,"Armor120"	,"DA129",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da129" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{ sinDA3 | sin01, "Armor125", "DA301", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da301", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA3 | sin02, "Armor130", "DA302", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da302", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA3 | sin03, "Armor135", "DA303", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da303", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	{sinDA2 | sin01  ,"Nude"				,"DA201",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR ,"da202",INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin02  ,"Faded Robe"		,"DA202",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da202" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin03  ,"Enhanced Robe"		,"DA203",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da203" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin04  ,"Battle Robe"		,"DA204",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da204" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin05  ,"Elven Robe"		,"DA205",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da205" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin06  ,"Dryad Robe"		,"DA206",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da206" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin07  ,"Nymph Robe"		,"DA207",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da207" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin08  ,"Apperntice Robe"   ,"DA208",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da208" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin09  ,"Disciple Robe"		,"DA209",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da209" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin10  ,"Master Robe"		,"DA210",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da210" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin11  ,"Arch Robe"			,"DA211",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da211" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin12  ,"Saint Robe"		,"DA212",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da212" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin13  ,"Royal Robe"		,"DA213",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da213" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin14  ,"Mystic Robe"		,"DA214",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da214" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin15  ,"Devine Robe"		,"DA215",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da215" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin16  ,"Bishop"			,"DA216",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da216" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin17  ,"Celestial Robe"	,"DA217",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da217" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin18  ,"Salvation Robe"	,"DA218",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da218" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin19  ,"Alchemist Robe"	,"DA219",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da219" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin20  ,"Astral Robe"		,"DA220",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da220" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin21  ,"Archon Robe"		,"DA221",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da221" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin22  ,"Angel Robe"		,"DA222",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da222" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA2 | sin23  ,"Ruah Robe"			,"DA223",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da223" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA2 | sin24  ,"Eternal Robe"			,"DA224",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da224" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA2 | sin25  ,"Archangel Robe"	,"DA225",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da225" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA2 | sin26  ,"Robe103"	,"DA226",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da226" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin27  ,"Robe108"	,"DA227",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da227" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin28  ,"Robe118"	,"DA228",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da228" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin29  ,"Robe120"	,"DA229",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da229" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{ sinDA4 | sin01, "Robe125", "DA401", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da401", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA4 | sin02, "Robe130", "DA402", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da402", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA4 | sin03, "Robe135", "DA403", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da403", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	{ sinDA1 | sin31, "ÆÄÆ¼ ÄÚ½ºÆ¬(7ÀÏ)", "DA131", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da131", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA1 | sin32, "ÆÄÆ¼ ÄÚ½ºÆ¬(30ÀÏ)", "DA132", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da132", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA1 | sin33, "ÆÄÆ¼ ÄÚ½ºÆ¬(7ÀÏ)", "DA133", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da133", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA1 | sin34, "ÆÄÆ¼ ÄÚ½ºÆ¬(30ÀÏ)", "DA134", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da134", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	{sinDA1 | sin35  ,"ÀÌ´Ù½º ¾Æ¸Ó(7ÀÏ)"		,"DA135",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da135" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin36  ,"ÀÌ´Ù½º ¾Æ¸Ó(30ÀÏ)"		,"DA136",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da136" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin37  ,"ÀÌ´Ù½º ¾Æ¸Ó(7ÀÏ)"		,"DA137",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da137" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin38  ,"ÀÌ´Ù½º ¾Æ¸Ó(30ÀÏ)"		,"DA138",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da138" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin39  ,"½Ç¹ö ÆÄÆ¼ ÄÚ½ºÆ¬(7ÀÏ)" ,"DA139",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da139" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin40  ,"½Ç¹ö ÆÄÆ¼ ÄÚ½ºÆ¬(30ÀÏ)","DA140",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da140" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin41  ,"½Ç¹ö ÆÄÆ¼ ÄÚ½ºÆ¬(7ÀÏ)" ,"DA141",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da141" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin42  ,"½Ç¹ö ÆÄÆ¼ ÄÚ½ºÆ¬(30ÀÏ)","DA142",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da142" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin43  ,"Å»·¹½º ¾Æ¸Ó(7ÀÏ)"		,"DA143",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da143" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin44  ,"Å»·¹½º ¾Æ¸Ó(30ÀÏ)"		,"DA144",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da144" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin45  ,"Å»·¹½º ¾Æ¸Ó(7ÀÏ)"		,"DA145",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da145" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA1 | sin46  ,"Å»·¹½º ¾Æ¸Ó(30ÀÏ)"		,"DA146",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da146" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA2 | sin31  ,"ÆÄÆ¼ ÄÚ½ºÆ¬(7ÀÏ)"		,"DA231",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da231" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin32  ,"ÆÄÆ¼ ÄÚ½ºÆ¬(30ÀÏ)"		,"DA232",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da232" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin33  ,"ÆÄÆ¼ ÄÚ½ºÆ¬(7ÀÏ)"		,"DA233",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da233" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin34  ,"ÆÄÆ¼ ÄÚ½ºÆ¬(30ÀÏ)"		,"DA234",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da234" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA2 | sin35  ,"¸¶¸£´Ù³ë½º ·Îºê(7ÀÏ)"  ,"DA235",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da235" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin36  ,"¸¶¸£´Ù³ë½º ·Îºê(30ÀÏ)" ,"DA236",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da236" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin37  ,"¸¶¸£´Ù³ë½º ·Îºê(7ÀÏ)"  ,"DA237",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da237" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin38  ,"¸¶¸£´Ù³ë½º ·Îºê(30ÀÏ)" ,"DA238",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da238" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA2 | sin39  ,"½Ç¹ö ÆÄÆ¼ ÄÚ½ºÆ¬(7ÀÏ)"  ,"DA239",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da239" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin40  ,"½Ç¹ö ÆÄÆ¼ ÄÚ½ºÆ¬(30ÀÏ)" ,"DA240",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da240" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin41  ,"½Ç¹ö ÆÄÆ¼ ÄÚ½ºÆ¬(7ÀÏ)"  ,"DA241",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da241" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin42  ,"½Ç¹ö ÆÄÆ¼ ÄÚ½ºÆ¬(30ÀÏ)" ,"DA242",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da242" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA2 | sin43  ,"¹Ì°¥ ·Îºê(7ÀÏ)"		 ,"DA243",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da243" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin44  ,"¹Ì°¥ ·Îºê(30ÀÏ)"		 ,"DA244",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da244" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin45  ,"¹Ì°¥ ·Îºê(7ÀÏ)"		 ,"DA245",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da245" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin46  ,"¹Ì°¥ ·Îºê(30ÀÏ)"		 ,"DA246",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da246" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin47  ,"·¹ÇÃ¸®Ä« °©¿Ê"			 ,"DA147",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da147" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin47  ,"·¹¸®Ä« ·Îºê"  			 ,"DA247",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da247" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin48  ,"ÇÑº¹ °©¿Ê"				,"DA148",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da148" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin48  ,"ÇÑº¹ ·Îºê"				,"DA248",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da248" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin49  ,"°¡ÀÌ¾Æ ¾Æ¸Ó"			,"DA149",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da149" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin49  ,"°¡ÀÌ¾Æ ·Îºê"			,"DA249",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da249" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin50  ,"ÀÌ¸®½º ¾Æ¸Ó"			,"DA150",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da150" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin50  ,"ÀÌ¸®½º ·Îºê"			,"DA250",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da250" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin51  ,"ºí·¢ °¡ÀÌ¾Æ ¾Æ¸Ó"	,"DA151",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da151" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin51  ,"ºí·¢ °¡ÀÌ¾Æ ·Îºê"	,"DA251",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da251" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA1 | sin52  ,"ºí·¢ ÀÌ¸®½º ¾Æ¸Ó"	,"DA152",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da152" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin52  ,"ºí·¢ ÀÌ¸®½º ·Îºê"	,"DA252",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da252" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{sinDA2 | sin54  ,"³²ÀÚ ¼ö¿µº¹(30ÀÏ)"		,"DA254",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da254" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+	{sinDA2 | sin55  ,"¿©ÀÚ ¼ö¿µº¹(30ÀÏ)"		,"DA255",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da255" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR},
+
+	{ sinDA1 | sin62, "NATALVERMELHOM", "DA162", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da162", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA1 | sin63, "NATALVERMELHROF", "DA163", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da163", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	{ sinDA2 | sin62, "NATALVERMELHOM", "DA262", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da262", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA2 | sin63, "NATALVERMELHROF", "DA263", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da263", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	{ sinDA1 | sin76, "NATALVERDEM", "DA176", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da176", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA1 | sin77, "NATALVERDEF", "DA177", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da177", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	{ sinDA2 | sin76, "NATALVERDEM", "DA276", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da276", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA2 | sin77, "NATALVERDEF", "DA277", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da277", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	{ sinDA2 | sin54, "³²ÀÚ ¼ö¿µº¹(30ÀÏ)", "DA254", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da254", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	{ sinDA2 | sin55, "¿©ÀÚ ¼ö¿µº¹(30ÀÏ)", "DA255", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "da255", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	{sinDB1 | sin01  ,"Leather Boots" ,"DB101",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db101" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin02  ,"Elven Boots"   ,"DB102",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db102" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin03  ,"Steel Boots"   ,"DB103",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db103" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin04  ,"Long Boots"    ,"DB104",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db104" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin05  ,"Chain Boots"   ,"DB105",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db105" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin06  ,"Plated Boots"  ,"DB106",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db106" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin07  ,"Brass Boots"   ,"DB107",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db107" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin08  ,"War Boots"     ,"DB108",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db108" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin09  ,"Metal Boots"   ,"DB109",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db109" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin10  ,"Chaos Boots"   ,"DB110",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db110" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin11  ,"Holy Boots"    ,"DB111",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db111" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin12  ,"Spiked Boots"  ,"DB112",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db112" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin13  ,"Grand Boots"   ,"DB113",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db113" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin14  ,"Winged Boots"  ,"DB114",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db114" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin15  ,"Titan Boots"	,"DB115",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db115" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin16  ,"Saint Boots"	,"DB116",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db116" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin17  ,"Wyvern Boots"  ,"DB117",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db117" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin18  ,"Rune Boots"	,"DB118",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db118" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin19  ,"Royal Boots"   ,"DB119",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db119" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin20  ,"Dragon Boots"  ,"DB120",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db120" ,0,SIN_SOUND_BOOTS},
+
+	{sinDB1 | sin21  ,"Inferno Boots" ,"DB121",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db121" ,0,SIN_SOUND_BOOTS},
+
+	{sinDB1 | sin22  ,"Phoenix Boots" ,"DB122",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db122" ,0,SIN_SOUND_BOOTS},
+
+	{sinDB1 | sin23  ,"Frenzy Boots"	,"DB123",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db123" ,0,SIN_SOUND_BOOTS},
+
+	{sinDB1 | sin24  ,"Boots108"	,"DB124",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db124" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin25  ,"Boots118"	,"DB125",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db125" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin26  ,"Boots120"	,"DB126",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db126" ,0,SIN_SOUND_BOOTS},
+
+	{sinDB1 | sin27  ,"Boots125"	,"DB127",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db127" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin28  ,"Boots130"	,"DB128",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db128" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin29  ,"Boots135"	,"DB129",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db129" ,0,SIN_SOUND_BOOTS},
+
+	{sinDB1 | sin30  ,"Mokova Boots " ,"DB130",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db130" ,0,SIN_SOUND_BOOTS},
+
+	{sinDB1 | sin31  ,"Speed Boots(7ÀÏ)"  ,"DB131",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db131" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin32  ,"Speed Boots(30ÀÏ)" ,"DB132",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db132" ,0,SIN_SOUND_BOOTS},
+
+	{sinDB1 | sin33  ,"BOTAS COMANDO"  ,"DB133",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db133" ,0,SIN_SOUND_BOOTS},
+	{sinDB1 | sin34  ,"Speed Boots(1½Ã°£)"  ,"DB134",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db134" ,0,SIN_SOUND_BOOTS},
+
+	{sinDB1 | sin35  ,"BotaBoss"  ,"DB150",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db150" ,0,SIN_SOUND_BOOTS},
+
+	{sinDG1 | sin01  ,"Leather Gloves"			,"DG101",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg101" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin02  ,"Leather Half Gauntlets"	,"DG102",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg102" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin03  ,"Steel Half Gauntlets"		,"DG103",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg103" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin04  ,"Clamshell Gauntlets"		,"DG104",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg104" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin05  ,"Finger Gauntlets"			,"DG105",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg105" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin06  ,"Gothic Mitten Gauntlets"	,"DG106",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg106" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin07  ,"War Gauntlets"				,"DG107",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg107" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin08  ,"Metal Gauntlets"			,"DG108",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg108" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin09  ,"Holy Gauntlets"			,"DG109",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg109" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin10  ,"Great Gauntlets"			,"DG110",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg110" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin11  ,"Brass Gauntlets"			,"DG111",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg111" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin12  ,"Giant Gauntlets"			,"DG112",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg112" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin13  ,"Titan Gauntlets"			,"DG113",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg113" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin14  ,"Grand Gauntlets"			,"DG114",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg114" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin15  ,"Ivory Gauntlets"			,"DG115",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg115" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin16  ,"Saint Gauntlets"			,"DG116",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg116" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin17  ,"Diamond Gauntlets"			,"DG117",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg117" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin18  ,"Angel Gauntlets"			,"DG118",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg118" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin19  ,"Relic Gauntlets"			,"DG119" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg119" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin20  ,"Dragon Gauntlets"			,"DG120" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg120" ,0,SIN_SOUND_GLOVES},
+
+	{sinDG1 | sin21  ,"INferno Gauntlets"			,"DG121" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg121" ,0,SIN_SOUND_GLOVES},
+
+	{sinDG1 | sin22  ,"Phoenix Gauntlets"			,"DG122" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg122" ,0,SIN_SOUND_GLOVES},
+
+	{sinDG1 | sin23  ,"Frenzy Gauntlets"			,"DG123" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg123" ,0,SIN_SOUND_GLOVES},
+
+	{sinDG1 | sin24  ,"Gauntlets108"			,"DG124" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg124" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin25  ,"Gauntlets118"			,"DG125" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg125" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin26  ,"Gauntlets120"			,"DG126" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg126" ,0,SIN_SOUND_GLOVES},
+
+	{sinDG1 | sin27  ,"Gauntlets125"			,"DG127" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg127" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin28  ,"Gauntlets130"			,"DG128" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg128" ,0,SIN_SOUND_GLOVES},
+	{sinDG1 | sin29  ,"Gauntlets135"			,"DG129" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg129" ,0,SIN_SOUND_GLOVES},
+
+	{sinDG1 | sin30  ,"GauntletsBoSS"			,"DG130" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg130" ,0,SIN_SOUND_GLOVES},
+
+	{sinDS1 | sin01  ,"Wood Shield"      ,"DS101",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_SHIELDS,"ds101" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin02  ,"Targe"            ,"DS102",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_SHIELDS,"ds102" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin03  ,"Steel Buckler"    ,"DS103",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_SHIELDS,"ds103" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin04  ,"Kite Shield"      ,"DS104",  ITEMSIZE * 2, ITEMSIZE * 3,"Defense",ITEM_CLASS_SHIELDS,"ds104" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin05  ,"Tower Shield"     ,"DS105",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds105" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin06  ,"Metalic Shield"   ,"DS106",  ITEMSIZE * 2, ITEMSIZE * 3,"Defense",ITEM_CLASS_SHIELDS,"ds106" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin07  ,"Scutum"           ,"DS107",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds107" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin08  ,"Great Shield"     ,"DS108",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds108" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin09  ,"Brass Shield"     ,"DS109",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds109" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin10  ,"Claw Shield"      ,"DS110",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds110" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin11  ,"Winged Shield"    ,"DS111",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds111" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin12  ,"Spiked Shield"    ,"DS112",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds112" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin13  ,"Grand Shield"     ,"DS113",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds113" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin14  ,"Titan Shield"     ,"DS114",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds114" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin15  ,"Gladiator Shield" ,"DS115",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds115" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin16  ,"Fury Shield"      ,"DS116",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds116" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin17  ,"Titan Shield"     ,"DS117",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds117" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin18  ,"Mystic Shield"    ,"DS118",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds118" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin19  ,"Vampire Shield"   ,"DS119",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds119" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin20  ,"Dragon Shield"    ,"DS120",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds120" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+
+	{sinDS1 | sin21  ,"Phoenix Shield"   ,"DS121",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds121" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+
+	{sinDS1 | sin22  ,"Dreadnaught Shield"   ,"DS122",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds122" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+
+	{sinDS1 | sin23  ,"Inferno Shield"   ,"DS123",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds123" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+
+	{sinDS1 | sin24  ,"Shield108"   ,"DS124",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds124" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin25  ,"Shield115"   ,"DS125",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds125" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin26  ,"Shield118"   ,"DS126",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds126" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin27  ,"Shield120"   ,"DS127",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds127" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+
+	{sinDS1 | sin28  ,"Shield125"   ,"DS128",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds128" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	//{sinDS1 | sin29  ,"DS186"       ,"DS186",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"DS186" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+	{sinDS1 | sin30  ,"Shield135"   ,"DS130",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds130" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS},
+
+	{sinOR2 | sin01  ,"Àý´ë¹ÝÁö-_-"  ,"OR201",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or201" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin02  ,"¾ÆÄÉÀÎ ¸µ"    ,"OR202",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or202" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin03  ,"¿¥Æä·¯ ¸µ"    ,"OR203",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or203" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin04  ,"Æ÷Ä¿½º ¸µ"    ,"OR204",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or204" ,0,SIN_SOUND_RING},
+
+	{sinOR2 | sin05  ,"Anel Valento"			  ,"OR205",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or205" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin06  ,"Anel Mortal"			  ,"OR206",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or206" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin07  ,"Anel Greedy"		  ,"OR207",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or207" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin08  ,"ÀÌµå ¸µ    "		  ,"OR208",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or208" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin09  ,"ÇÃ·¡Æ¾ ¸¶ºê ¸µ"      ,"OR209",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or209" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin10  ,"±×·¹ÀÌºê »þÅ²½º ¸µ"  ,"OR210",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or210" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin11  ,"½ÎÀÌÅ¬·Ð ¸µ"		  ,"OR211",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or211" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin12  ,"¹Ù¿ìÅæ ¸µ"			  ,"OR212",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or212" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin13  ,"±æÆ¼ °íµç ¸µ"		  ,"OR213",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or213" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin14  ,"¿¤ ¶ó½Ã Äï ¸µ"		  ,"OR214",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or214" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin15  ,"ÇÁ¶óÀÌÆ® ³×¹Ã ¸µ"	  ,"OR215",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or215" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin16  ,"¾îÆÄ½ºÅÍ½Ã ¸µ"		  ,"OR216",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or216" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin17  ,"¾ðÈ¦¸® ³ªÀÌÆ® ¸µ"	  ,"OR217",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or217" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin18  ,"º£°¡ µå¹Ì¸£ ¸µ"	  ,"OR218",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or218" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin19  ,"º£°¡ µå¹ÌÆ®¸® ¸µ"    ,"OR219",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or219" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin20  ,"½½·¹ÀÌ¿Â ¸µ"		  ,"OR220",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or220" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin21  ,"ºí·¯µð ·ÎÁî ¸µ"	  ,"OR221",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or221" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin22  ,"Çï½Ì ¸µ"			  ,"OR222",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or222" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin23  ,"º£¸£¹® ¾ÇÅ¸·é ¸µ"	  ,"OR223",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or223" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin24  ,"½ºÆ½½º ¾Æ¸£Ä­ ¸µ"    ,"OR224",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or224" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin25  ,"¶ó»þ'½º ¸µ"	      ,"OR225",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or225" ,0,SIN_SOUND_RING},
+
+	{sinOR2 | sin27  ,"Santa Ring"		  ,"OR227",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or227" ,0,SIN_SOUND_RING},
+
+	{sinOR2 | sin28  ,"Event Ring"		  ,"OR228",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or228" ,0,SIN_SOUND_RING},
+
+	{sinOR2 | sin29  ,"Event Ring(1½Ã°£)"	  ,"OR229",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or228" ,0,SIN_SOUND_RING},
+
+	{sinOR2 | sin30  ,"Event Ring(1ÀÏ)"	  ,"OR230",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or228" ,0,SIN_SOUND_RING},
+
+	{sinOR2 | sin31  ,"Babel Ring"		  ,"OR231",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or231" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin32  ,"Fury Ring"			  ,"OR232",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or232" ,0,SIN_SOUND_RING},
+
+	{sinOR2 | sin33  ,"Heart Ring(7ÀÏ)"	  ,"OR233",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or233" ,0,SIN_SOUND_RING},
+
+	{sinOR2 | sin34  ,"ÈÄ¶óÀÌµå Ä¡Å² ¸µ"		  ,"OR234",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or234" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin35  ,"¾ç³ä Ä¡Å² ¸µ"			  ,"OR235",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or235" ,0,SIN_SOUND_RING},
+
+	{sinOR2 | sin36  ,"µðÄÚÀÌ ¸µ"	  ,"OR236",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or236" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin37  ,"Å¸ÀÌÅº ¸µ"	  ,"OR237",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or237" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin38  ,"À§Ä¡ ¸µ"	  ,"OR238",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or238" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin39  ,"»õµå´Ï½º ¸µ"	  ,"OR239",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or239" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin40  ,"±¼°¡¸£ ¸µ"	  ,"OR240",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or240" ,0,SIN_SOUND_RING},
+
+	{sinOR2 | sin41  ,"AnelDoShy"	  ,"OR248",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or240" ,0,SIN_SOUND_RING},
+	{sinOR2 | sin51  ,"OR251"	  ,"OR251",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or251" ,0,SIN_SOUND_RING },
+
+	{sinPM1 | sin01  ,"Small  Mana Potion"    ,"PM101",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"pm101" ,0,SIN_SOUND_POTION},
+	{sinPM1 | sin02  ,"Middle Mana Potion"    ,"PM102",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"pm101" ,0,SIN_SOUND_POTION},
+	{sinPM1 | sin03  ,"High   Mana Potion"    ,"PM103",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"pm101" ,0,SIN_SOUND_POTION},
+	{sinPM1 | sin04  ,"Greate Mana Potion"    ,"PM104",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"pm101" ,0,SIN_SOUND_POTION},
+	{sinPM1 | sin05 ,"Greate Mana Potion"    ,"PM105",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"pm101" ,0,SIN_SOUND_POTION},
+
+	{sinPL1 | sin01  ,"Small  Life Potion"    ,"PL101",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"pl101" ,0,SIN_SOUND_POTION},
+	{sinPL1 | sin02  ,"Middle Life Potion"    ,"PL102",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"pl101" ,0,SIN_SOUND_POTION},
+	{sinPL1 | sin03  ,"High   Life Potion"    ,"PL103",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"pl101" ,0,SIN_SOUND_POTION},
+	{sinPL1 | sin04  ,"Greate Life Potion"    ,"PL104",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"pl101" ,0,SIN_SOUND_POTION},
+	{sinPL1 | sin05  ,"M Greate Life Potion"    ,"PL105",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"pl101" ,0,SIN_SOUND_POTION},
+
+	{sinPS1 | sin01  ,"Small  Stamina Potion" ,"PS101",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"ps101" ,0,SIN_SOUND_POTION},
+	{sinPS1 | sin02  ,"Middle Stamina Potion" ,"PS102",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"ps101" ,0,SIN_SOUND_POTION},
+	{sinPS1 | sin03  ,"High   Stamina Potion" ,"PS103",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"ps101" ,0,SIN_SOUND_POTION},
+	{sinPS1 | sin04  ,"Greate Stamina Potion" ,"PS104",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"ps101" ,0,SIN_SOUND_POTION},
+	{sinPS1 | sin05  ,"Greate Stamina Potion" ,"PS105",  ITEMSIZE * 1, ITEMSIZE * 1,"Potion",ITEM_CLASS_POTION,"ps101" ,0,SIN_SOUND_POTION},
+
+	{sinEC1 | sin01  ,"¸®Ä«¸£ÅÙ ±ÍÈ¯","EC101",ITEMSIZE * 2, ITEMSIZE * 1,"Potion",ITEM_CLASS_ECORE,"ec101",0,SIN_SOUND_Armlet},
+	{sinEC1 | sin02  ,"³×ºñ½ºÄÚ ±ÍÈ¯","EC102",ITEMSIZE * 2, ITEMSIZE * 1,"Potion",ITEM_CLASS_ECORE,"ec102",0,SIN_SOUND_Armlet},
+	{sinEC1 | sin03  ,"·çÀÌ³Ù   ±ÍÈ¯","EC103",ITEMSIZE * 2, ITEMSIZE * 2,"Potion",ITEM_CLASS_ECORE,"ec102",0,SIN_SOUND_Armlet},
+	{sinEC1 | sin04  ,"ÇÊ¶óÀÌ   ±ÍÈ¯","EC104",ITEMSIZE * 2, ITEMSIZE * 1,"Potion",ITEM_CLASS_ECORE,"ec102",0,SIN_SOUND_Armlet},
+	{sinEC1 | sin05  ,"À¯´Ï¿Â   ÄÚ¾î","EC105",ITEMSIZE * 2, ITEMSIZE * 1,"Potion",ITEM_CLASS_ECORE,"ec102",0,SIN_SOUND_Armlet},
+
+	{ sinEC1 | sin06  ,"À¯´Ï¿Â   ÄÚ¾î","EC106",ITEMSIZE * 2, ITEMSIZE * 1,"Potion",ITEM_CLASS_ECORE,"ec106",0,SIN_SOUND_Armlet },
+
+	{sinQT1 | sin01 ,"Àü¾÷¾ÆÀÌÅÛ","QT101",ITEMSIZE * 2,ITEMSIZE * 2,"Quest",ITEM_CLASS_QUEST,"QT101",0,SIN_SOUND_Armlet},
+	{sinQT1 | sin02 ,"Àü¾÷¾ÆÀÌÅÛ","QT102",ITEMSIZE * 2,ITEMSIZE * 2,"Quest",ITEM_CLASS_QUEST,"QT102",0,SIN_SOUND_Armlet},
+	{sinQT1 | sin03 ,"Àü¾÷¾ÆÀÌÅÛ","QT103",ITEMSIZE * 2,ITEMSIZE * 2,"Quest",ITEM_CLASS_QUEST,"QT103",0,SIN_SOUND_Armlet},
+
+	{sinQT1 | sin04 ,"·Î¾âÁ¦¸®"  ,"QT104",ITEMSIZE * 2,ITEMSIZE * 2,"Make",ITEM_CLASS_QUEST,"QT104",0,SIN_SOUND_MAGICIAL},
+	{sinQT1 | sin05 ,"¹ß¸ðÁ¦"    ,"QT105",ITEMSIZE * 2,ITEMSIZE * 2,"Make",ITEM_CLASS_QUEST,"QT105",0,SIN_SOUND_MAGICIAL},
+	{sinQT1 | sin06 ,"¹ìÇÁ½©ÅÒ  ","QT106",ITEMSIZE * 1,ITEMSIZE * 1,"Quest",ITEM_CLASS_QUEST,"QT106",0,SIN_SOUND_SHELTOM},
+
+	{sinQT1 | sin07 ,"·ÎÀÌÆ®¶ó"		,"QT107",ITEMSIZE * 2,ITEMSIZE * 2,"Quest",ITEM_CLASS_QUEST,"QT107",0,SIN_SOUND_MAGICIAL},
+	{sinQT1 | sin08 ,"Ä®¸®¾ÆÀÇ´«¹°"	,"QT108",ITEMSIZE * 2,ITEMSIZE * 2,"Quest",ITEM_CLASS_QUEST,"QT108",0,SIN_SOUND_MAGICIAL},
+	{sinQT1 | sin09 ,"°ñµ§ ¹ìÇÁ"		,"QT109",ITEMSIZE * 1,ITEMSIZE * 1,"Quest",ITEM_CLASS_QUEST,"QT109",0,SIN_SOUND_SHELTOM},
+	{sinQT1 | sin10 ,"½Ç¹ö ¹ìÇÁ"		,"QT110",ITEMSIZE * 1,ITEMSIZE * 1,"Quest",ITEM_CLASS_QUEST,"QT110",0,SIN_SOUND_SHELTOM},
+	{sinQT1 | sin11 ,"ºê·ÐÁî ¹ìÇÁ"	,"QT111",ITEMSIZE * 1,ITEMSIZE * 1,"Quest",ITEM_CLASS_QUEST,"QT111",0,SIN_SOUND_SHELTOM},
+	{sinQT1 | sin12 ,"ÃßÃµ¼­"			,"QT112",ITEMSIZE * 2,ITEMSIZE * 2,"Quest",ITEM_CLASS_QUEST,"QT112",0,SIN_SOUND_Armlet},
+	{sinQT1 | sin13 ,"·Î¿­¾Æ¹Ä·¿"		,"QT113",ITEMSIZE * 1,ITEMSIZE * 1,"Quest",ITEM_CLASS_QUEST,"QT113",0,SIN_SOUND_RING},
+
+	{sinQT1 | sin14 ,"¸·´ë»çÅÁ"		,"QT114",ITEMSIZE * 1,ITEMSIZE * 2,"Quest",ITEM_CLASS_QUEST,"QT114",0,SIN_SOUND_SHELTOM},
+	{sinQT1 | sin15 ,"»ýÅ©¸² ÄÉÀÍ"	,"QT115",ITEMSIZE * 2,ITEMSIZE * 2,"Quest",ITEM_CLASS_QUEST,"QT115",0,SIN_SOUND_Armlet},
+	{sinQT1 | sin16 ,"¾öÇÁÀÇ ¸ÁÄ¡"	,"QT116",ITEMSIZE * 2,ITEMSIZE * 2,"Quest",ITEM_CLASS_QUEST,"QT116",0,SIN_SOUND_RING},
+
+	{sinSP1 | sin01  ,"ÀÛÀº ¼ÛÆí"			,"SP101",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP101" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin02  ,"Å«   ¼ÛÆí"			,"SP102",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP102" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin03  ,"»ï°èÅÁ"			,"SP103",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP103" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin05  ,"¼±¹°»óÀÚ1"			,"SP105",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"SP105" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin06  ,"¼±¹°»óÀÚ2"			,"SP106",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"SP105" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin07  ,"¼±¹°»óÀÚ3"			,"SP107",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"SP105" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin08  ,"¼±¹°»óÀÚ4"			,"SP108",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"SP105" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin09  ,"¼±¹°»óÀÚ5"			,"SP109",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"SP105" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin10  ,"¼±¹°»óÀÚ6"			,"SP110",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"SP105" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin15  ,"¼ö¹Ú"				,"SP115",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP115" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin26  ,"º°"				,"SP126",  ITEMSIZE, ITEMSIZE,	"Event",ITEM_CLASS_ECORE,"SP126" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin27  ,"P"		,"SP127",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP127" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin28  ,"R"		,"SP128",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP128" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin29  ,"I"		,"SP129",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP129" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin30  ,"S"		,"SP130",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP130" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin31  ,"T"		,"SP131",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP131" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin32  ,"O"		,"SP132",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP132" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin33  ,"N"		,"SP133",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP133" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin34  ,"È£¶ûÀÌ Ä¸½¶"		,"SP134",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"SP134" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin35  ,"ÃÊÄÝ¸´"			,"SP135",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP135" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin36  ,"Äµµð"				,"SP136",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP136" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin37  ,"ºñÃë"				,"SP137",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP137" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin38  ,"¿¡¸Þ¶öµå"				,"SP138",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP138" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin39  ,"Ä«¶óÀÇ ´«¹°"				,"SP139",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP139" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin40  ,"Ãà±¸°ø Æ÷¼Ç"	,"SP140",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP140" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin42  ,"¼ö¹Ú"				,"SP142",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP142" ,0,SIN_SOUND_Armlet},
+
+	{sinSP1 | sin43  ,"A"				,"SP143",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP143" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin44  ,"B"				,"SP144",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP144" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin45  ,"C"				,"SP145",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP145" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin46  ,"D"				,"SP146",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP146" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin47  ,"E"				,"SP147",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP147" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin48  ,"F"				,"SP148",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP148" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin49  ,"G"				,"SP149",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP149" ,0,SIN_SOUND_Armlet},
+
+	{ sinSP1 | sin50  ,"C"				,"SP150",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP150" ,0,SIN_SOUND_Armlet },
+	{ sinSP1 | sin51  ,"A"				,"SP151",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP151" ,0,SIN_SOUND_Armlet },
+	{ sinSP1 | sin52  ,"R"				,"SP152",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP152" ,0,SIN_SOUND_Armlet },
+	{ sinSP1 | sin53  ,"N"				,"SP153",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP153" ,0,SIN_SOUND_Armlet },
+	{ sinSP1 | sin54  ,"A"				,"SP154",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP154" ,0,SIN_SOUND_Armlet },
+	{ sinSP1 | sin55  ,"V"				,"SP155",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP155" ,0,SIN_SOUND_Armlet },
+	{ sinSP1 | sin56  ,"A"				,"SP156",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP156" ,0,SIN_SOUND_Armlet },
+	{ sinSP1 | sin57  ,"L"				,"SP157",  ITEMSIZE * 1, ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SP157" ,0,SIN_SOUND_Armlet },
+
+	{sinSP1 | sin60  ,"¿µ"			,"SP160",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP160" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin61  ,"È­"			,"SP161",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP161" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin62  ,"Ç÷"			,"SP162",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP162" ,0,SIN_SOUND_Armlet},
+	{sinSP1 | sin63  ,"Åõ"			,"SP163",  ITEMSIZE, ITEMSIZE,"Event",ITEM_CLASS_ECORE,"SP163" ,0,SIN_SOUND_Armlet},
+
+	{sinGP1 | sin01  ,"È£ÇÇ	  "			,"GP101",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin02  ,"È©°íºí¸° "			,"GP102",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin03  ,"µðÄÚÀÌ   "			,"GP103",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin04  ,"¹Ù°ï     "			,"GP104",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin05  ,"ÇìµåÄ¿ÅÍ "			,"GP105",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin06  ,"ÆÄÀÌ°ï   "			,"GP106",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin07  ,"Å·È£ÇÇ   "			,"GP107",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin08  ,"ÇæÅ©     "			,"GP108",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin09  ,"·£´ý     "			,"GP109",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin10  ,"Å¬·£     "			,"GP110",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin11  ,"À¥       "			,"GP111",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin12  ,"´ÙÅ©½ºÆÑÅÍ"		,"GP112",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin13  ,"¾ÆÀÌ¾ð°¡µå"		,"GP113",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin14  ,"¸®Ä«¸£µ§ ¹Îº´´ë"	,"GP114",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin15  ,"¸®Ä«¸£µ§ °æºñ´ë"	,"GP115",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin16  ,"ºí·¹½º¿Õ±¹ ¼öºñ´ë" ,"GP116",  ITEMSIZE * 2, ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101" ,0,SIN_SOUND_MAGICIAL},
+
+	{sinGP1 | sin17 ,"½ºÄÌ·¹Åæ Å©¸®½ºÅ»"  ,"GP117",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101",0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin18 ,"°ÔÀÌ¾Æ½º Å©¸®½ºÅ»"  ,"GP118",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101",0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin19 ,"ÀÎÆä¸£³ª Å©¸®½ºÅ»"  ,"GP119",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101",0,SIN_SOUND_MAGICIAL},
+
+	{sinGP1 | sin20 ,"ÀÍ½ºÆ®¸² Å©¸®½ºÅ»"  ,"GP120",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101",0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin21 ,"¸¶º§ Å©¸®½ºÅ»"	    ,"GP121",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101",0,SIN_SOUND_MAGICIAL},
+	{sinGP1 | sin22 ,"°¡µð¾È µð¹ÙÀÎ"	    ,"GP122",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP101",0,SIN_SOUND_MAGICIAL},
+
+	{ sinGP1 | sin35 ,"MiniKelvezu"	    ,"GP135",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP135",0,SIN_SOUND_MAGICIAL },
+	{ sinGP1 | sin36 ,"MiniValento"	    ,"GP136",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP136",0,SIN_SOUND_MAGICIAL },
+	{ sinGP1 | sin37 ,"MiniTulla"	    ,"GP137",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"GP137",0,SIN_SOUND_MAGICIAL },
+
+	{ sinGP2 | sin01, "###", "GP201", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP201", 0, SIN_SOUND_MAGICIAL },
+	{ sinGP2 | sin02, "###", "GP202", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP202", 0, SIN_SOUND_MAGICIAL },
+	{ sinGP2 | sin03, "###", "GP203", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP203", 0, SIN_SOUND_MAGICIAL },
+	{ sinGP2 | sin04, "###", "GP204", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP204", 0, SIN_SOUND_MAGICIAL },
+	{ sinGP2 | sin05, "###", "GP205", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP205", 0, SIN_SOUND_MAGICIAL },
+	{ sinGP2 | sin06, "###", "GP206", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP206", 0, SIN_SOUND_MAGICIAL },
+	{ sinGP2 | sin07, "###", "GP207", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP207", 0, SIN_SOUND_MAGICIAL },
+	{ sinGP2 | sin08, "###", "GP208", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP208", 0, SIN_SOUND_MAGICIAL },
+	{ sinGP2 | sin09, "###", "GP209", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP209", 0, SIN_SOUND_MAGICIAL },
+	{ sinGP2 | sin10, "###", "GP210", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP210", 0, SIN_SOUND_MAGICIAL },
+	{ sinGP2 | sin11, "###", "GP211", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "GP211", 0, SIN_SOUND_MAGICIAL },
+
+	{sinQW1 | sin01  ,"À®1	          " ,"QW101",  ITEMSIZE * 2, ITEMSIZE * 2,"Wing",ITEM_CLASS_ECORE,"QW101" ,0,SIN_SOUND_MAGICIAL},
+	{sinQW1 | sin02  ,"À®2		      " ,"QW102",  ITEMSIZE * 2, ITEMSIZE * 2,"Wing",ITEM_CLASS_ECORE,"QW102" ,0,SIN_SOUND_MAGICIAL},
+	{sinQW1 | sin03  ,"À®3			  " ,"QW103",  ITEMSIZE * 2, ITEMSIZE * 2,"Wing",ITEM_CLASS_ECORE,"QW103" ,0,SIN_SOUND_MAGICIAL},
+	{sinQW1 | sin04  ,"À®4			  "	,"QW104",  ITEMSIZE * 2, ITEMSIZE * 2,"Wing",ITEM_CLASS_ECORE,"QW104" ,0,SIN_SOUND_MAGICIAL},
+	{sinQW1 | sin05  ,"À®5			  "	,"QW105",  ITEMSIZE * 2, ITEMSIZE * 2,"Wing",ITEM_CLASS_ECORE,"QW105" ,0,SIN_SOUND_MAGICIAL},
+
+	{sinQW1 | sin06  ,"À®6			  "	,"QW106",  ITEMSIZE * 2, ITEMSIZE * 2,"Wing",ITEM_CLASS_ECORE,"QW106" ,0,SIN_SOUND_MAGICIAL},
+
+	{sinMA1 | sin01  ,"À¯¸®º´           " ,"MA101",  ITEMSIZE * 2, ITEMSIZE * 2,"Make",ITEM_CLASS_QUEST,"MA101" ,0,SIN_SOUND_MAGICIAL},
+
+	{sinMA2 | sin01  ,"¹ú²Ü             " ,"MA201",  ITEMSIZE * 1, ITEMSIZE * 1,"Make",ITEM_CLASS_QUEST,"MA201" ,0,SIN_SOUND_POTION},
+	{sinMA2 | sin02  ,"°ËÀº±â¸§         " ,"MA202",  ITEMSIZE * 1, ITEMSIZE * 1,"Make",ITEM_CLASS_QUEST,"MA202" ,0,SIN_SOUND_POTION},
+
+	{sinGF1 | sin01 ,"º°»óÇ°±Ç"			,"GF101",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_QUEST,"GF101",0,SIN_SOUND_Armlet},
+
+	{sinGF1 | sin03 ,"±¸¹ÌÈ£¸ñ°ÉÀÌ1"		,"GF103",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_QUEST,"GF103",0,SIN_SOUND_Armlet},
+	{sinGF1 | sin04 ,"±¸¹ÌÈ£¸ñ°ÉÀÌ2"		,"GF104",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_QUEST,"GF104",0,SIN_SOUND_Armlet},
+
+	{sinGF1 | sin05 ,"ºû³ª´Â °¡·ç","GF105",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_QUEST,"GF105",0,SIN_SOUND_Armlet},
+	{sinGF1 | sin06 ,"¹ÝÂ¦   °¡·ç","GF106",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_QUEST,"GF106",0,SIN_SOUND_Armlet},
+
+	{sinGF1 | sin07 ,"³ªÀÎ¾Æ¹Ä·¿"		,"GF107",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_QUEST,"GF107",0,SIN_SOUND_Armlet},
+	{sinGF1 | sin08 ,"Å×ÀÏ¾Æ¹Ä·¿"		,"GF108",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_QUEST,"GF108",0,SIN_SOUND_Armlet},
+
+	{sinGF1 | sin02 ,"¿ª°Ü¿î Áø¾×","GF102",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_QUEST,"GF102",0,SIN_SOUND_POTION},
+
+	{sinPZ1 | sin00 ,"º¹ÁÖ¸Ó´Ï"			,"PZ100",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"PZ100",0,SIN_SOUND_Armlet},
+
+	{sinSD2 | sin01 ,"ÆøÅº"         ,"SD201",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SD201",0,SIN_SOUND_Armlet},
+	{sinSD2 | sin02 ,"½Ã°è"         ,"SD202",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SD202",0,SIN_SOUND_Armlet},
+	{sinSD2 | sin03 ,"¾ÆÀÌ½ºÅ©¸²"   ,"SD203",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SD203",0,SIN_SOUND_Armlet},
+	{sinSD2 | sin04 ,"Åä³¢ÀÎÇü"     ,"SD204",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SD204",0,SIN_SOUND_Armlet},
+	{sinSD2 | sin05 ,"´ÞÀÇ ¼öÁ¤±¸"  ,"SD205",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SD205",0,SIN_SOUND_Armlet},
+	{sinSD2 | sin06 ,"ÅÂ¾çÀÇ ¼öÁ¤±¸","SD206",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SD206",0,SIN_SOUND_Armlet},
+	{sinSD2 | sin07 ,"Ãµ°øÀÇ ¼öÁ¤±¸","SD207",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"SD207",0,SIN_SOUND_Armlet},
+
+	{sinBS1 | sin01 ,"º§¶óÅä½ºÅæ(¼Ò)","BS101",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BS101",0,SIN_SOUND_SHELTOM},
+	{sinBS1 | sin02 ,"º§¶óÅä½ºÅæ(Áß)","BS102",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BS102",0,SIN_SOUND_SHELTOM},
+	{sinBS1 | sin03 ,"º§¶óÅä½ºÅæ(´ë)","BS103",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BS103",0,SIN_SOUND_SHELTOM},
+
+	{sinBC1 | sin01 ,"¾ÆÅ¸³ª½Ã¾Æ"          ,"BC101",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC101",0,SIN_SOUND_Armlet},
+	{sinBC1 | sin02 ,"µ¥µé¸® ¿¡Áö"         ,"BC102",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC101",0,SIN_SOUND_Armlet},
+	{sinBC1 | sin03 ,"¾îº£ÀÏ ¿Àºê ÀÌº£ÀÌµå","BC103",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC101",0,SIN_SOUND_Armlet},
+	{sinBC1 | sin04 ,"º¼½ºÅÍ ¸®Ä¿¹ö¸®"     ,"BC104",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC101",0,SIN_SOUND_Armlet},
+	{sinBC1 | sin05 ,"¸®½ºÅä·¹ÀÌ¼Ç"        ,"BC105",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC101",0,SIN_SOUND_Armlet},
+
+	{sinBC1 | sin06 ,"µðÆÄÀÌ¾ð½º ½ºÅæ","BC106",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin07 ,"µðÆÄÀÌ¾ð½º ½ºÅæ","BC107",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin08 ,"µðÆÄÀÌ¾ð½º ½ºÅæ","BC108",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin09 ,"¸¶ÀÌÆ® ½ºÅæ"    ,"BC109",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin10 ,"¸¶ÀÌÆ® ½ºÅæ"    ,"BC110",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin11 ,"¸¶ÀÌÆ® ½ºÅæ"    ,"BC111",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin12 ,"¸¶ÀÌÆ® ½ºÅæ"    ,"BC112",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin13 ,"¸¶ÀÌÆ® ½ºÅæ"    ,"BC113",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin14 ,"¸¶ÀÌÆ® ½ºÅæ"    ,"BC114",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin15 ,"¸¶ÀÌÆ® ½ºÅæ"    ,"BC115",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin16 ,"¸¶ÀÌÆ® ½ºÅæ"    ,"BC116",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC102",0,SIN_SOUND_SHELTOM},
+
+	{sinBC1 | sin21 ,"»ý¸í·Â ºÎ½ºÅÍ(1½Ã°£)"  ,"BC121",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC121",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin22 ,"»ý¸í·Â ºÎ½ºÅÍ(3½Ã°£)"  ,"BC122",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC122",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin23 ,"»ý¸í·Â ºÎ½ºÅÍ(1ÀÏ)"    ,"BC123",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC123",0,SIN_SOUND_SHELTOM},
+
+	{sinBC1 | sin24 ,"±â·Â ºÎ½ºÅÍ(1½Ã°£)"  ,"BC124",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC124",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin25 ,"±â·Â ºÎ½ºÅÍ(3½Ã°£)"  ,"BC125",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC125",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin26 ,"±â·Â ºÎ½ºÅÍ(1ÀÏ)"    ,"BC126",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC126",0,SIN_SOUND_SHELTOM},
+
+	{sinBC1 | sin27 ,"±Ù·Â ºÎ½ºÅÍ(1½Ã°£)"  ,"BC127",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC127",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin28 ,"±Ù·Â ºÎ½ºÅÍ(3½Ã°£)"  ,"BC128",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC128",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin29 ,"±Ù·Â ºÎ½ºÅÍ(1ÀÏ)"    ,"BC129",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC129",0,SIN_SOUND_SHELTOM},
+
+	{sinBC1 | sin30 ,"½ºÅ³ µô·¹ÀÌ(1½Ã°£)"  ,"BC130",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC130",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin31 ,"½ºÅ³ µô·¹ÀÌ(3½Ã°£)"  ,"BC131",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC131",0,SIN_SOUND_SHELTOM},
+	{sinBC1 | sin32 ,"½ºÅ³ µô·¹ÀÌ(1ÀÏ)"    ,"BC132",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"BC132",0,SIN_SOUND_SHELTOM},
+
+	{sinBI1 | sin01 ,"ºí·ç ½ºÅæ"       ,"BI101",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI101",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin02 ,"·¹µå ½ºÅæ"       ,"BI102",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI102",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin03 ,"±×¸° ½ºÅæ"       ,"BI103",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI103",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin04 ,"ºÎÈ°ÁÖ¹®¼­"      ,"BI104",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI104",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin05 ,"ÀÌÅÍ³Î ¶óÀÌÇÁ"   ,"BI105",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI105",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin06 ,"ÆäÀÌÆ² ¿¡Áö"     ,"BI106",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI106",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin07 ,"¾î¹öÆ® ½ºÅ©·Ñ"   ,"BI107",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI107",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin08 ,"ÅÚ·¹Æ÷Æ® ÄÚ¾î"   ,"BI108",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI108",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin09 ,"¾óÅ«ÀÌ ¹°¾à"     ,"BI109",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI109",0,SIN_SOUND_POTION},
+	{sinBI1 | sin10 ,"Aging10"  ,"BI110",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI110",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin11 ,"ÄÚÆÛ ¿À¾î"       ,"BI111",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI111",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin12 ,"½áµå ¾ÆÀÌÁî(1ÀÏ)"       ,"BI112",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI112",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin13 ,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(1ÀÏ)"   ,"BI113",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI113",0,SIN_SOUND_POTION},
+	{sinBI1 | sin14 ,"½áµå ¾ÆÀÌÁî(7ÀÏ)"       ,"BI114",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI114",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin15 ,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(7ÀÏ)"   ,"BI115",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI115",0,SIN_SOUND_POTION},
+	{sinBI1 | sin16 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(AÇü)"	    ,"BI116",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI116",0,SIN_SOUND_POTION},
+	{sinBI1 | sin17 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(BÇü)"     ,"BI117",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI117",0,SIN_SOUND_POTION},
+	{sinBI1 | sin18 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(CÇü)"     ,"BI118",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI118",0,SIN_SOUND_POTION},
+	{sinBI1 | sin19 ,"¹ìÇÇ¸¯ Ä¿½ºÇÍ(15ºÐ)"    ,"BI119",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI119",0,SIN_SOUND_POTION},
+	{sinBI1 | sin20 ,"¹ìÇÇ¸¯ Ä¿½ºÇÍ(30ºÐ)"    ,"BI120",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI120",0,SIN_SOUND_POTION},
+	{sinBI1 | sin21 ,"¸¶³ª ¸®Â÷Â¡ Æ÷¼Ç(15ºÐ)" ,"BI121",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI121",0,SIN_SOUND_POTION},
+	{sinBI1 | sin22 ,"¸¶³ª ¸®Â÷Â¡ Æ÷¼Ç(30ºÐ)" ,"BI122",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI122",0,SIN_SOUND_POTION},
+	{sinBI1 | sin23 ,"ValeLevel","BI123",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI123",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin24 ,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(50% 1ÀÏ)","BI124",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI124",0,SIN_SOUND_POTION},
+	{sinBI1 | sin25 ,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(50% 7ÀÏ)","BI125",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI125",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin26 ,"¸¶ÀÌÆ® ¿Àºê ¾ÆÀ£(7ÀÏ)"   ,"BI126",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI126",0,SIN_SOUND_POTION},
+	{sinBI1 | sin27 ,"¸¶ÀÌÆ® ¿Àºê ¾ÆÀ£(30ÀÏ)"   ,"BI127",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI127",0,SIN_SOUND_POTION},
+	{sinBI1 | sin28 ,"¸¶³ª ¸®µà½º Æ÷¼Ç(1ÀÏ)"   ,"BI128",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI128",0,SIN_SOUND_POTION},
+	{sinBI1 | sin29 ,"¸¶³ª ¸®µà½º Æ÷¼Ç(7ÀÏ)"   ,"BI129",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI129",0,SIN_SOUND_POTION},
+	{sinBI1 | sin30 ,"¸¶ÀÌÆ® ¿Àºê ¾ÆÀ£2(7ÀÏ)"   ,"BI130",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI130",0,SIN_SOUND_POTION},
+	{sinBI1 | sin31 ,"¸¶ÀÌÆ® ¿Àºê ¾ÆÀ£2(30ÀÏ)"   ,"BI131",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI131",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin32 ,"ÇÇ´Ð½ºÆê(1ÀÏ)"          ,"BI132",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI132",0,SIN_SOUND_POTION},
+	{sinBI1 | sin33 ,"ÇÇ´Ð½ºÆê(7ÀÏ)"          ,"BI133",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI132",0,SIN_SOUND_POTION},
+	{sinBI1 | sin34 ,"ÇÇ´Ð½ºÆê(3½Ã°£)"        ,"BI134",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI132",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin36 ,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(A)"		,"BI136",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI136",0,SIN_SOUND_POTION},
+	{sinBI1 | sin37 ,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(B)"		,"BI137",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI137",0,SIN_SOUND_POTION},
+	{sinBI1 | sin38 ,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(C)"		,"BI138",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI138",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin39 ,"½ºÅ³ ¸¶½ºÅÍ(1Â÷)"		,"BI139",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI139",0,SIN_SOUND_POTION},
+	{sinBI1 | sin40 ,"½ºÅ³ ¸¶½ºÅÍ(2Â÷)"		,"BI140",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI140",0,SIN_SOUND_POTION},
+	{sinBI1 | sin41 ,"½ºÅ³ ¸¶½ºÅÍ(3Â÷)"		,"BI141",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI141",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin42 ,"FerreiroExterno"		,"BI142",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI142",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin43 ,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(100% 1ÀÏ)","BI143",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI143",0,SIN_SOUND_POTION},
+	{sinBI1 | sin44 ,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(100% 7ÀÏ)","BI144",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI144",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin45 ,"Èû ½ºÅæ"       ,"BI145",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI145",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin46 ,"Á¤½Å ½ºÅæ"     ,"BI146",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI146",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin47 ,"Àç´É ½ºÅæ"     ,"BI147",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI147",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin48 ,"¹ÎÃ¸¼º ½ºÅæ"   ,"BI148",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI148",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin49 ,"°Ç°­ ½ºÅæ"     ,"BI149",ITEMSIZE * 2,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI149",0,SIN_SOUND_SHELTOM},
+
+	{sinBI1 | sin50 ,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(100% 30ÀÏ)","BI150",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI150",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin51 ,"ÇÇ´Ð½ºÆê(30ÀÏ)"         ,"BI151",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI151",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin52 ,"Å×¸®(30ÀÏ)"    ,"BI152",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI152",0,SIN_SOUND_POTION},
+	{sinBI1 | sin53 ,"³Ü½Ã½º(30ÀÏ)"  ,"BI153",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI153",0,SIN_SOUND_POTION},
+	{sinBI1 | sin54 ,"ÀÌ¿À(30ÀÏ)"    ,"BI154",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI154",0,SIN_SOUND_POTION},
+	{sinBI1 | sin55 ,"¹«Æ®(30ÀÏ)"    ,"BI155",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI155",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin60 ,"¿¤´õ ÄÚÆÛ ¿À¾î"     ,"BI160",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI160",0,SIN_SOUND_SHELTOM},
+	{sinBI1 | sin61 ,"½´ÆÛ ¿¡ÀÌÂ¡ ½ºÅæ"   ,"BI161",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI161",0,SIN_SOUND_SHELTOM},
+
+	{sinBI1 | sin62 ,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(D)"		,"BI162",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI162",0,SIN_SOUND_POTION},
+	{sinBI1 | sin63 ,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(E)"		,"BI163",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI163",0,SIN_SOUND_POTION},
+	{sinBI1 | sin64 ,"¿¡ÀÌÂ¡ ¸¶½ºÅÍ(F)"		,"BI164",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI164",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin65 ,"Å×¸®(7ÀÏ)"    ,"BI165",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI165",0,SIN_SOUND_POTION},
+	{sinBI1 | sin66 ,"³Ü½Ã½º(7ÀÏ)"  ,"BI166",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI166",0,SIN_SOUND_POTION},
+	{sinBI1 | sin67 ,"ÀÌ¿À(7ÀÏ)"    ,"BI167",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI167",0,SIN_SOUND_POTION},
+	{sinBI1 | sin68 ,"¹«Æ®(7ÀÏ)"    ,"BI168",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI168",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin69 ,"Å×¸®(1ÀÏ)"    ,"BI169",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI169",0,SIN_SOUND_POTION},
+	{sinBI1 | sin70 ,"³Ü½Ã½º(1ÀÏ)"  ,"BI170",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI170",0,SIN_SOUND_POTION},
+	{sinBI1 | sin71 ,"ÀÌ¿À(1ÀÏ)"    ,"BI171",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI171",0,SIN_SOUND_POTION},
+	{sinBI1 | sin72 ,"¹«Æ®(1ÀÏ)"    ,"BI172",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI172",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin73 ,"Å×¸®(1½Ã°£)"    ,"BI173",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI173",0,SIN_SOUND_POTION},
+	{sinBI1 | sin74 ,"³Ü½Ã½º(1½Ã°£)"  ,"BI174",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI174",0,SIN_SOUND_POTION},
+	{sinBI1 | sin75 ,"ÀÌ¿À(1½Ã°£)"    ,"BI175",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI175",0,SIN_SOUND_POTION},
+	{sinBI1 | sin76 ,"¹«Æ®(1½Ã°£)"    ,"BI176",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI176",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin77 ,"ÇÇ´Ð½ºÆê(1½Ã°£)"   ,"BI177",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI177",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin78 ,"½áµå ¾ÆÀÌÁî(1½Ã°£)"       ,"BI178",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI178",0,SIN_SOUND_SHELTOM},
+
+	{sinBI1 | sin79 ,"°æÇèÄ¡Áõ°¡ Æ÷¼Ç(1½Ã°£)"   ,"BI179",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI179",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin80 ,"°æÇèÄ¡ 2¹è Áõ°¡¾à(1½Ã°£)"   ,"BI180",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI180",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin81 ,"¹ìÇÇ¸¯ Ä¿½ºÇÍ(1½Ã°£)"    ,"BI181",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI181",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin82 ,"¸¶³ª ¸®Â÷Â¡ Æ÷¼Ç(1½Ã°£)" ,"BI182",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI182",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin83 ,"¸¶³ª ¸®µà½º Æ÷¼Ç(1½Ã°£)"   ,"BI183",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI183",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin84 ,"±×¶óºñÆ¼ ½ºÅæ"   ,"BI184",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI184",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin85 ,"½´Æä¸®¾î ÄÚÆÛ¿À¾î"   ,"BI185",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI185",0,SIN_SOUND_SHELTOM},
+
+	{sinBI1 | sin86 ,"ResTruturarItemAge"    ,"BI186",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI186",0,SIN_SOUND_POTION},
+	{sinBI1 | sin87 ,"Perfeito 114"    ,"BI187",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI187",0,SIN_SOUND_POTION},
+	{sinBI1 | sin88 ,"DesmontadordeItem"    ,"BI188",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI188",0,SIN_SOUND_SHELTOM },
+
+	{sinBI1 | sin89 ,"ReversaoMixAge"	,"BI189",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI189",0,SIN_SOUND_SHELTOM},
+
+	{sinBI1 | sin90 ,"PedradaHonra","BI190",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI190",0,SIN_SOUND_POTION},
+
+	{sinBI1 | sin91 ,"±Ù·Â ¸®µà½º Æ÷¼Ç(1ÀÏ)"    ,"BI191",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI191",0,SIN_SOUND_POTION},
+	{sinBI1 | sin92 ,"±Ù·Â ¸®µà½º Æ÷¼Ç(7ÀÏ)"    ,"BI192",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI192",0,SIN_SOUND_POTION},
+
+	{ sinBI1 | sin93 ,"PEdra do item Perfeio112"		,"BI193",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI193",0,SIN_SOUND_SHELTOM},
+	{ sinBI1 | sin94, "RENOMEAR ITEM", "BI194", ITEMSIZE * 1, ITEMSIZE * 1, "Premium", ITEM_CLASS_ECORE, "BI194", 0, SIN_SOUND_SHELTOM },
+
+	{ sinBI1 | sin95, "PedraPerfeito", "BI195", ITEMSIZE * 1, ITEMSIZE * 1, "Premium", ITEM_CLASS_ECORE, "BI195", 0, SIN_SOUND_SHELTOM },
+	{ sinBI1 | sin96, "PedraHonrr", "BI196", ITEMSIZE * 1, ITEMSIZE * 1, "Premium", ITEM_CLASS_ECORE, "BI196", 0, SIN_SOUND_SHELTOM },
+
+	{ sinBI1 | sin97, "Pedra do Restaure", "BI197", ITEMSIZE * 1, ITEMSIZE * 1, "Premium", ITEM_CLASS_ECORE, "BI197", 0, SIN_SOUND_SHELTOM },
+	{ sinBI1 | sin98, "Pedra do Restaure", "BI198", ITEMSIZE * 1, ITEMSIZE * 1, "Premium", ITEM_CLASS_ECORE, "BI198", 0, SIN_SOUND_SHELTOM },
+
+	{sinBI2 | sin01 ,"Bronze Package(3½Ã°£)"	,"BI201",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI201",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin02 ,"Bronze Package(1ÀÏ)"    ,"BI202",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI202",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin03 ,"Bronze Package(7ÀÏ)"    ,"BI203",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI203",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin04 ,"Bronze Package(30ÀÏ)"   ,"BI204",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI204",0,SIN_SOUND_SHELTOM},
+
+	{sinBI2 | sin05 ,"Siver Package(3½Ã°£)"   ,"BI205",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI205",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin06 ,"Siver Package(1ÀÏ)"     ,"BI206",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI206",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin07 ,"Siver Package(7ÀÏ)"     ,"BI207",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI207",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin08 ,"Siver Package(30ÀÏ)"	,"BI208",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI208",0,SIN_SOUND_SHELTOM},
+
+	{sinBI2 | sin09 ,"Gold Package(3½Ã°£)"    ,"BI209",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI209",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin10 ,"Gold Package(1ÀÏ)"      ,"BI210",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI210",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin11 ,"Gold Package(7ÀÏ)"      ,"BI211",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI211",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin12 ,"Gold Package(30ÀÏ)"     ,"BI212",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI212",0,SIN_SOUND_SHELTOM},
+
+	{sinBI2 | sin13 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(DÇü)"	,"BI213",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI213",0,SIN_SOUND_POTION},
+	{sinBI2 | sin14 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(EÇü)" ,"BI214",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI214",0,SIN_SOUND_POTION},
+	{sinBI2 | sin15 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(FÇü)" ,"BI215",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI215",0,SIN_SOUND_POTION},
+	{sinBI2 | sin16 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(GÇü)" ,"BI216",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI216",0,SIN_SOUND_POTION},
+	{sinBI2 | sin17 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(HÇü)" ,"BI217",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI217",0,SIN_SOUND_POTION},
+
+	{sinBI2 | sin18 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(IÇü)"	,"BI218",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI218",0,SIN_SOUND_POTION},
+	{sinBI2 | sin19 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(JÇü)" ,"BI219",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI219",0,SIN_SOUND_POTION},
+	{sinBI2 | sin20 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(KÇü)" ,"BI220",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI220",0,SIN_SOUND_POTION},
+	{sinBI2 | sin21 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(LÇü)" ,"BI221",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI221",0,SIN_SOUND_POTION},
+	{sinBI2 | sin22 ,"Çì¾îÆ¾Æ® Æ÷¼Ç(MÇü)" ,"BI222",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI222",0,SIN_SOUND_POTION},
+
+	{sinBI2 | sin23 ,"Superior Package(3½Ã°£)" ,"BI223",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI223",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin24 ,"Superior Package(1ÀÏ)"   ,"BI224",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI224",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin25 ,"Superior Package(7ÀÏ)"   ,"BI225",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI225",0,SIN_SOUND_SHELTOM},
+
+	{sinBI2 | sin26 ,"Bronze Package2(3½Ã°£)" ,"BI226",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI226",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin27 ,"Bronze Package2(1ÀÏ)"   ,"BI227",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI227",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin28 ,"Bronze Package2(7ÀÏ)"   ,"BI228",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI228",0,SIN_SOUND_SHELTOM},
+
+	{sinBI2 | sin29 ,"Siver Package2(3½Ã°£)"   ,"BI229",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI229",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin30 ,"Siver Package2(1ÀÏ)"     ,"BI230",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI230",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin31 ,"Siver Package2(7ÀÏ)"     ,"BI231",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI231",0,SIN_SOUND_SHELTOM},
+
+	{sinBI2 | sin32 ,"Gold Package2(3½Ã°£)"    ,"BI232",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI232",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin33 ,"Gold Package2(1ÀÏ)"      ,"BI233",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI233",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin34 ,"Gold Package2(7ÀÏ)"      ,"BI234",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI234",0,SIN_SOUND_SHELTOM},
+
+	{sinBI2 | sin35 ,"Superior Package2(3½Ã°£)" ,"BI235",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI235",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin36 ,"Superior Package2(1ÀÏ)"   ,"BI236",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI236",0,SIN_SOUND_SHELTOM},
+	{sinBI2 | sin37 ,"Superior Package2(7ÀÏ)"   ,"BI237",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI237",0,SIN_SOUND_SHELTOM},
+
+	{ sinBI2 | sin38 ,"VALE13X"  ,"BI238",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI238",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin39 ,"VALE14X"  ,"BI239",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI239",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin40 ,"VALE15X"  ,"BI240",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI240",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin41 ,"VALE15X"  ,"BI241",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI241",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin42 ,"VALE16X"  ,"BI242",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI242",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin43 ,"VALE16X"  ,"BI243",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI243",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin44 ,"VALE16X"  ,"BI244",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI244",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin45 ,"VALE17X"  ,"BI2*45",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI245",0,SIN_SOUND_POTION },
+
+	{ sinBI2 | sin46 ,"Fighter Stone"                ,"BI246",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI246",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin47 ,"Mechanician Stone"            ,"BI247",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI247",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin48 ,"Archer Stone"                 ,"BI248",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI248",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin49 ,"Pikeman Stone"                ,"BI249",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI249",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin50 ,"Atalanta Stone"               ,"BI250",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI250",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin51 ,"Knight Stone"                 ,"BI251",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI251",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin52 ,"Magician Stone"               ,"BI252",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI252",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin53 ,"Priestess Stone"              ,"BI253",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI253",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin54 ,"Assassin Stone"               ,"BI254",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI254",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin55 ,"Shaman Stone"                 ,"BI255",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI255",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin56 ,"Martial Stone"                ,"BI256",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI256",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin57 ,"Safe Stone"                   ,"BI257",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI257",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin58 ,"Plus Stone"                   ,"BI258",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI258",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin59 ,"Ultra Plus Stone"             ,"BI259",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI259",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin60 ,"Warehouse 1 Day"              ,"BI260",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI260",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin61 ,"Warehouse 7 Day"              ,"BI261",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI261",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin62 ,"Warehouse 30 Day"             ,"BI262",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI262",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin66 ,"Artefato Comum"               ,"BI266",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI266",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin67 ,"Artefato Superior"            ,"BI267",ITEMSIZE * 3,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI267",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin68 ,"Safe Stone Gold"              ,"BI268",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI268",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin69 ,"Safe Stone Gold"              ,"BI269",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI269",0,SIN_SOUND_POTION },
+	{ sinBI2 | sin70 ,"Safe Stone Gold"              ,"BI270",ITEMSIZE * 2,ITEMSIZE * 2,"Premium",ITEM_CLASS_ECORE,"BI270",0,SIN_SOUND_POTION },
+
+	{ sinEV1 | sin01 ,"Novas Pedras Evento"              ,"EV101",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV101",0,SIN_SOUND_POTION },
+	{ sinEV1 | sin02 ,"Novas Pedras Evento"              ,"EV102",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV102",0,SIN_SOUND_POTION },
+	{ sinEV1 | sin03 ,"Novas Pedras Evento"              ,"EV103",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV103",0,SIN_SOUND_POTION },
+	{ sinEV1 | sin04 ,"Novas Pedras Evento"              ,"EV104",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV104",0,SIN_SOUND_POTION },
+	{ sinEV1 | sin05 ,"Novas Pedras Evento"              ,"EV105",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV105",0,SIN_SOUND_POTION },
+	{ sinEV1 | sin06 ,"Novas Pedras Evento"              ,"EV106",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV106",0,SIN_SOUND_POTION },
+	{ sinEV1 | sin07 ,"Novas Pedras Evento"              ,"EV107",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV107",0,SIN_SOUND_POTION },
+	{ sinEV1 | sin08 ,"Novas Pedras Evento"              ,"EV108",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"EV108",0,SIN_SOUND_POTION },
+
+	{ sinEV2 | sin01 ,"Novas Pedras Evento"              ,"SP231",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"SP231",0,SIN_SOUND_POTION },
+	{ sinEV2 | sin02 ,"Novas Pedras Evento"              ,"SP232",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"SP232",0,SIN_SOUND_POTION },
+
+	{sinOR2 | sin05 ,"¹ß·»Åä ¸µ"      ,"OR205",ITEMSIZE * 1,ITEMSIZE * 1,"Accessory",ITEM_CLASS_RING,"or205",0,SIN_SOUND_RING},
+
+	{sinPZ1 | sin01 ,"ÆÛÁñ1","PZ101",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ1 | sin02 ,"ÆÛÁñ2","PZ102",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ1 | sin03 ,"ÆÛÁñ3","PZ103",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ1 | sin04 ,"ÆÛÁñ4","PZ104",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ1 | sin05 ,"ÆÛÁñ5","PZ105",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ1 | sin06 ,"ÆÛÁñ6","PZ106",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ1 | sin07 ,"ÆÛÁñ7","PZ107",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ1 | sin08 ,"ÆÛÁñ8","PZ108",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+
+	{sinPZ2 | sin01 ,"ÆÛÁñ1","PZ201",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ2 | sin02 ,"ÆÛÁñ2","PZ202",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ2 | sin03 ,"ÆÛÁñ3","PZ203",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ2 | sin04 ,"ÆÛÁñ4","PZ204",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ2 | sin05 ,"ÆÛÁñ5","PZ205",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ2 | sin06 ,"ÆÛÁñ6","PZ206",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ2 | sin07 ,"ÆÛÁñ7","PZ207",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+	{sinPZ2 | sin08 ,"ÆÛÁñ8","PZ208",ITEMSIZE * 2,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"PZ101",0,SIN_SOUND_Armlet},
+
+	{sinCH1 | sin01 ,"ÃÊÄÝ·¿1","CH101",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"CH101",0,SIN_SOUND_Armlet},
+	{sinCH1 | sin02 ,"ÃÊÄÝ·¿2","CH102",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"CH102",0,SIN_SOUND_Armlet},
+	{sinCH1 | sin03 ,"»çÅÁ1"  ,"CH103",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"CH103",0,SIN_SOUND_Armlet},
+	{sinCH1 | sin04 ,"»çÅÁ2"  ,"CH104",ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_ECORE,"CH104",0,SIN_SOUND_Armlet},
+
+	{sinSE1 | sin01 ,"Á¦¶ó"  ,"SE101"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Accessory",ITEM_CLASS_SEEL,"SE101",0,SIN_SOUND_SHELTOM},
+	{sinSE1 | sin02 ,"´ÏÀÌµå","SE102"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Accessory",ITEM_CLASS_SEEL,"SE102",0,SIN_SOUND_SHELTOM},
+	{sinSE1 | sin03 ,"ÁöÇª"  ,"SE103"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Accessory",ITEM_CLASS_SEEL,"SE103",0,SIN_SOUND_SHELTOM},
+
+	{sinSE1 | sin04 ,"Å×ÀÌ¿ÍÁî"  ,"SE104"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Accessory",ITEM_CLASS_SEEL,"SE104",0,SIN_SOUND_SHELTOM},
+   { sinSE1 | sin05 ,"Å×ÀÌ¿ÍÁî"  ,"SE105"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Accessory",ITEM_CLASS_SEEL,"SE105",0,SIN_SOUND_SHELTOM },
+
+	{sinPR1 | sin01, "º¸¶óºû ±¤¼®",	"PR101"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR101",0,SIN_SOUND_SHELTOM},
+	{sinPR1 | sin02, "Àººû ±¤¼®",		"PR102"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR102",0,SIN_SOUND_SHELTOM},
+	{sinPR1 | sin03, "±Ýºû ±¤¼®",		"PR103"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR103",0,SIN_SOUND_SHELTOM},
+	{sinPR1 | sin04, "ÇÏ´Ãºû ±¤¼®",	"PR104"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR104",0,SIN_SOUND_SHELTOM},
+	{sinPR1 | sin05, "³²ºû ±¤¼®",		"PR105"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR105",0,SIN_SOUND_SHELTOM},
+	{sinPR1 | sin06, "ÁÖÈ²ºû ±¤¼®" ,	"PR106"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR106",0,SIN_SOUND_SHELTOM},
+	{sinPR1 | sin07, "ºÓÀººû ±¤¼®" ,	"PR107"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR107",0,SIN_SOUND_SHELTOM},
+	{sinPR1 | sin08, "ÃÊ·Ïºû ±¤¼®" ,	"PR108"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR108",0,SIN_SOUND_SHELTOM},
+
+	{ sinPR1 | sin20, "###", "PR120", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR120", 0, SIN_SOUND_SHELTOM },
+	{ sinPR1 | sin21, "###", "PR121", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR121", 0, SIN_SOUND_SHELTOM },
+	{ sinPR1 | sin22, "###", "PR122", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR122", 0, SIN_SOUND_SHELTOM },
+	{ sinPR1 | sin23, "###", "PR123", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR123", 0, SIN_SOUND_SHELTOM },
+	{ sinPR1 | sin24, "###", "PR124", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR124", 0, SIN_SOUND_SHELTOM },
+	{ sinPR1 | sin25, "###", "PR125", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR125", 0, SIN_SOUND_SHELTOM },
+	{ sinPR1 | sin26, "###", "PR126", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR126", 0, SIN_SOUND_SHELTOM },
+	{ sinPR1 | sin27, "###", "PR127", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR127", 0, SIN_SOUND_SHELTOM },
+	{ sinPR1 | sin28, "###", "PR128", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR128", 0, SIN_SOUND_SHELTOM },
+	{ sinPR1 | sin29, "###", "PR129", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR129", 0, SIN_SOUND_SHELTOM },
+	{ sinPR1 | sin30, "###", "PR130", ITEMSIZE * 1, ITEMSIZE * 1, "Event", ITEM_CLASS_SEEL, "PR130", 0, SIN_SOUND_SHELTOM },
+
+	{sinPR2 | sin01, "º¸¶óºû ¼öÁ¤",	"PR201"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR201",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin02, "Àººû ¼öÁ¤",		"PR202"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR202",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin03, "±Ýºû ¼öÁ¤",		"PR203"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR203",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin04, "ÇÏ´Ãºû ¼öÁ¤",	"PR204"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR204",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin05, "³²ºû ¼öÁ¤",		"PR205"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR205",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin06, "ÁÖÈ²ºû ¼öÁ¤",	"PR206"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR206",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin07, "ºÓÀººû ¼öÁ¤",	"PR207"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR207",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin08, "ÃÊ·Ïºû ¼öÁ¤",	"PR208"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR208",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin09, "´«ÀÇ °áÁ¤",		"PR209"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR209",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin10, "½º³ë¿ìÇÃ¶ó¿ö",	"PR210"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR210",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin11, "ÇÏ¾á ´«¹°",		"PR211"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR211",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin12, "³ì½¼ ¼öÁ¤",		"PR212"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR212",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin13, "¿ø¼® Á¶°¢",		"PR213"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR213",0,SIN_SOUND_SHELTOM},
+	{sinPR2 | sin14, "°ËÀººû ¼öÁ¤",		"PR214"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR214",0,SIN_SOUND_SHELTOM},
+
+	{sinPR3 | sin01, "º¸¶óºû ·é(A)",	"PR301"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR301",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin02, "Àººû ·é(A)",	"PR302"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR302",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin03, "±Ýºû ·é(A)",	"PR303"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR303",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin04, "ÇÏ´Ãºû ·é(A)",	"PR304"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR304",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin05, "³²ºû ·é(A)",	"PR305"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR305",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin06, "ÁÖÈ²ºû ·é(A)",	"PR306"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR306",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin07, "ºÓÀººû ·é(A)",	"PR307"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR307",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin08, "ÃÊ·Ïºû ·é(A)",	"PR308"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR308",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin09, "½º³ë¿ì ·é(A)",	"PR309"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR309",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin10, "ÇÃ¶ó¿ö ·é(A)",	"PR310"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR310",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin11, "È­ÀÌÆ® ·é(A)",	"PR311"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR311",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin12, "ÀÏ·çÁ¯ ·é(A)",	"PR312"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR312",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin13, "¾ÆÀÌµð¾ó ·é(A)",	"PR313"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR313",0,SIN_SOUND_SHELTOM},
+	{sinPR3 | sin14, "ºê·¹ÀÌÅ© ·é(A)",	"PR314"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR314",0,SIN_SOUND_SHELTOM},
+
+	{sinPR4 | sin01, "º¸¶óºû ·é(B)",	"PR401"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR401",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin02, "Àººû ·é(B)",	"PR402"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR402",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin03, "±Ýºû ·é(B)",	"PR403"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR403",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin04, "ÇÏ´Ãºû ·é(B)",	"PR404"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR404",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin05, "³²ºû ·é(B)",	"PR405"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR405",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin06, "ÁÖÈ²ºû ·é(B)",	"PR406"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR406",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin07, "ºÓÀººû ·é(B)",	"PR407"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR407",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin08, "ÃÊ·Ïºû ·é(B)",	"PR408"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR408",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin09, "½º³ë¿ì ·é(B)",	"PR409"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR409",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin10, "ÇÃ¶ó¿ö ·é(B)",	"PR410"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR410",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin11, "È­ÀÌÆ® ·é(B)",	"PR411"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR411",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin12, "ÀÏ·çÁ¯ ·é(B)",	"PR412"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR412",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin13, "¾ÆÀÌµð¾ó ·é(B)",	"PR413"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR413",0,SIN_SOUND_SHELTOM},
+	{sinPR4 | sin14, "ºê·¹ÀÌÅ© ·é(B)",	"PR414"  ,ITEMSIZE * 1,ITEMSIZE * 1,"Event",ITEM_CLASS_SEEL,"PR414",0,SIN_SOUND_SHELTOM},
+
+	{sinWR1 | sin01 ,"ÀØÇôÁø ¹«±â Á¦ÀÛ¼­",	"WR101",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"WR101",0,SIN_SOUND_SHELTOM},
+	{ sinWR1 | sin02, "°í´ëÀÇ ¹«±â Á¦ÀÛ¼­", "WR102", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "WR102", 0, SIN_SOUND_SHELTOM },
+	{ sinWR1 | sin03, "´ëÁöÀÇ ¹«±â Á¦ÀÛ¼­", "WR103", ITEMSIZE * 2, ITEMSIZE * 2, "Event", ITEM_CLASS_ECORE, "WR103", 0, SIN_SOUND_SHELTOM },
+	{sinWR1 | sin04 ,"¾îµÒÀÇ ¹«±â Á¦ÀÛ¼­",	"WR104",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"WR104",0,SIN_SOUND_SHELTOM},
+	{sinWR1 | sin05 ,"È­¿°ÀÇ ¹«±â Á¦ÀÛ¼­",	"WR105",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"WR105",0,SIN_SOUND_SHELTOM},
+	{sinWR1 | sin06 ,"¹Ù¶÷ÀÇ ¹«±â Á¦ÀÛ¼­",	"WR106",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"WR106",0,SIN_SOUND_SHELTOM},
+	{sinWR1 | sin07 ,"ÅÂ¾çÀÇ ¹«±â Á¦ÀÛ¼­",	"WR107",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"WR107",0,SIN_SOUND_SHELTOM},
+	{sinWR1 | sin08 ,"±¤Æ÷ÇÑ ¹«±â Á¦ÀÛ¼­",	"WR108",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"WR108",0,SIN_SOUND_SHELTOM},
+	{sinWR1 | sin09 ,"Ãµ»óÀÇ ¹«±â Á¦ÀÛ¼­",	"WR109",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"WR109",0,SIN_SOUND_SHELTOM},
+
+	{sinDR1 | sin01 ,"ÀØÇôÁø ¹æ¾î±¸ Á¦ÀÛ¼­",	"DR101",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR101",0,SIN_SOUND_SHELTOM},
+	{sinDR1 | sin02 ,"°í´ëÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­",	"DR102",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR102",0,SIN_SOUND_SHELTOM},
+	{sinDR1 | sin03 ,"´ëÁöÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­",	"DR103",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR103",0,SIN_SOUND_SHELTOM},
+	{sinDR1 | sin04 ,"¾îµÒÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­",	"DR104",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR104",0,SIN_SOUND_SHELTOM},
+	{sinDR1 | sin05 ,"È­¿°ÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­",	"DR105",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR105",0,SIN_SOUND_SHELTOM},
+	{sinDR1 | sin06 ,"¹Ù¶÷ÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­",	"DR106",ITEMSIZE * 2,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR106",0,SIN_SOUND_SHELTOM},
+	{sinDR1 | sin07 ,"ÅÂ¾çÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­",	"DR107",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR107",0,SIN_SOUND_SHELTOM},
+	{sinDR1 | sin08 ,"±¤Æ÷ÇÑ ¹æ¾î±¸ Á¦ÀÛ¼­",	"DR108",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR108",0,SIN_SOUND_SHELTOM},
+	{sinDR1 | sin09 ,"Ãµ»óÀÇ ¹æ¾î±¸ Á¦ÀÛ¼­",	"DR109",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR109",0,SIN_SOUND_SHELTOM},
+	{sinDR1 | sin10 ,"Æ÷¼³ÀÇ Á¦ÀÛ¼­",			"DR110",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR110",0,SIN_SOUND_SHELTOM},
+	{sinDR1 | sin11 ,"±â¾ïÀÇ Á¦ÀÛ¼­",			"DR111",ITEMSIZE * 1,ITEMSIZE * 2,"Event",ITEM_CLASS_ECORE,"DR111",0,SIN_SOUND_SHELTOM},
+
+	 { sinCA1 | sin31, "", "CA131", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA131", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin33, "", "CA133", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA133", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin35, "", "CA135", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA135", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin37, "", "CA137", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA137", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin43, "", "CA143", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA143", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin45, "", "CA145", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA145", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin54, "", "CA154", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA154", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin55, "", "CA155", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA155", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin66, "", "CA166", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA166", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin67, "", "CA167", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA167", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin68, "", "CA168", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA168", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin69, "", "CA169", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA169", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin85, "", "CA185", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA185", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin86, "", "CA186", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA186", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin87, "", "CA187", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA187", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin88, "", "CA188", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA188", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin89, "", "CA189", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA189", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin90, "", "CA190", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA190", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin91, "", "CA191", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA191", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin92, "", "CA192", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA192", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin93, "", "CA193", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA193", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin94, "", "CA194", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA194", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin95, "", "CA195", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA195", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA1 | sin96, "", "CA196", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA196", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA2 | sin32, "", "CA232", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA232", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin34, "", "CA234", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA234", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin35, "", "CA235", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA235", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin37, "", "CA237", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA237", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin43, "", "CA243", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA243", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin45, "", "CA245", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA245", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin54, "", "CA254", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA254", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin55, "", "CA255", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA255", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin66, "", "CA266", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA266", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin67, "", "CA267", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA267", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin68, "", "CA268", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA268", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin69, "", "CA269", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA269", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin85, "", "CA285", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA285", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin86, "", "CA286", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA286", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin87, "", "CA287", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA287", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin88, "", "CA288", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA288", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin89, "", "CA289", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA289", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin90, "", "CA290", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA290", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin91, "", "CA291", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA291", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin92, "", "CA292", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA292", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin93, "", "CA293", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA293", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin94, "", "CA294", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA294", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin95, "", "CA295", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA295", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA2 | sin96, "", "CA296", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA296", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA5 | sin01, "", "CA501", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA501", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin02, "", "CA502", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA502", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin03, "", "CA503", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA503", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin04, "", "CA504", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA504", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin05, "", "CA505", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA505", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin06, "", "CA506", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA506", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin07, "", "CA507", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA507", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin08, "", "CA508", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA508", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin09, "", "CA509", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA509", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin10, "", "CA510", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA510", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin11, "", "CA511", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA511", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin12, "", "CA512", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA512", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin15, "", "CA515", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA515", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin16, "", "CA516", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA516", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin17, "", "CA517", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA517", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin18, "", "CA518", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA518", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin19, "", "CA519", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA519", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin20, "", "CA520", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA520", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin21, "", "CA521", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA521", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin22, "", "CA522", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA522", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin23, "", "CA523", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA523", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin24, "", "CA524", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA524", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin25, "", "CA525", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA525", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin26, "", "CA526", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA526", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin27, "", "CA527", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA527", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin28, "", "CA528", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA528", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin31, "", "CA531", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA531", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin32, "", "CA532", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA532", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin33, "", "CA533", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA533", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin34, "", "CA534", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA534", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin35, "", "CA535", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA535", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin36, "", "CA536", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA536", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin37, "", "CA537", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA537", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin38, "", "CA538", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA538", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin39, "", "CA539", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA539", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin40, "", "CA540", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA540", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin41, "", "CA541", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA541", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin42, "", "CA542", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA542", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin43, "", "CA543", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA543", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin44, "", "CA544", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA544", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin45, "", "CA545", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA545", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin46, "", "CA546", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA546", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin47, "", "CA547", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA547", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin48, "", "CA548", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA548", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin01, "CA601", "CA601", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA601", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin02, "CA602", "CA602", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA602", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin03, "CA603", "CA603", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA603", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin04, "CA604", "CA604", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA604", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin05, "CA605", "CA605", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA605", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin06, "CA606", "CA606", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA606", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin07, "CA607", "CA607", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA607", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin08, "CA608", "CA608", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA608", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin09, "CA609", "CA609", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA609", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin10, "CA610", "CA610", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA610", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin11, "CA611", "CA611", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA611", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin12, "CA612", "CA612", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA612", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin15, "CA615", "CA615", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA615", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin16, "CA616", "CA616", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA616", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin17, "CA617", "CA617", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA617", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin18, "CA618", "CA618", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA618", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin19, "CA619", "CA619", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA619", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin20, "CA620", "CA620", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA620", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin21, "CA621", "CA621", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA621", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin22, "CA622", "CA622", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA622", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin23, "CA623", "CA623", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA623", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin24, "CA624", "CA624", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA624", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin25, "CA625", "CA625", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA625", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin26, "CA626", "CA626", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA626", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin27, "CA627", "CA627", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA627", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin28, "CA628", "CA628", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA628", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin31, "CA631", "CA631", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA631", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin32, "CA632", "CA632", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA632", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin33, "CA633", "CA633", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA633", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin34, "CA634", "CA634", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA634", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin35, "CA635", "CA635", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA635", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin36, "CA636", "CA636", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA636", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin37, "CA637", "CA637", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA637", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin38, "CA638", "CA638", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA638", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin39, "CA639", "CA639", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA639", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin40, "CA640", "CA640", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA640", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin41, "CA641", "CA641", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA641", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin42, "CA642", "CA642", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA642", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin43, "CA643", "CA643", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA643", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin44, "CA644", "CA644", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA644", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin45, "CA645", "CA645", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA645", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin46, "CA646", "CA646", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA646", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin47, "CA647", "CA647", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA647", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA6 | sin48, "CA648", "CA648", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA648", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin49, "FootBrazil", "CA649", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA649", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin49, "FootBrazil", "CA549", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA549", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin50, "FootARG", "CA650", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA650", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin50, "FootARG", "CA550", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA550", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin51, "FootChile", "CA651", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA651", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin51, "FootChile", "CA551", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA551", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin52, "FootPeru", "CA652", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA652", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin52, "FootPeru", "CA552", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA552", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin53, "FootJapao", "CA653", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA653", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin53, "FootJapao", "CA553", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA553", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin54, "FootColombia", "CA654", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA654", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin54, "FootColombia", "CA554", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA554", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin55, "FootFranca", "CA655", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA655", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin55, "FootFranca", "CA555", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA555", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin56, "FootHollanda", "CA656", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA656", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin56, "FootHollanda", "CA556", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA556", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin57, "FootItalia", "CA657", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA657", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin57, "FootItalia", "CA557", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA557", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin58, "FootEspanha", "CA658", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA658", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin58, "FootEspanha", "CA558", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA558", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin59, "FootPortugal", "CA659", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA659", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin59, "FootPortugal", "CA559", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA559", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin60, "FootAlemanha", "CA660", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA660", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin60, "FootAlemanha", "CA560", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA560", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin61, "FootMexico", "CA661", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA661", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin61, "FootMexico", "CA561", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA561", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin62, "FootUSA", "CA662", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA662", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin62, "FootUSA", "CA562", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA562", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin63, "FootVietinan", "CA663", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA663", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin63, "FootVietinan", "CA563", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA563", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 { sinCA6 | sin64, "FootPhilipinas", "CA664", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA664", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+	 { sinCA5 | sin64, "FootPhilipinas", "CA564", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_COSTUME, "CA564", INVENTORY_POS_COSTUME, SIN_SOUND_ARMOR },
+
+	 //{ sinWP1 | sin32, "Scythe", "WP132", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WP132", INVENTORY_POS_RHAND, SIN_SOUND_POLES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	 //{ sinWA1 | sin32, "Axe", "WA132", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WA132", INVENTORY_POS_RHAND, SIN_SOUND_AXES, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	 //{ sinWT1 | sin32, "Javelin", "WT132", ITEMSIZE * 1, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_ONE, "WT132", INVENTORY_POS_RHAND, SIN_SOUND_THROWING, ITEM_WEAPONCLASS_SHOOTING },
+	 //{ sinWH1 | sin33, "Hammer", "WH133", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WH133", INVENTORY_POS_RHAND, SIN_SOUND_HAMMER, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	 //{ sinDS1 | sin32, "Shield", "DS132", ITEMSIZE * 2, ITEMSIZE * 4, "Defense", ITEM_CLASS_SHIELDS, "ds132", INVENTORY_POS_LHAND, SIN_SOUND_SHIELDS },
+	 //{ sinWC1 | sin31, "Garra", "WC131", ITEMSIZE * 2, ITEMSIZE * 3, "Weapon", ITEM_CLASS_WEAPON_ONE, "WC131", INVENTORY_POS_RHAND, SIN_SOUND_CLAWS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	 //{ sinWS1 | sin33, "Bow", "WS133", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS133", INVENTORY_POS_LHAND, SIN_SOUND_SHOOTERS, ITEM_WEAPONCLASS_SHOOTING },
+	 //{ sinWM1 | sin33, "Staff", "WM133", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WM133", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	 //{ sinWS2 | sin35, "Sword", "WS235", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WS235", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	 //{ sinWN1 | sin31, "Fantasma", "WN131", ITEMSIZE * 3, ITEMSIZE * 2, "Weapon", ITEM_CLASS_WEAPON_ONE, "WN131", INVENTORY_POS_RHAND, SIN_SOUND_STAFF, ITEM_WEAPONCLASS_CASTING },
+	 //{ sinWD1 | sin31, "Adaga", "WD131", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WD131", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+	 //{ sinWV1 | sin31, "Punho", "WV131", ITEMSIZE * 2, ITEMSIZE * 4, "Weapon", ITEM_CLASS_WEAPON_TWO, "WV131", INVENTORY_POS_RHAND, SIN_SOUND_SWORDS, ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+	 //{ sinDA4 | sin04, "Robe145", "DA404", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA404", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	 //{ sinDA3 | sin04, "Armor145", "DA304", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA304", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	/* { sinDA3 | sin05, "Armor145", "DA305", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA305", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	 { sinDA3 | sin06, "Armor145", "DA306", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA306", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	 { sinDA3 | sin07, "Armor145", "DA307", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA307", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	 { sinDA3 | sin08, "Armor145", "DA308", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA308", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	 { sinDA4 | sin08, "Armor145", "DA408", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA408", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },*/
+
+	 //{ sinDA4 | sin05, "Armor145", "DA405", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA405", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	 //{ sinDA4 | sin06, "Armor145", "DA406", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA406", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+	 //{ sinDA4 | sin07, "Armor145", "DA407", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA407", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+	 { sinDB1 | sin44  ,"BOTAS"  ,"DB144",  ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_BOOTS,"db144" ,0,SIN_SOUND_BOOTS },
+	 { sinDG1 | sin31  ,"Luvas"			,"DG131" , ITEMSIZE * 2, ITEMSIZE * 2,"Defense",ITEM_CLASS_GLOVES,"dg131" ,0,SIN_SOUND_GLOVES },
+	 { sinOA2 | sin30, "Brac", "OA230", ITEMSIZE * 2, ITEMSIZE * 2, "Accessory", ITEM_CLASS_ARMLET, "oa230", 0, SIN_SOUND_Armlet },
+
+	 { sinDA1 | sin59  ,"NovaArmorRange"	,"DA159",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da159" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR },
+	 { sinDA1 | sin61  ,"NovaArmorRange"	,"DA161",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da161" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR },
+	 { sinDA1 | sin65  ,"NovaArmorRange"	,"DA165",  ITEMSIZE * 3, ITEMSIZE * 4,"Defense",ITEM_CLASS_ARMOR,"da165" ,INVENTORY_POS_ARMOR,SIN_SOUND_ARMOR },
+
+	 { sinGG1 | sin01  ,"Gold"  ,"GG101",  ITEMSIZE * 1, ITEMSIZE * 1,"Gold",  0   ,"DRCOIN" , 0 ,SIN_SOUND_COIN },
+	 { sinGG1 | sin02  ,"Exp"   ,"GG102",  ITEMSIZE * 1, ITEMSIZE * 1,"Exp" ,  0   ,"DRExp" , 0  ,SIN_SOUND_MAGICIAL },
+
+	 { sinOS1 | sin18 ,"Umbrella Shelton","OS118",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os118" ,0,SIN_SOUND_SHELTOM },
+	 { sinOS1 | sin19 ,"Craft Shelton","OS119",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os119" ,0,SIN_SOUND_SHELTOM },
+	 { sinOS1 | sin20 ,"Craft Shelton","OS120",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os120" ,0,SIN_SOUND_SHELTOM },
+	 { sinOS1 | sin21 ,"Craft Shelton","OS121",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os122" ,0,SIN_SOUND_SHELTOM },
+	 { sinOS1 | sin22 ,"Craft Shelton","OS122",  ITEMSIZE * 1, ITEMSIZE * 1,"Accessory",ITEM_CLASS_SHELTOM,"os121" ,0,SIN_SOUND_SHELTOM },
+
+	 { sinGG1 | sin03 ,"Coin" ,"GG103", 240, 160,"Coin", 0 ,"Coins" , 0 ,SIN_SOUND_COIN },
+
+	 { sinBI3 | sin01 ,"Skin1"	,"BI301",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI301",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin02 ,"Skin2"	,"BI302",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI302",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin03 ,"Skin3"	,"BI303",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI303",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin04 ,"Skin4"	,"BI304",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI304",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin05 ,"Skin5"	,"BI305",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI305",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin06 ,"Skin6"	,"BI306",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI306",0,SIN_SOUND_SHELTOM },
+
+	 { sinBI3 | sin07 ,"Skin7"	,"BI307",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI307",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin08 ,"Skin8"	,"BI308",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI308",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin09 ,"Skin9"	,"BI309",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI309",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin10 ,"Skin10"	,"BI310",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI310",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin11 ,"Skin11"	,"BI311",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI311",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin12 ,"Skin12"	,"BI312",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI312",0,SIN_SOUND_SHELTOM },
+
+	 { sinBI3 | sin13 ,"Skin13"	,"BI313",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI313",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin14 ,"Skin14"	,"BI314",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI314",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin15 ,"Skin15"	,"BI315",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI315",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin16 ,"Skin16"	,"BI316",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI316",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin17 ,"Skin17"	,"BI317",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI317",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin18 ,"Skin18"	,"BI318",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI318",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin19 ,"ClearSkin"	,"BI319",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI319",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin20 ,"Skin18"	,"BI320",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI320",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin21 ,"Skin18"	,"BI321",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI321",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin22 ,"Skin18"	,"BI322",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI322",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin23 ,"Skin18"	,"BI323",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI323",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin24 ,"Skin18"	,"BI324",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI324",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin25 ,"Skin18"	,"BI325",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI325",0,SIN_SOUND_SHELTOM },
+	 { sinBI3 | sin26 ,"Skin18"	,"BI326",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI326",0,SIN_SOUND_SHELTOM },
+	 // ESCUDOS
+ { sinBI3 | sin30 ,"ClearSkin"	,"BI330",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI330",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin31 ,"ClearSkin"	,"BI331",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI331",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin32 ,"ClearSkin"	,"BI332",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI332",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin33 ,"ClearSkin"	,"BI333",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI333",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin34 ,"ClearSkin"	,"BI334",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI334",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin35 ,"ClearSkin"	,"BI335",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI335",0,SIN_SOUND_SHELTOM },
+ { sinBI3 | sin36 ,"ClearSkin"	,"BI336",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI336",0,SIN_SOUND_SHELTOM },
+
+ //ARMADURAS E ROBES
+{ sinBI3 | sin40 ,"ClearSkin"	,"BI340",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI340",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin41 ,"ClearSkin"	,"BI341",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI341",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin42 ,"ClearSkin"	,"BI342",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI342",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin43 ,"ClearSkin"	,"BI343",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI343",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin44 ,"ClearSkin"	,"BI344",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI344",0,SIN_SOUND_SHELTOM },
+{ sinBI3 | sin45 ,"ClearSkin"	,"BI345",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI345",0,SIN_SOUND_SHELTOM },
+
+//NOVOS POTES CAPILARES
+{ sinBI3 | sin80 ,"Hair" ,"BI380",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI380",0, SIN_SOUND_POTION },
+{ sinBI3 | sin81 ,"Hair" ,"BI381",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI381",0, SIN_SOUND_POTION },
+{ sinBI3 | sin82 ,"Hair" ,"BI382",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI382",0, SIN_SOUND_POTION },
+{ sinBI3 | sin83 ,"Hair" ,"BI383",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI383",0, SIN_SOUND_POTION },
+{ sinBI3 | sin84 ,"Hair" ,"BI384",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI384",0, SIN_SOUND_POTION },
+{ sinBI3 | sin85 ,"Hair" ,"BI385",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI385",0, SIN_SOUND_POTION },
+{ sinBI3 | sin86 ,"Hair" ,"BI386",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI386",0, SIN_SOUND_POTION },
+{ sinBI3 | sin87 ,"Hair" ,"BI387",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI387",0, SIN_SOUND_POTION },
+{ sinBI3 | sin88 ,"Hair" ,"BI388",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI388",0, SIN_SOUND_POTION },
+{ sinBI3 | sin89 ,"Hair" ,"BI389",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI389",0, SIN_SOUND_POTION },
+{ sinBI3 | sin90 ,"Hair" ,"BI390",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI390",0, SIN_SOUND_POTION },
+{ sinBI3 | sin91 ,"Hair" ,"BI391",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI391",0, SIN_SOUND_POTION },
+{ sinBI3 | sin92 ,"Hair" ,"BI392",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI392",0, SIN_SOUND_POTION },
+{ sinBI3 | sin93 ,"Hair" ,"BI393",ITEMSIZE * 1,ITEMSIZE * 1,"Premium",ITEM_CLASS_ECORE,"BI393",0, SIN_SOUND_POTION },
+
+{ sinDA3 | sin04, "DA500", "DA500", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA500", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA3 | sin05, "DA501", "DA501", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA501", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA3 | sin06, "DA502", "DA502", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA502", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA3 | sin07, "DA503", "DA503", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA503", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA3 | sin08, "DA504", "DA504", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA504", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA3 | sin09, "DA505", "DA505", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA505", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+{ sinDA4 | sin04, "DA600", "DA600", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA600", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA4 | sin05, "DA601", "DA601", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA601", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA4 | sin06, "DA602", "DA602", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA602", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA4 | sin07, "DA603", "DA603", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA603", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA4 | sin08, "DA604", "DA604", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA604", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+{ sinDA4 | sin09, "DA605", "DA605", ITEMSIZE * 3, ITEMSIZE * 4, "Defense", ITEM_CLASS_ARMOR, "DA605", INVENTORY_POS_ARMOR, SIN_SOUND_ARMOR },
+
+{ sinDS1 | sin31  ,"DS300"   ,"DS300",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds300" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+{ sinDS1 | sin32  ,"DS301"   ,"DS301",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds301" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+{ sinDS1 | sin33  ,"DS302"   ,"DS302",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds302" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+{ sinDS1 | sin34  ,"DS303"   ,"DS303",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds303" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+{ sinDS1 | sin35  ,"DS304"   ,"DS304",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds304" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+{ sinDS1 | sin36  ,"DS305"   ,"DS305",  ITEMSIZE * 2, ITEMSIZE * 4,"Defense",ITEM_CLASS_SHIELDS,"ds305" ,INVENTORY_POS_LHAND,SIN_SOUND_SHIELDS },
+
+{ sinWA1 | sin32  ,"WA300" ,"WA300",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA300" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWA1 | sin33  ,"WA301" ,"WA301",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA301" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWA1 | sin34  ,"WA302" ,"WA302",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA302" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWA1 | sin35  ,"WA303" ,"WA303",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA303" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWA1 | sin36  ,"WA304" ,"WA304",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA304" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWA1 | sin37  ,"WA305" ,"WA305",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WA305" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+{ sinWC1 | sin31  ,"WC300"		,"WC300",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC300" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWC1 | sin32  ,"WC301"		,"WC301",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC301" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWC1 | sin33  ,"WC302"		,"WC302",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC302" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWC1 | sin34  ,"WC303"		,"WC303",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC303" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWC1 | sin35  ,"WC304"		,"WC304",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC304" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWC1 | sin36  ,"WC305"		,"WC305",  ITEMSIZE * 2, ITEMSIZE * 3,"Weapon",ITEM_CLASS_WEAPON_ONE,"WC305" ,INVENTORY_POS_RHAND,SIN_SOUND_CLAWS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+{ sinWH1 | sin34  ,"WH300" ,"WH300",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH300" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWH1 | sin35  ,"WH301" ,"WH301",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH301" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWH1 | sin36  ,"WH302" ,"WH302",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH302" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWH1 | sin37  ,"WH303" ,"WH303",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH303" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWH1 | sin38  ,"WH304" ,"WH304",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH304" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWH1 | sin39  ,"WH305" ,"WH305",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WH305" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+{ sinWM1 | sin33  ,"WM300" ,"WM300",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM300" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL, ITEM_WEAPONCLASS_CASTING },
+{ sinWM1 | sin34  ,"WM301" ,"WM301",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM301" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL,ITEM_WEAPONCLASS_CASTING },
+{ sinWM1 | sin35  ,"WM302" ,"WM302",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM302" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL,ITEM_WEAPONCLASS_CASTING },
+{ sinWM1 | sin36  ,"WM303" ,"WM303",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM303" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL,ITEM_WEAPONCLASS_CASTING },
+{ sinWM1 | sin37  ,"WM304" ,"WM304",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM304" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL,ITEM_WEAPONCLASS_CASTING },
+{ sinWM1 | sin38  ,"WM305" ,"WM305",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WM305" ,INVENTORY_POS_RHAND,SIN_SOUND_MAGICIAL,ITEM_WEAPONCLASS_CASTING },
+
+{ sinWP1 | sin32  ,"WP300" ,"WP300",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP300" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWP1 | sin33  ,"WP301" ,"WP301",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP301" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWP1 | sin34  ,"WP302" ,"WP302",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP302" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWP1 | sin35  ,"WP303" ,"WP303",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP303" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWP1 | sin36  ,"WP304" ,"WP304",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP304" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWP1 | sin37  ,"WP305" ,"WP305",  ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WP305" ,INVENTORY_POS_RHAND,SIN_SOUND_AXES,ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+{ sinWS1 | sin33  ,"WS300"	,"WS300", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS300" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWS1 | sin34  ,"WS301"	,"WS301", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS301" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWS1 | sin35  ,"WS302"	,"WS302", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS302" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWS1 | sin36  ,"WS303"	,"WS303", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS303" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWS1 | sin37  ,"WS304"	,"WS304", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS304" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWS1 | sin38  ,"WS305" ,"WS305", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS305" , INVENTORY_POS_LHAND,SIN_SOUND_SHOOTERS,ITEM_WEAPONCLASS_SHOOTING },
+
+{ sinWS2 | sin35  ,"WS400"	,"WS400", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS400" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWS2 | sin41  ,"WS401"	,"WS401", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS406" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWS2 | sin42  ,"WS402"	,"WS402", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS407" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWS2 | sin38  ,"WS403"	,"WS403", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS403" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWS2 | sin39  ,"WS404"	,"WS404", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS404" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+{ sinWS2 | sin40  ,"WS405"	,"WS405", ITEMSIZE * 2, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_TWO,"WS405" ,INVENTORY_POS_RHAND,SIN_SOUND_SWORDS,ITEM_WEAPONCLASS_NOT_SHOOTING },
+
+{ sinWT1 | sin32  ,"WT300","WT300", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT300" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWT1 | sin33  ,"WT301","WT301", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT301" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWT1 | sin34  ,"WT302","WT302", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT302" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWT1 | sin35  ,"WT303","WT303", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT303" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWT1 | sin36  ,"WT304","WT304", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT304" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+{ sinWT1 | sin37  ,"WT305","WT305", ITEMSIZE * 1, ITEMSIZE * 4,"Weapon",ITEM_CLASS_WEAPON_ONE,"WT305" ,INVENTORY_POS_RHAND,SIN_SOUND_THROWING,ITEM_WEAPONCLASS_SHOOTING },
+
+{ sinWA1 | sin38,"Machado Morghulis","WA186",44,88,"Weapon",6,"WA186",4,1,1 },
+{ sinWA1 | sin39,"Machado Morghulis","WA188",44,88,"Weapon",4,"WA188",4,1,1 },
+{ sinWC1 | sin37,"Garra Morghulis","WC186",44,66,"Weapon",4,"WC186",4,2,1 },
+{ sinWH1 | sin40,"Martelo Morghulis","WH186",44,88,"Weapon",6,"WH186",4,3,1 },
+{ sinWH1 | sin41,"Martelo Morghulis","WH188",44,88,"Weapon",4,"WH188",4,3,1 },
+{ sinWP1 | sin38,"Foice Morghulis","WP186",44,88,"Weapon",6,"WP186",4,5,1 },
+{ sinWS1 | sin39,"Arco Morghulis","WS186",44,88,"Weapon",6,"WS186",2,6,2 },
+{ sinWS2 | sin43,"Espada Morghulis","WS286",44,88,"Weapon",6,"WS286",4,7,1 },
+{ sinWS2 | sin44,"Espada Morghulis","WS288",44,88,"Weapon",4,"WS288",4,7,1 },
+{ sinWM1 | sin39,"Cajado Morghulis","WM186",44,88,"Weapon",6,"WM186",4,19,3 },
+{ sinWM1 | sin40,"Varinha Morghulis","WM188",44,88,"Weapon",4,"WM188",4,19,3 },
+
+{ sinWT1 | sin38,"Lança Morghulis","WT186",22,88,"Weapon",4,"WT186",4,8,2 },
+{ sinDG1 | sin86,"Luvas Morghulis","DG186",44,44,"Defense",32,"dg186",0,11,0 },
+{ sinDB1 | sin86,"Botas Morghulis","DB186",44,44,"Defense",16,"db186",0,10,0 },
+{ sinOA2 | sin86,"Bracelete Morghulis","OA286",44,44,"Accessory",2048,"OA286",0,14,0 },
+{ sinDS1 | sin29,"Escudo Morghulis","DS186",44,88,"Defense",2,"DS186",2,12,0 },
+{ sinDA3 | sin10,"Armadura Morghulis","DA307",66,88,"Defense",8,"DA307",8,9,0 },
+{ sinDA4 | sin10,"Roupão Morghulis","DA407",66,88,"Defense",8,"DA407",8,9,0 },
+
+{ 0x30a0100,"¾ÆÀ£ÀÇ ±Í°ÉÀÌ(1ÀÏ)","OE101",22,22,"Accessory",196608,"oe101",0,15,0 },
+{ 0x30a0200,"¾ÆÀ£ÀÇ ±Í°ÉÀÌ(7ÀÏ)","OE102",22,22,"Accessory",196608,"oe102",0,15,0 },
+{ 0x30a0300,"¾ÆÀ£ÀÇ ±Í°ÉÀÌ(30ÀÏ)","OE103",22,22,"Accessory",196608,"oe103",0,15,0 },
+
+{ 0x3013c00,"Tulla Amulet","OA144",22,22,"Accessory",512,"oa144",0,13,0 },
+{ 0x3014300,"Tulla Amulet","OA151",22,22,"Accessory",512,"oa151",0,13,0 },
+{ 0x3014500,"(P)½Ç¶óÆä ¾Æ¹Ä·¿(1ÀÏ)","OA153",22,22,"Accessory",512,"oa153",0,13,0 },
+{ 0x80c4f00,"·é µå¸±","BI263",44,22,"Premium",1,"BI263",0,16,0 },
+{ 0x80c5000,"·¹µå ·é µå¸±","BI264",44,22,"Premium",1,"BI264",0,16,0 },
+{ 0x80c5100,"¿»·Î¿ì ·é µå¸±","BI265",44,22,"Premium",1,"BI265",0,16,0 },
+{ 0x80c6600,"±â·ÂÀÇ »óÀÚ","BI286",22,22,"Premium",1,"BI286",0,16,0 },
+{ 0x80c6700,"½ºÆä¼È ¹öÇÁ","BI287",22,22,"Premium",1,"BI287",0,16,0 },
+{ 0x80c6800,"°í½ºÆ® Æ¼ÄÏ(S)","BI288",22,22,"Premium",1,"BI288",0,16,0 },
+};
+#endif
+
+cITEM::cITEM()
+{
+}
+cITEM::~cITEM()
+{
+}
+
+void cITEM::Init()
+{
+	for (int cnt = 0; cnt < MAX_ITEM; cnt++)
+		sItem[cnt].sItemInfo.CODE = sItem[cnt].CODE;
+	MatItemInfoBox = CreateTextureMaterial("Image\\SinImage\\Items\\ItemInfoBox.tga", 0, 0, 0, 0, SMMAT_BLEND_ALPHA);
+
+	MatItemInfoBox_TopLeft = CreateTextureMaterial("Image\\SinImage\\Items\\ItemInfoBox\\BoxTopLeft.tga", 0, 0, 0, 0, SMMAT_BLEND_ALPHA);
+	MatItemInfoBox_TopRight = CreateTextureMaterial("Image\\SinImage\\Items\\ItemInfoBox\\BoxTopRight.tga", 0, 0, 0, 0, SMMAT_BLEND_ALPHA);
+	MatItemInfoBox_TopCenter = CreateTextureMaterial("Image\\SinImage\\Items\\ItemInfoBox\\BoxTopCenter.tga", 0, 0, 0, 0, SMMAT_BLEND_ALPHA);
+
+	MatItemInfoBox_BottomLeft = CreateTextureMaterial("Image\\SinImage\\Items\\ItemInfoBox\\BoxBottomLeft.tga", 0, 0, 0, 0, SMMAT_BLEND_ALPHA);
+	MatItemInfoBox_BottomRight = CreateTextureMaterial("Image\\SinImage\\Items\\ItemInfoBox\\BoxBottomRight.tga", 0, 0, 0, 0, SMMAT_BLEND_ALPHA);
+	MatItemInfoBox_BottomCenter = CreateTextureMaterial("Image\\SinImage\\Items\\ItemInfoBox\\BoxBottomCenter.tga", 0, 0, 0, 0, SMMAT_BLEND_ALPHA);
+
+	MatItemInfoBox_Left = CreateTextureMaterial("Image\\SinImage\\Items\\ItemInfoBox\\BoxLeft.tga", 0, 0, 0, 0, SMMAT_BLEND_ALPHA);
+	MatItemInfoBox_Right = CreateTextureMaterial("Image\\SinImage\\Items\\ItemInfoBox\\BoxRight.tga", 0, 0, 0, 0, SMMAT_BLEND_ALPHA);
+	MatItemInfoBox_Center = CreateTextureMaterial("Image\\SinImage\\Items\\ItemInfoBox\\BoxCenter.tga", 0, 0, 0, 0, SMMAT_BLEND_ALPHA);
+
+	Load();
+
+	int CheckCount = 0;
+	while (1) {
+		if (NotSell_Item_CODE[NotSell_Item_CODECnt])
+			NotSell_Item_CODECnt++;
+		else CheckCount++;
+		if (NotSell_Item_MASK[NotSell_Item_MASKCnt])
+			NotSell_Item_MASKCnt++;
+		else CheckCount++;
+		if (NotSell_Item_KIND[NotSell_Item_KINDCnt])
+			NotSell_Item_KINDCnt++;
+		else CheckCount++;
+
+		if (NotDrow_Item_CODE[NotDrow_Item_CODECnt])
+			NotDrow_Item_CODECnt++;
+		else CheckCount++;
+		if (NotDrow_Item_MASK[NotDrow_Item_MASKCnt])
+			NotDrow_Item_MASKCnt++;
+		else CheckCount++;
+		if (NotDrow_Item_KIND[NotDrow_Item_KINDCnt])
+			NotDrow_Item_KINDCnt++;
+		else CheckCount++;
+
+		if (NotSet_Item_CODE[NotSet_Item_CODECnt])
+			NotSet_Item_CODECnt++;
+		else CheckCount++;
+		if (NotSet_Item_MASK[NotSet_Item_MASKCnt])
+			NotSet_Item_MASKCnt++;
+		else CheckCount++;
+		if (NotSet_Item_KIND[NotSet_Item_KINDCnt])
+			NotSet_Item_KINDCnt++;
+		else CheckCount++;
+
+		if (CheckCount >= 9)break;
+	}
+
+	//memset(g_Manufacture_ItemInfo, 0, sizeof(SManufacture_ResultItemInfo));
+}
+
+void cITEM::Load()
+{
+	AgingBar = LoadDibSurfaceOffscreen("image\\Sinimage\\shopall\\Aging\\Bar.bmp");
+	AgingGage = LoadDibSurfaceOffscreen("image\\Sinimage\\shopall\\Aging\\Bar_.bmp");
+	AgingBar2 = LoadDibSurfaceOffscreen("image\\Sinimage\\shopall\\Aging\\Aging.bmp");
+}
+
+void cITEM::Release()
+{
+	if (AgingBar)
+	{
+		AgingBar->Release();
+		AgingBar = 0;
+	}
+
+	if (AgingGage)
+	{
+		AgingGage->Release();
+		AgingGage = 0;
+	}
+
+	if (AgingBar2)
+	{
+		AgingBar2->Release();
+		AgingBar2 = 0;
+	}
+}
+
+void cITEM::Draw()
+{
+	int t = 0, i = 0;
+	char TempBuff[64];
+	int len = 0, len2 = 0;
+	int tSetTextXposi = 0;
+	int x, y;
+	len = lstrlen(szInfoBuff);
+
+	int AddX = 0;
+
+	if (sinShowItemInfoFlag == 2)
+		AddX = InterfaceX;
+
+	memset(&TempBuff, 0, sizeof(TempBuff));
+	for (i = 0; i < len; i++) {
+		if (szInfoBuff[i] == '\r') {
+			memcpy(TempBuff, szInfoBuff, i);
+			break;
+		}
+	}
+	len2 = lstrlen(TempBuff);
+	tSetTextXposi = (int)(AddX + ItemBoxPosi.x + (((ItemBoxSize.x * 16) / 2) - ((len2 * 5.5) / 2)) + (len2 * 5.5));
+
+	if (MouseItem.Flag) {
+		if (!MouseItem.lpItem) {
+			dsDrawColorBox(D3DCOLOR_RGBA(125, 125, 255, 125), MouseItem.x, MouseItem.y, MouseItem.w, MouseItem.h);
+		}
+
+		x = pCursorPos.x - (MouseItem.w / 2);
+		y = pCursorPos.y - (MouseItem.h / 2);
+
+		dsDrawOffsetArray = dsARRAY_TOP;
+		DrawSprite(x, y, MouseItem.lpItem, 0, 0, MouseItem.w, MouseItem.h);
+		if ((MouseItem.sItemInfo.CODE & sinITEM_MASK2) == sinPZ1 || (MouseItem.sItemInfo.CODE & sinITEM_MASK2) == sinPZ2) {
+			if (MouseItem.sItemInfo.PotionCount == 2) {
+				if (MouseItem.w == 44)
+					DrawSprite(x, y, cInvenTory.lpPuzzlewidth, 0, 0, 44, 22);
+				if (MouseItem.w == 22)
+					DrawSprite(x, y, cInvenTory.lpPuzzleHeight, 0, 0, 22, 44);
+			}
+		}
+
+		if (cMyShop.OpenFlag) {
+			dsDrawColorBox(D3DCOLOR_RGBA(0, 0, 128, 125), x, y, MouseItem.w, MouseItem.h);
+		}
+	}
+
+	if (sinShowItemInfoFlag)
+	{
+		if (sinShowItemInfoFlag == 1)dsDrawOffsetArray = dsARRAY_TOP;
+		else dsDrawOffsetArray = dsARRAY_BOTTOM;
+		for (i = 0; i < ItemBoxSize.x; i++)
+		{
+			for (int j = 0; j < ItemBoxSize.y; j++)
+			{
+				if (i == 0 && j == 0)
+					dsDrawTexImage(MatItemInfoBox_TopLeft, AddX + ItemBoxPosi.x + (i * 16), ItemBoxPosi.y + (j * 16), 16, 16, 255);
+				if (j == 0 && i != 0 && i + 1 < ItemBoxSize.x)
+					dsDrawTexImage(MatItemInfoBox_TopCenter, AddX + ItemBoxPosi.x + (i * 16), ItemBoxPosi.y + (j * 16), 16, 16, 255);
+				if (j == 0 && i + 1 == ItemBoxSize.x)
+					dsDrawTexImage(MatItemInfoBox_TopRight, AddX + ItemBoxPosi.x + (i * 16), ItemBoxPosi.y + (j * 16), 16, 16, 255);
+				if (i == 0 && j != 0 && j + 1 != ItemBoxSize.y)
+					dsDrawTexImage(MatItemInfoBox_Left, AddX + ItemBoxPosi.x + (i * 16), ItemBoxPosi.y + (j * 16), 16, 16, 255);
+				if (i != 0 && j != 0 && i + 1 != ItemBoxSize.x && j + 1 != ItemBoxSize.y)
+					dsDrawTexImage(MatItemInfoBox_Center, AddX + ItemBoxPosi.x + (i * 16), ItemBoxPosi.y + (j * 16), 16, 16, 255);
+				if (i + 1 == ItemBoxSize.x && j != 0 && j + 1 != ItemBoxSize.y)
+					dsDrawTexImage(MatItemInfoBox_Right, AddX + ItemBoxPosi.x + (i * 16), ItemBoxPosi.y + (j * 16), 16, 16, 255);
+				if (i == 0 && j + 1 == ItemBoxSize.y)
+					dsDrawTexImage(MatItemInfoBox_BottomLeft, AddX + ItemBoxPosi.x + (i * 16), ItemBoxPosi.y + (j * 16), 16, 16, 255);
+				if (i != 0 && j + 1 == ItemBoxSize.y && i + 1 != ItemBoxSize.x)
+					dsDrawTexImage(MatItemInfoBox_BottomCenter, AddX + ItemBoxPosi.x + (i * 16), ItemBoxPosi.y + (j * 16), 16, 16, 255);
+				if (j + 1 == ItemBoxSize.y && i + 1 == ItemBoxSize.x)
+					dsDrawTexImage(MatItemInfoBox_BottomRight, AddX + ItemBoxPosi.x + (i * 16), ItemBoxPosi.y + (j * 16), 16, 16, 255);
+			}
+		}
+
+		if (tWeaponClass == 1)
+			DrawSprite(tSetTextXposi + 12, ItemBoxPosi.y + 12, cInvenTory.lpShowWeaponClass[0], 0, 0, 18, 16);
+
+		if (tWeaponClass == 2)
+			DrawSprite(tSetTextXposi + 12, ItemBoxPosi.y + 12, cInvenTory.lpShowWeaponClass[1], 0, 0, 18, 16);
+
+		if (tWeaponClass == 3)
+			DrawSprite(tSetTextXposi + 12, ItemBoxPosi.y + 12, cInvenTory.lpShowWeaponClass[2], 0, 0, 18, 16);
+
+		if (tWeaponClass == 4)
+			DrawSprite(tSetTextXposi + 12, ItemBoxPosi.y + 12, cInvenTory.lpShowWeaponClass[3], 0, 0, 18, 16);
+
+		if (AgingGageFlag)
+		{
+			if (AgingGageFlag == 1)
+				DrawSprite(AddX + ItemBoxPosi.x + 31, ItemBoxPosi.y + 35, AgingBar, 0, 0, 130, 19);
+			if (AgingGageFlag == 2)
+				DrawSprite(AddX + ItemBoxPosi.x + 92, ItemBoxPosi.y + 35, AgingBar2, 0, 0, 26, 19);
+			if (AgingBarLenght)
+				DrawSprite(AddX + ItemBoxPosi.x + 33, ItemBoxPosi.y + 42, AgingGage, 0, 0, AgingBarLenght, 4);
+		}
+	}
+}
+
+void cITEM::Main()
+{
+	sinShowItemInfoFlag = 0;
+	if (MouseItem.Flag)
+	{
+		if (!sinMessageBoxShowFlag)
+		{
+			MouseItem.x = pCursorPos.x - (MouseItem.w / 2);
+			MouseItem.y = pCursorPos.y - (MouseItem.h / 2);
+		}
+	}
+
+	if (cMyShop.OpenFlag)
+	{
+		if (MyShopMouseItem.Flag)
+		{
+			MyShopMouseItem.x = pCursorPos.x - (MyShopMouseItem.w / 2);
+			MyShopMouseItem.y = pCursorPos.y - (MyShopMouseItem.h / 2);
+		}
+	}
+}
+void cITEM::GetMousePos(int* MouseX, int* MouseY)
+{
+	if (MouseItem.Flag) {
+		if (!sinMessageBoxShowFlag) {
+			*MouseX = pCursorPos.x - (MouseItem.w / 2);
+			*MouseY = pCursorPos.y - (MouseItem.h / 2);
+		}
+	}
+	if (cMyShop.OpenFlag) {
+		if (MyShopMouseItem.Flag) {
+			*MouseX = pCursorPos.x - (MyShopMouseItem.w / 2);
+			*MouseY = pCursorPos.y - (MyShopMouseItem.h / 2);
+		}
+	}
+}
+
+void cITEM::Close()
+{
+}
+
+void cITEM::LButtonDown(int x, int y)
+{
+}
+
+void cITEM::LButtonUp(int x, int y)
+{
+}
+
+void cITEM::RButtonDown(int x, int y)
+{
+	if (!MouseItem.Flag)
+		SetCursorGame(CursorID::Default);
+}
+
+void cITEM::RButtonUp(int x, int y)
+{
+}
+
+void cITEM::KeyDown()
+{
+}
+
+int sinLineCount = 0;
+int RedLine[10] = { 0,0,0,0,0,0,0,0,0,0 };
+int SpecialItemLine = 0;
+int CountSpecialName = 0;
+int   ItemInfoCol = 0;
+int UniFlag = 0;
+DWORD sinItemKindFlag = 0;
+sITEMINFO sInfo;
+sITEMPRICE sinItemPrice;
+
+int RequireLine[10] = { 0,0,0,0,0,0,0,0,0 };
+int MixItemLine[10] = { 0,0,0,0,0,0,0,0,0,0 };
+int NameMixLine = 0;
+int Name1MixLine = 0;
+int MigraçãoMixLine = 0;
+int ItemBossMixLine = 0;
+int AgingItemLine[10] = { 0,0,0,0,0,0,0,0,0,0 };
+int AgingLevel4 = 0;
+int SkinItemLine = 0;
+int QuestItemLine = 0;
+int MyShopItemPriceLine = 0;
+int ExpiredItemLine = 0;
+int ItemPerfLine = 0;
+int ItemLinkedLine = 0;
+bool bItemInfoPerf = false;
+int ItemBoss1 = 0;
+int ItemBoss2 = 0;
+int ItemBossLine = 0;
+int ItemBossFlag = 0;
+
+int cITEM::ShowItemInfo(sITEM* pItem, int Flag, int Index)
+{
+	int   t = 0;
+	int   cnt = 0;
+	int   BlockRate = 0;
+	int   sinSpeed = 0;
+	int   sinAbsorb = 0;
+	int   sinLeftSpot = 0;
+	int   sinRightSpot = 0;
+	int   sinRegen = 0;
+
+	char	szTemp[64];
+	char    szTemp2[64];
+	tWeaponClass = 0;
+	AgingGageFlag = 0;
+	AgingBarLenght = 0;
+	AgingLevel4 = 0;
+	NameMixLine = 0;
+	Name1MixLine = 0;
+	MigraçãoMixLine = 0;
+	ItemBossMixLine = 0;
+	SkinItemLine = 0;
+	QuestItemLine = 0;
+	ItemPerfLine = 0;
+	ItemLinkedLine = 0;
+
+	int AgingCnt = 0;
+	BOOL bExpiredLine = FALSE;
+
+	int AddX = 0;
+
+	if (sinShowItemInfoFlag == 2)
+		AddX = InterfaceX;
+
+	UniFlag = 0;
+	sinItemKindFlag = 0;
+
+	ItemInfoCol = 0;
+	SpecialItemLine = 0;
+
+	if (pItem->Class == ITEM_CLASS_WEAPON_ONE)
+		tWeaponClass = 1;
+
+	if (pItem->Class == ITEM_CLASS_WEAPON_TWO)
+		tWeaponClass = 2;
+
+	if ((pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDA1 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDA3)
+		tWeaponClass = 3;
+	if ((pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDA2 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDA4)
+		tWeaponClass = 4;
+
+	if ((pItem->sItemInfo.CODE & sinITEM_MASK2) == sinOM1)
+		tWeaponClass = 4;
+
+	for (int t = 0; t < 10; t++) {
+		RedLine[t] = 0;
+		RequireLine[t] = 0;
+	}
+
+	for (t = 0; t < 10; t++)
+	{
+		MixItemLine[t] = 0;
+		AgingItemLine[t] = 0;
+	}
+
+	sRequire.rDexterity = 0;
+	sRequire.rHealth = 0;
+	sRequire.rLevel = 0;
+	sRequire.rSpirit = 0;
+	sRequire.rStrength = 0;
+	sRequire.rTalent = 0;
+
+	memset(&szTemp, 0, sizeof(szTemp));
+	memset(&szTemp2, 0, sizeof(szTemp2));
+	memset(&szInfoBuff, 0, sizeof(szInfoBuff));
+	memset(&szInfoBuff2, 0, sizeof(szInfoBuff2));
+
+	bItemInfoPerf = false;
+
+	if (VRKeyBuff['P'] && !bSendGetItemInfoPerf && (
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWA1 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWC1 ||
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWH1 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWM1 ||
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWD1 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWN1 ||
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWP1 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWS1 ||
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWS2 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWT1 ||
+
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDA1 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDB1 ||
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDA3 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDA4 ||
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDG1 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDS1 ||
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinDA2 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinWV1 ||
+
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinOA1 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinOA2 ||
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinOM1 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinOR1 ||
+		(pItem->sItemInfo.CODE & sinITEM_MASK2) == sinOR2 || (pItem->sItemInfo.CODE & sinITEM_MASK2) == sinOS1))
+	{
+		std::unordered_map<DWORD, sITEMINFO>::iterator it;
+
+		if (pItem->sItemInfo.SwapItem.Flag)
+			it = mapItemInfo.find(pItem->sItemInfo.SwapItem.Code);
+		else
+			it = mapItemInfo.find(pItem->sItemInfo.CODE);
+
+		if (it == mapItemInfo.end())
+		{
+			if (pItem->sItemInfo.ItemKindCode == ITEM_KIND_AGING)
+			{
+				SendGetItemInfoPerf(pItem->sItemInfo.CODE, pItem->sItemInfo.ItemAgingNum[0], pItem->sItemInfo.SwapItem.Flag, pItem->sItemInfo.SwapItem.Code);
+			}
+			else
+			{
+				SendGetItemInfoPerf(pItem->sItemInfo.CODE, 0, pItem->sItemInfo.SwapItem.Flag, pItem->sItemInfo.SwapItem.Code);
+			}
+
+			bSendGetItemInfoPerf = true;
+		}
+		else
+		{
+			memcpy(&sInfo, &it->second, sizeof(sITEMINFO));
+			bItemInfoPerf = true;
+		}
+	}
+
+	if (!bItemInfoPerf)
+	{
+		if (pItem->Class == ITEM_CLASS_WEAPON_TWO && pItem->ItemPosition)
+			memcpy(&sInfo, &cInvenTory.InvenItem[sInven[0].ItemIndex - 1].sItemInfo, sizeof(sITEMINFO));
+		else
+			memcpy(&sInfo, &pItem->sItemInfo, sizeof(sITEMINFO));
+	}
+
+#ifdef	_LANGUAGE_CHINESE
+	{
+		if (sInfo.CODE == (sinWA1 | sin20))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[0]);
+		}
+
+		if (sInfo.CODE == (sinWC1 | sin20))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[1]);
+		}
+
+		if (sInfo.CODE == (sinWH1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[2]);
+		}
+
+		if (sInfo.CODE == (sinWM1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[7]);
+		}
+
+		if (sInfo.CODE == (sinWP1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[3]);
+		}
+
+		if (sInfo.CODE == (sinWS1 | sin22))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[4]);
+		}
+
+		if (sInfo.CODE == (sinWS2 | sin23))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[5]);
+		}
+
+		if (sInfo.CODE == (sinWT1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[6]);
+		}
+	}
+#endif
+#ifdef	_LANGUAGE_ENGLISH
+	{
+		if (sInfo.CODE == (sinWA1 | sin20))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[0]);
+		}
+
+		if (sInfo.CODE == (sinWC1 | sin20))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[1]);
+		}
+
+		if (sInfo.CODE == (sinWH1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[2]);
+		}
+
+		if (sInfo.CODE == (sinWM1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[7]);
+		}
+
+		if (sInfo.CODE == (sinWP1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[3]);
+		}
+
+		if (sInfo.CODE == (sinWS1 | sin22))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[4]);
+		}
+
+		if (sInfo.CODE == (sinWS2 | sin23))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[5]);
+		}
+
+		if (sInfo.CODE == (sinWT1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[6]);
+		}
+	}
+#endif
+#ifdef	_LANGUAGE_VEITNAM
+	{
+		if (sInfo.CODE == (sinWA1 | sin20))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[0]);
+		}
+
+		if (sInfo.CODE == (sinWC1 | sin20))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[1]);
+		}
+
+		if (sInfo.CODE == (sinWH1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[2]);
+		}
+
+		if (sInfo.CODE == (sinWM1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[7]);
+		}
+
+		if (sInfo.CODE == (sinWP1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[3]);
+		}
+
+		if (sInfo.CODE == (sinWS1 | sin22))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[4]);
+		}
+
+		if (sInfo.CODE == (sinWS2 | sin23))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[5]);
+		}
+
+		if (sInfo.CODE == (sinWT1 | sin21))
+		{
+			strcpy(sInfo.ItemName, ha100LVQuestItemName[6]);
+		}
+	}
+#endif
+
+	if (sInfo.UniqueItem)
+		UniFlag = 1;
+	if (sInfo.ItemKindCode)
+		sinItemKindFlag = sInfo.ItemKindCode;
+
+	if (sInfo.CODE == (sinQT1 | sin06)) {
+		sinItemKindFlag = 100;
+	}
+
+	if (tWeaponClass)
+		wsprintf(szInfoBuff, "%s%s\r", sInfo.ItemName, "  ");
+	else
+		wsprintf(szInfoBuff, "%s\r", sInfo.ItemName);
+
+	if ((sInfo.CODE & sinITEM_MASK2) == sinPZ1 || (sInfo.CODE & sinITEM_MASK2) == sinPZ2) {
+		if (sInfo.PotionCount <= 1) {
+			wsprintf(szInfoBuff, "%s\r", sinLuckyBox);
+		}
+	}
+
+	lstrcpy(szInfoBuff2, "\r");
+	ItemInfoCol++;
+
+	if (sInfo.ItemKindCode == ITEM_KIND_AGING) {
+		if (sInfo.ItemAgingCount[1]) AgingGageFlag = 1;
+		else AgingGageFlag = 2;
+
+		lstrcat(szInfoBuff, "\r\r");
+		lstrcat(szInfoBuff2, "\r\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+		if (sInfo.ItemAgingCount[0]) {
+			AgingBarLenght = (int)((float)((float)125 * (((float)sInfo.ItemAgingCount[0] / (float)sInfo.ItemAgingCount[1]))));
+		}
+		AgingLevel4 = sInfo.ItemAgingNum[0];
+	}
+
+	//if (sInfo.ItemKindCode == 1)
+	//{
+	//	if (sInfo.ItemAgingNum[0] == 12)
+	//		lstrcpy(szTemp, "Mix Enigma\r");
+	//	if (sInfo.ItemAgingNum[0] == 13)
+	//		lstrcpy(szTemp, "Mix Bellum\r");
+
+	//	wsprintf(szTemp2, "\r");
+	//	lstrcat(szInfoBuff, szTemp);
+	//	lstrcat(szInfoBuff2, szTemp2);
+
+	//	ItemInfoCol++;
+	//	NameMixLine = ItemInfoCol;
+
+	//}
+
+	if (sInfo.ItemKindCode == 1)
+	{
+		if (sInfo.ItemAgingNum[0] == 10)
+		{
+			lstrcpy(szTemp, "Mix Mirage\r");
+			wsprintf(szTemp2, "\r");
+			lstrcat(szInfoBuff, szTemp);
+			lstrcat(szInfoBuff2, szTemp2);
+
+			ItemInfoCol++;
+			NameMixLine = ItemInfoCol;
+		}
+		else if (sInfo.ItemAgingNum[0] == 13)
+		{
+			lstrcpy(szTemp, "Mix Bellum\r");
+			wsprintf(szTemp2, "\r");
+			lstrcat(szInfoBuff, szTemp);
+			lstrcat(szInfoBuff2, szTemp2);
+
+			ItemInfoCol++;
+			Name1MixLine = ItemInfoCol;
+		}
+		else if (sInfo.ItemAgingNum[0] == 1)
+		{
+			lstrcpy(szTemp, "Mix Bellum\r");
+			wsprintf(szTemp2, "\r");
+			lstrcat(szInfoBuff, szTemp);
+			lstrcat(szInfoBuff2, szTemp2);
+
+			ItemInfoCol++;
+			Name1MixLine = ItemInfoCol;
+		}
+		else if (sInfo.ItemAgingNum[0] == 21)
+		{
+			lstrcpy(szTemp, "Item Migração\r");
+			wsprintf(szTemp2, "\r");
+			lstrcat(szInfoBuff, szTemp);
+			lstrcat(szInfoBuff2, szTemp2);
+
+			ItemInfoCol++;
+			MigraçãoMixLine = ItemInfoCol;
+		}
+	}
+
+	if (sInfo.CODE == (sinOR1 | sin29) || sInfo.CODE == (sinOA1 | sin26) || sInfo.CODE == (sinOS1 | sin17) || sInfo.CODE == (sinDB1 | sin35)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Item Boss\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemBossMixLine = ItemInfoCol;
+	}
+
+	if (pItem->CODE == (sinOR1 | sin29) || pItem->CODE == (sinOA1 | sin26) || pItem->CODE == (sinOS1 | sin17))
+	{
+		ItemBoss2 = 1;
+		lstrcpy(szTemp2, "  \r");
+		lstrcat(szInfoBuff, szTemp2);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		wsprintf(szTemp, "Set Boss #1\r");
+		lstrcat(szInfoBuff, szTemp);
+		strcpy_s(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		ItemBossLine = ItemInfoCol;
+		wsprintf(szTemp, "Tulla Amulet (%d/1)\r", TullaAmulet);
+		lstrcat(szInfoBuff, szTemp);
+		strcpy_s(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		Amuleto = ItemInfoCol;
+		wsprintf(szTemp, "Shy Ring (%d/2)\r", LShyRing + RShyRing);
+		lstrcat(szInfoBuff, szTemp);
+		strcpy_s(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		Ring = ItemInfoCol;
+		wsprintf(szTemp, "Fury Sheltom (%d/1)\r", FurySheltom);
+		lstrcat(szInfoBuff, szTemp);
+		strcpy_s(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		Sheltom = ItemInfoCol;
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		wsprintf(szTemp, "(Força dos Deuses)\r");
+		lstrcat(szInfoBuff, szTemp);
+		strcpy_s(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		Efect2Line = ItemInfoCol;
+		wsprintf(szTemp, "+35 HP/+35 RES/+35 MP\r", SetBoss2Bonus1);
+		lstrcat(szInfoBuff, szTemp);
+		strcpy_s(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		/*Efect2Line2 = ItemInfoCol;
+		wsprintf(szTemp, "3 Itens: +%d Velocidade de Ataque\r", SetBoss2Bonus2);
+		lstrcat(szInfoBuff, szTemp);
+		strcpy_s(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;*/
+		Efect2Line3 = ItemInfoCol;
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	else
+		ItemBoss2 = 0;
+
+	if (pItem->CODE == (sinBI2 | sin67) || pItem->CODE == (sinBI2 | sin69) || pItem->CODE == (sinBI2 | sin70))
+	{ //ÃÊº¸¸¶À»·Î °¡±â
+		lstrcpy(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Clique com o botão direito\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcpy(szTemp, "e ganhe um item aleatório\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinBI3 | sin80)) {
+		lstrcpy(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Muda o cabelo do personagem.\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcpy(szTemp, "Tipo de Cabelo: N\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinBI3 | sin19)) {
+		lstrcpy(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Remove do Item a Skin\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcpy(szTemp, "Aplicada para o seu inventário!\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinBI3 | sin81)) {
+		lstrcpy(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Muda o cabelo do personagem.\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcpy(szTemp, "Tipo de Cabelo: O\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinBI3 | sin82)) {
+		lstrcpy(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Muda o cabelo do personagem.\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcpy(szTemp, "Tipo de Cabelo: P\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinBI3 | sin83)) {
+		lstrcpy(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Muda o cabelo do personagem.\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcpy(szTemp, "Tipo de Cabelo: Q\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinBI3 | sin84)) {
+		lstrcpy(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Muda o cabelo do personagem.\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcpy(szTemp, "Tipo de Cabelo: R\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinBI3 | sin85)) {
+		lstrcpy(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Muda o cabelo do personagem.\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcpy(szTemp, "Tipo de Cabelo: S\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinBI3 | sin86)) {
+		lstrcpy(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Muda o cabelo do personagem.\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcpy(szTemp, "Tipo de Cabelo: T\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinBI3 | sin87)) {
+		lstrcpy(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Muda o cabelo do personagem.\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcpy(szTemp, "Tipo de Cabelo: U\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if ((sInfo.CODE) == (sinBI1 | sin12)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Tx de drop 50% adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinEC1 | sin03)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Teleporte para o Abismo\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+
+	if ((sInfo.CODE) == (sinBI1 | sin14)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Tx de drop 50% adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin24)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Exp. 50% adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin25)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Exp. 50% adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin28)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Reduz o uso de MP em 30%\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin91)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Reduz o uso de STM em 30%\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin92)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Reduz o uso de STM em 30%\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin20)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Converte o dano em HP\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin22)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Converte o dano em MP\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin52)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "5% de ATQ adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin53)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "5% de ATQ adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin54)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "5% de ATQ adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin55)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "5% de ATQ adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin65)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "5% de ATQ adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin66)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "5% de ATQ adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin67)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "5% de ATQ adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin68)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "5% de ATQ adicional\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin11)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Evita que o item se quebre\ndurante o Aging\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin89)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Remove o mix ou aging de um item\nstatus e spec são mantidos\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin85)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Aumenta a chance de sucesso\ndo aging em 30%\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin61)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Aumenta a chance de sucesso\ndo aging em 20%\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI1 | sin10)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Aumenta a chance de sucesso\ndo aging em 10%\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin68)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Aumenta a chance de sucesso\ndo aging em 5%\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin46)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin47)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin48)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin49)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin50)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin51)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin52)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin53)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin54)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin55)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinBI2 | sin56)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine com 2 Super Jeras\n(Garante status perfeito)\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinEC1 | sin03)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Teleporte Boss Espectro de Ossos\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+
+		lstrcpy(szTemp, "Horários: 11:XX/17:XX/21:XX\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+
+	if (sInfo.CODE == (sinBI2 | sin38) || sInfo.CODE == (sinBI2 | sin39) || sInfo.CODE == (sinBI2 | sin40) || sInfo.CODE == (sinBI2 | sin41)
+		|| sInfo.CODE == (sinBI2 | sin42) || sInfo.CODE == (sinBI2 | sin43) || sInfo.CODE == (sinBI2 | sin44)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Use com botão direito\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Receba +1 Nível no seu personagem\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.CODE == (sinEV1 | sin01) || sInfo.CODE == (sinEV1 | sin02) || sInfo.CODE == (sinEV1 | sin03) || sInfo.CODE == (sinEV1 | sin04)
+		|| sInfo.CODE == (sinEV1 | sin05) || sInfo.CODE == (sinEV1 | sin06) || sInfo.CODE == (sinEV1 | sin07)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Encontre todas as peças\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "e faça uma Draxos Boots\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.CODE == (sinEV1 | sin08)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Junte com os 7 fragmentos\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "e faça uma Draxos Boots\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.CODE == (sinBI2 | sin66)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Contém todas as Skins existentes\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "Clique com o botão direito\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, "e tire uma aleatória\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if ((sInfo.CODE) == (sinGF1 | sin03)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine e troque por um item\naleatório!\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+
+	if ((sInfo.CODE) == (sinEV2 | sin01) || (sInfo.CODE) == (sinEV2 | sin02)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine e troque por um prêmio\naleatório!\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+	if ((sInfo.CODE) == (sinGF1 | sin04)) // CODIGO DO ITEM
+	{
+		lstrcpy(szTemp, "Combine e troque por um item\naleatório!\r"); //DESCRIÇÂO
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.SwapItem.Flag)
+	{
+		switch (pItem->sItemInfo.SwapItem.Flag)
+		{
+		case sinBI3 | sin01:
+		case sinBI3 | sin07:
+		case sinBI3 | sin13:
+			wsprintf(szTemp, "Skin Ancestral\r");
+			break;
+		case sinBI3 | sin02:
+		case sinBI3 | sin08:
+		case sinBI3 | sin14:
+			wsprintf(szTemp, "Skin Abissal\r");
+			break;
+		case sinBI3 | sin03:
+		case sinBI3 | sin09:
+		case sinBI3 | sin15:
+			wsprintf(szTemp, "Skin Zealous\r");
+			break;
+		case sinBI3 | sin04:
+		case sinBI3 | sin10:
+		case sinBI3 | sin16:
+			wsprintf(szTemp, "Skin Verthex\r");
+			break;
+		case sinBI3 | sin05:
+		case sinBI3 | sin11:
+		case sinBI3 | sin17:
+			wsprintf(szTemp, "Skin Lennister\r");
+			break;
+		case sinBI3 | sin06:
+		case sinBI3 | sin12:
+		case sinBI3 | sin18:
+			wsprintf(szTemp, "Skin Dakness\r");
+			break;
+		case sinBI3 | sin20:
+			wsprintf(szTemp, "Skin Copa\r");
+			break;
+			//
+		case sinBI3 | sin22:
+			wsprintf(szTemp, "Skin Newbie\r");
+			break;
+		case sinBI3 | sin23:
+			wsprintf(szTemp, "Skin Extreme\r");
+			break;
+		case sinBI3 | sin24:
+			wsprintf(szTemp, "Skin Shadow\r");
+			break;
+		case sinBI3 | sin25:
+			wsprintf(szTemp, "Skin Secret\r");
+			break;
+		case sinBI3 | sin26:
+			wsprintf(szTemp, "Skin de Natal\r");
+			break;
+			//
+
+		case sinBI3 | sin30:
+			wsprintf(szTemp, "Skin Copa\r");
+			break;
+
+			//
+		case sinBI3 | sin32:
+			wsprintf(szTemp, "Skin Newbie\r");
+			break;
+		case sinBI3 | sin33:
+			wsprintf(szTemp, "Skin Extreme\r");
+			break;
+		case sinBI3 | sin34:
+			wsprintf(szTemp, "Skin Shadow\r");
+			break;
+		case sinBI3 | sin35:
+			wsprintf(szTemp, "Skin Secret\r");
+			break;
+		case sinBI3 | sin36:
+			wsprintf(szTemp, "Skin de Natal\r");
+			break;
+			//
+		case sinBI3 | sin40:
+			wsprintf(szTemp, "Skin Magma\r");
+			break;
+		case sinBI3 | sin21:
+		case sinBI3 | sin31:
+		case sinBI3 | sin41:
+			wsprintf(szTemp, "Skin Destroier\r");
+			break;
+		case sinBI3 | sin42:
+			wsprintf(szTemp, "Skin Newbie\r");
+			break;
+		case sinBI3 | sin43:
+			wsprintf(szTemp, "Skin Extreme\r");
+			break;
+		case sinBI3 | sin44:
+			wsprintf(szTemp, "Skin Shadow\r");
+			break;
+		case sinBI3 | sin45:
+			wsprintf(szTemp, "Skin Secret\r");
+			break;
+		}
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		SkinItemLine = ItemInfoCol;
+	}
+
+	if (sInfo.ItemKindCode == ITEM_KIND_QUEST_WEAPON && sInfo.ItemAgingNum[0] < 4 &&
+		(sInfo.CODE & sinITEM_MASK2) != sinOR2) {
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+
+		wsprintf(szTemp, "%s:%d/%d  \r", QuestMonsterName[sInfo.ItemAgingNum[1]], sInfo.ItemAgingCount[1] - sInfo.ItemAgingCount[0], sInfo.ItemAgingCount[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		QuestItemLine = ItemInfoCol;
+
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinEC1 | sin01)) {
+		lstrcpy(szTemp, TownName[0]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinEC1 | sin02)) {
+		lstrcpy(szTemp, TownName[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	if (pItem->CODE == (sinEC1 | sin04)) {
+		lstrcpy(szTemp, TownName[2]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->CODE == (sinGP1 | sin10) || pItem->CODE == (sinGP1 | sin22)) {
+		lstrcpy(szTemp, ClanCristalName);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		for (cnt = 0; cnt < 10; cnt++) {
+			if (!MixItemLine[cnt]) {
+				MixItemLine[cnt] = ItemInfoCol;
+				break;
+			}
+		}
+	}
+
+	int len = lstrlen(pItem->sItemInfo.ItemName);
+	char szLinkName[24];
+	if (pItem->CODE == (sinEC1 | sin05)) {
+		lstrcpy(szTemp, LinkCoreName);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if (pItem->sItemInfo.ItemName[len + 1] != NULL) {
+			lstrcat(szInfoBuff, "\r");
+			lstrcat(szInfoBuff2, "\r");
+			ItemInfoCol++;
+
+			lstrcpy(szLinkName, &pItem->sItemInfo.ItemName[len + 1]);
+			lstrcpy(szTemp, szLinkName);
+			lstrcat(szInfoBuff, DesLinkCore);
+			lstrcat(szInfoBuff, szTemp);
+			lstrcpy(szTemp2, "\r");
+			lstrcat(szInfoBuff, szTemp2);
+			lstrcat(szInfoBuff2, szTemp2);
+			ItemInfoCol++;
+
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+
+	if (sInfo.Damage[0] || sInfo.Damage[1]) {
+		lstrcpy(szTemp, sinAbilityName[0]);
+		wsprintf(szTemp2, "%d-%d\r", sInfo.Damage[0], sInfo.Damage[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_DAMAGE_MIN) != 0 ||
+			(sInfo.ItemKindMask & SIN_ADD_DAMAGE_MAX) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+
+		if (sInfo.ItemAgingNum[0]) {
+			if ((sInfo.CODE & sinITEM_MASK2) == sinWA1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWC1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWH1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWM1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWN1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWD1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWV1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWP1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWS1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWS2 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWT1)
+
+				AgingItemLine[AgingCnt++] = ItemInfoCol;
+		}
+	}
+
+	if (sInfo.Attack_Speed)
+	{
+		lstrcpy(szTemp, sinAbilityName[1]);
+		if (CheckQuestItemDownFlag && sInfo.ItemKindCode == ITEM_KIND_QUEST_WEAPON)
+		{
+			wsprintf(szTemp2, "%d\r", sInfo.Attack_Speed - 2);
+			RedLine[9] = ItemInfoCol + 1;
+		}
+		else
+		{
+			wsprintf(szTemp2, "%d\r", sInfo.Attack_Speed);
+		}
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		if ((sInfo.ItemKindMask & SIN_ADD_ATTACK_SPEED) != 0)
+		{
+			for (cnt = 0; cnt < 10; cnt++)
+			{
+				if (!MixItemLine[cnt])
+				{
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+
+		if (sInfo.ItemAgingNum[0] >= 22)
+		{
+			if ((sInfo.CODE & sinITEM_MASK2) == sinWA1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWC1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWH1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWP1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWD1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWS1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWT1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWD1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWV1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWN1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWS2)
+				AgingItemLine[AgingCnt++] = ItemInfoCol;
+		}
+	}
+
+	if (sInfo.Shooting_Range)
+	{
+		lstrcpy(szTemp, sinAbilityName[2]);
+		wsprintf(szTemp2, "%d\r", sInfo.Shooting_Range);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.Critical_Hit)
+	{
+		lstrcpy(szTemp, sinAbilityName[3]);
+		wsprintf(szTemp2, "%d%s\r", sInfo.Critical_Hit, "%");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_CRITICAL) != 0)
+		{
+			for (cnt = 0; cnt < 10; cnt++)
+			{
+				if (!MixItemLine[cnt])
+				{
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+
+		if (sInfo.ItemAgingNum[0])
+		{
+			if ((sInfo.CODE & sinITEM_MASK2) == sinWC1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWP1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWD1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWS1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWT1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWS2)
+				AgingItemLine[AgingCnt++] = ItemInfoCol;
+		}
+	}
+
+	if (sInfo.Defence) {
+		lstrcpy(szTemp, sinAbilityName[4]);
+		wsprintf(szTemp2, "%d\r", sInfo.Defence);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_DEFENCE) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+
+		if (sInfo.ItemAgingNum[0]) {
+			if ((sInfo.CODE & sinITEM_MASK2) == sinOM1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDS1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA2 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA3 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA4 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDB1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDG1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinOA2) {
+				AgingItemLine[AgingCnt++] = ItemInfoCol;
+			}
+		}
+	}
+
+	if (sInfo.Attack_Rating) {
+		lstrcpy(szTemp, sinAbilityName[5]);
+		wsprintf(szTemp2, "%d\r", sInfo.Attack_Rating);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_ATTACK_RATE) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+
+		if (sInfo.ItemAgingNum[0]) {
+			if ((sInfo.CODE & sinITEM_MASK2) == sinWA1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWC1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWM1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWN1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWD1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWV1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWH1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWP1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWS2 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinOA2) {
+				AgingItemLine[AgingCnt++] = ItemInfoCol;
+			}
+		}
+	}
+
+	if (sInfo.fAbsorb) {
+		sinAbsorb = (int)(GetItemAbsorb(&sInfo) * 10.001f);
+		sinRightSpot = sinAbsorb % 10;
+		sinLeftSpot = (sinAbsorb - sinRightSpot) / 10;
+		lstrcpy(szTemp, sinAbilityName[6]);
+		wsprintf(szTemp2, "%d.%d\r", sinLeftSpot, sinRightSpot);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_ABSORB) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+		if (sInfo.ItemAgingNum[0]) {
+			if ((sInfo.CODE & sinITEM_MASK2) == sinOM1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA3 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA4 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDS1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA2 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDB1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDG1) {
+				AgingItemLine[AgingCnt++] = ItemInfoCol;
+			}
+		}
+	}
+
+	if (sInfo.fBlock_Rating) {
+		BlockRate = (int)(sInfo.fBlock_Rating);
+		lstrcpy(szTemp, sinAbilityName[7]);
+		wsprintf(szTemp2, "%d%s\r", BlockRate, "%");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		if ((sInfo.ItemKindMask & SIN_ADD_BLOCK_RATE) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+
+		if (sInfo.ItemAgingNum[0]) {
+			if ((sInfo.CODE & sinITEM_MASK2) == sinDS1)
+				AgingItemLine[AgingCnt++] = ItemInfoCol;
+		}
+	}
+
+	if (sInfo.fSpeed) {
+		sinSpeed = (int)(sInfo.fSpeed * 10.001f);
+		sinRightSpot = sinSpeed % 10;
+		sinLeftSpot = (sinSpeed - sinRightSpot) / 10;
+		lstrcpy(szTemp, sinAbilityName[8]);
+		wsprintf(szTemp2, "%d.%d\r", sinLeftSpot, sinRightSpot);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_MOVE_SPEED) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+
+	if (sInfo.Durability[0] || sInfo.Durability[1]) {
+		lstrcpy(szTemp, sinAbilityName[9]);
+		wsprintf(szTemp2, "%d/%d\r", sInfo.Durability[0], sInfo.Durability[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		if (sInfo.ItemAgingNum[0]) {
+			if ((sInfo.CODE & sinITEM_MASK2) == sinWA1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWV1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWH1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWS1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDS1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinOM1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA2 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA3 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDA4 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDB1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinDG1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinOA2) {
+				AgingItemLine[AgingCnt++] = ItemInfoCol;
+			}
+		}
+	}
+
+	if (sInfo.Mana[0] || sInfo.Mana[1]) {
+		lstrcpy(szTemp, sinAbilityName[10]);
+		wsprintf(szTemp2, "%d-%d\r", sInfo.Mana[0], sInfo.Mana[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	if (sInfo.Life[0] || sInfo.Life[1]) {
+		lstrcpy(szTemp, sinAbilityName[11]);
+		wsprintf(szTemp2, "%d-%d\r", sInfo.Life[0], sInfo.Life[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	if (sInfo.Stamina[0] || sInfo.Stamina[1]) {
+		lstrcpy(szTemp, sinAbilityName[12]);
+		wsprintf(szTemp2, "%d-%d\r", sInfo.Stamina[0], sInfo.Stamina[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.Resistance[0]) {
+		lstrcpy(szTemp, sinAbilityName[13]);
+		wsprintf(szTemp2, "%d\r", sInfo.Resistance[0]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_BIO) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+	if (sInfo.Resistance[1]) {
+		lstrcpy(szTemp, sinAbilityName[14]);
+		wsprintf(szTemp2, "%d\r", sInfo.Resistance[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	if (sInfo.Resistance[2]) {
+		lstrcpy(szTemp, sinAbilityName[15]);
+		wsprintf(szTemp2, "%d\r", sInfo.Resistance[2]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_FIRE) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+
+	if (sInfo.Resistance[3]) {
+		lstrcpy(szTemp, sinAbilityName[16]);
+		wsprintf(szTemp2, "%d\r", sInfo.Resistance[3]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_ICE) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+	if (sInfo.Resistance[4]) {
+		lstrcpy(szTemp, sinAbilityName[17]);
+		wsprintf(szTemp2, "%d\r", sInfo.Resistance[4]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_LIGHTNING) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+	if (sInfo.Resistance[5]) {
+		lstrcpy(szTemp, sinAbilityName[18]);
+		wsprintf(szTemp2, "%d\r", sInfo.Resistance[5]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_POISON) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+	if (sInfo.Resistance[6]) {
+		lstrcpy(szTemp, sinAbilityName[19]);
+		wsprintf(szTemp2, "%d\r", sInfo.Resistance[6]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	if (sInfo.Resistance[7]) {
+		lstrcpy(szTemp, sinAbilityName[20]);
+		wsprintf(szTemp2, "%d\r", sInfo.Resistance[7]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.fLife_Regen && (sInfo.CODE & sinITEM_MASK2) != sinFO1) {
+		sinRegen = (int)(sInfo.fLife_Regen * 10.001f);
+		sinRightSpot = sinRegen % 10;
+		sinLeftSpot = (sinRegen - sinRightSpot) / 10;
+		lstrcpy(szTemp, sinAbilityName[21]);
+		wsprintf(szTemp2, "%d.%d\r", sinLeftSpot, sinRightSpot);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_LIFEREGEN) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+
+	if (sInfo.fMana_Regen && (sInfo.CODE & sinITEM_MASK2) != sinFO1) {
+		sinRegen = (int)(sInfo.fMana_Regen * 10.001f);
+		sinRightSpot = sinRegen % 10;
+		sinLeftSpot = (sinRegen - sinRightSpot) / 10;
+		lstrcpy(szTemp, sinAbilityName[22]);
+		wsprintf(szTemp2, "%d.%d\r", sinLeftSpot, sinRightSpot);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		if ((sInfo.ItemKindMask & SIN_ADD_MANAREGEN) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+
+	if (sInfo.fStamina_Regen && (sInfo.CODE & sinITEM_MASK2) != sinFO1) {
+		sinRegen = (int)(sInfo.fStamina_Regen * 10.001f);
+		sinRightSpot = sinRegen % 10;
+		sinLeftSpot = (sinRegen - sinRightSpot) / 10;
+		lstrcpy(szTemp, sinAbilityName[23]);
+		wsprintf(szTemp2, "%d.%d\r", sinLeftSpot, sinRightSpot);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_STAMINAREGEN) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+	int AddState;
+	if (sInfo.fIncrease_Life) {
+		AddState = (int)sInfo.fIncrease_Life;
+		lstrcpy(szTemp, sinAbilityName[24]);
+		wsprintf(szTemp2, "%d\r", AddState);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_LIFE) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+	if (sInfo.fIncrease_Mana) {
+		AddState = (int)sInfo.fIncrease_Mana;
+		lstrcpy(szTemp, sinAbilityName[25]);
+		wsprintf(szTemp2, "%d\r", AddState);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_MANA) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+
+		if (sInfo.ItemAgingNum[0]) {
+			if ((sInfo.CODE & sinITEM_MASK2) == sinWM1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWN1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWS1 ||
+				(sInfo.CODE & sinITEM_MASK2) == sinWT1) {
+				AgingItemLine[AgingCnt++] = ItemInfoCol;
+			}
+		}
+	}
+	if (sInfo.fIncrease_Stamina) {
+		AddState = (int)sInfo.fIncrease_Stamina;
+		lstrcpy(szTemp, sinAbilityName[26]);
+		wsprintf(szTemp2, "%d\r", AddState);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if ((sInfo.ItemKindMask & SIN_ADD_STAMINA) != 0) {
+			for (cnt = 0; cnt < 10; cnt++) {
+				if (!MixItemLine[cnt]) {
+					MixItemLine[cnt] = ItemInfoCol;
+					break;
+				}
+			}
+		}
+	}
+	if (sInfo.Potion_Space) {
+		lstrcpy(szTemp, sinAbilityName[27]);
+		wsprintf(szTemp2, "%d\r", sInfo.Potion_Space);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	int i = 0;
+
+	if (sInfo.Level) {
+		lstrcpy(szTemp, sinAbilityName[28]);
+		if ((sInfo.CODE & sinITEM_MASK2) == sinFO1) {
+			lstrcat(szInfoBuff, "\r");
+			lstrcat(szInfoBuff2, "\r"); //µÎÄ­  °Ç³Ê¶Ü
+			ItemInfoCol++;
+
+			for (i = 0; i < 16; i++) { // ¹ÚÀç¿ø : ºô¸µ Æ÷½º Ãß°¡·Î Æ÷½º °¹¼ö 12·Î ¿¬Àå
+				if (((pItem->CODE & sinITEM_MASK3) == SheltomCode2[i])) // ¹ÚÀç¿ø - ÀÏ¹Ý Æ÷½º Ãß°¡
+				{
+					if (i <= 3) {
+						wsprintf(szTemp2, "%d-%d\r", ForceOrbUseLevel[i][0], ForceOrbUseLevel[i][1]);
+					}
+					else {
+						wsprintf(szTemp2, "%d+\r", ForceOrbUseLevel[i][0]);
+					}
+					break;
+				}
+				else if (((pItem->CODE & sinITEM_MASK3) == MagicSheltomCode[i])) // ¹ÚÀç¿ø - ¸ÅÁ÷ Æ÷½º(»ç¿ë ·¹º§)
+				{
+					if (i <= 3) {
+						wsprintf(szTemp2, "%d-%d\r", MagicForceOrbUseLevel[i][0], MagicForceOrbUseLevel[i][1]);
+					}
+					else {
+						wsprintf(szTemp2, "%d+\r", MagicForceOrbUseLevel[i][0]);
+					}
+					break;
+				}
+				else if (((pItem->CODE & sinITEM_MASK3) == BillingMagicSheltomCode[i])) // ¹ÚÀç¿ø - ºô¸µ ¸ÅÁ÷ Æ÷½º Ãß°¡
+				{
+					wsprintf(szTemp2, "%d+\r", BillingMagicForceOrbUseLevel[i][0]);
+					break;
+				}
+			}
+			lstrcat(szInfoBuff, szTemp);
+			lstrcat(szInfoBuff2, szTemp2);
+			ItemInfoCol++;
+			RequireLine[0] = ItemInfoCol;
+			if (sinChar->Level < ForceOrbUseLevel[i][0] ||
+				sinChar->Level > ForceOrbUseLevel[i][1]) {
+				sRequire.rLevel = 1;
+				RedLine[0] = ItemInfoCol;
+			}
+		}
+		else {
+			wsprintf(szTemp2, "%d\r", sInfo.Level);
+			lstrcat(szInfoBuff, szTemp);
+			lstrcat(szInfoBuff2, szTemp2);
+			ItemInfoCol++;
+			RequireLine[0] = ItemInfoCol;
+			if (sInfo.Level > sinChar->Level) {
+				sRequire.rLevel = 1;
+				RedLine[0] = ItemInfoCol;
+			}
+		}
+	}
+
+	if ((sInfo.CODE & sinITEM_MASK2) == sinFO1) {
+		for (i = 0; i < 15; i++) {
+			if ((pItem->CODE & sinITEM_MASK3) == SheltomCode2[i]) {
+				lstrcpy(szTemp, sinAddDamageItem);
+				wsprintf(szTemp2, "%d\r", ForceOrbDamage[i]);
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+
+				if (i > 5 && i < 10) { // ¹ÚÀç¿ø : ºô¸µ Æ÷½º Ãß°¡(¸ÓÅ°, µ¥ºñ³×, ½ì·¹½ºÅä, ¹Ì¶óÁö Æ÷½ºÀÏ °æ¿ì °ø°Ý·Â °¡Áß 10%¸¦ ´õ ºÙ¿©ÁØ´Ù)
+					lstrcpy(szTemp, AddPercentDamage3);
+					wsprintf(szTemp2, "%d%s\r", 10, "%");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+				}
+				else if (i == 10) { // ¹ÚÀç¿ø : ºô¸µ Æ÷½º Ãß°¡(ÀÎÆä¸£³ª Æ÷½ºÀÏ °æ¿ì °ø°Ý·Â °¡Áß 15%¸¦ ´õ ºÙ¿©ÁØ´Ù)
+					lstrcpy(szTemp, AddPercentDamage3);
+					wsprintf(szTemp2, "%d%s\r", 15, "%");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+				}
+				else if (i == 11) { // ¹ÚÀç¿ø : ºô¸µ Æ÷½º Ãß°¡(ÀÌ´Ï±×¸¶ Æ÷½ºÀÏ °æ¿ì °ø°Ý·Â °¡Áß 20%¸¦ ´õ ºÙ¿©ÁØ´Ù)
+					lstrcpy(szTemp, AddPercentDamage3);
+					wsprintf(szTemp2, "%d%s\r", 20, "%");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+				}
+				else if (i == 12) { // ¹ÚÀç¿ø : ºô¸µ Æ÷½º Ãß°¡(ÀÌ´Ï±×¸¶ Æ÷½ºÀÏ °æ¿ì °ø°Ý·Â °¡Áß 20%¸¦ ´õ ºÙ¿©ÁØ´Ù)
+					lstrcpy(szTemp, AddPercentDamage3);
+					wsprintf(szTemp2, "%d%s\r", 25, "%");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+				}
+				else if (i == 13) { // ¹ÚÀç¿ø : ºô¸µ Æ÷½º Ãß°¡(ÀÌ´Ï±×¸¶ Æ÷½ºÀÏ °æ¿ì °ø°Ý·Â °¡Áß 20%¸¦ ´õ ºÙ¿©ÁØ´Ù)
+					lstrcpy(szTemp, AddPercentDamage3);
+					wsprintf(szTemp2, "%d%s\r", 30, "%");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+				}
+				else if (i == 14) {
+					lstrcpy(szTemp, AddPercentDamage3);
+					wsprintf(szTemp2, "%d%s\r", 30, "%");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+				}
+
+				lstrcpy(szTemp, sinContinueTimeItem);
+				wsprintf(szTemp2, "%d%s\r", ForceOrbUseTime[i], SecName);
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+				break;
+			}
+			else if ((pItem->CODE & sinITEM_MASK3) == MagicSheltomCode[i])
+			{
+				lstrcpy(szTemp, sinAddDamageItem);
+				wsprintf(szTemp2, "%d\r", MagicForceOrbDamage[i]);
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+
+				if (i > 5 && i < 10) {
+					lstrcpy(szTemp, AddPercentDamage3);
+					wsprintf(szTemp2, "%d%s\r", 10, "%");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+				}
+				else if (i == 10) {
+					lstrcpy(szTemp, AddPercentDamage3);
+					wsprintf(szTemp2, "%d%s\r", 15, "%");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+				}
+				else if (i == 11) {
+					lstrcpy(szTemp, AddPercentDamage3);
+					wsprintf(szTemp2, "%d%s\r", 20, "%");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+				}
+
+				lstrcpy(szTemp, sinContinueTimeItem);
+				wsprintf(szTemp2, "%d%s\r", MagicForceOrbUseTime[i], SecName);
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+				break;
+			}
+			else if ((pItem->CODE & sinITEM_MASK3) == BillingMagicSheltomCode[i])
+			{
+				lstrcpy(szTemp, AddPercentDamage3);
+				wsprintf(szTemp2, "%d%s\r", 15, "%");
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+
+				lstrcpy(szTemp, sinContinueTimeItem);
+				wsprintf(szTemp2, "%d%s\r", BillingMagicForceOrbUseTime[i], SecName);
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+				break;
+			}
+		}
+	}
+
+	if (pItem->sItemInfo.CODE == (sinDA1 | sin48) || pItem->sItemInfo.CODE == (sinDA2 | sin48))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 14) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOR2 | sin06) || pItem->sItemInfo.CODE == (sinOR2 | sin07) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin08) || pItem->sItemInfo.CODE == (sinOR2 | sin09) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin10) || pItem->sItemInfo.CODE == (sinOR2 | sin11) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin12) || pItem->sItemInfo.CODE == (sinOR2 | sin13) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin14) || pItem->sItemInfo.CODE == (sinOR2 | sin15) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin16) || pItem->sItemInfo.CODE == (sinOR2 | sin17) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin18) || pItem->sItemInfo.CODE == (sinOR2 | sin19) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin20) || pItem->sItemInfo.CODE == (sinOR2 | sin21) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin22) || pItem->sItemInfo.CODE == (sinOR2 | sin23) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin24) || pItem->sItemInfo.CODE == (sinOR2 | sin25))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 5) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOR2 | sin27) || pItem->sItemInfo.CODE == (sinOA1 | sin32))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 1) - (NowTime - pItem->sItemInfo.dwCreateTime);
+
+		lstrcpy(szTemp, sinContinueTimeItem);
+
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOR2 | sin28) || pItem->sItemInfo.CODE == (sinOA1 | sin33))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 7) - (NowTime - pItem->sItemInfo.dwCreateTime);
+
+		lstrcpy(szTemp, sinContinueTimeItem);
+
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOR2 | sin29) || pItem->sItemInfo.CODE == (sinOA1 | sin34))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60) - (NowTime - pItem->sItemInfo.dwCreateTime);
+
+		lstrcpy(szTemp, sinContinueTimeItem);
+
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+
+			wsprintf(szTemp2, "%d\r", (Time / 60) % 60);
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOR2 | sin30) || pItem->sItemInfo.CODE == (sinOA1 | sin35))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24) - (NowTime - pItem->sItemInfo.dwCreateTime);
+
+		lstrcpy(szTemp, sinContinueTimeItem);
+
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+
+			wsprintf(szTemp2, "%d:%d\r", (Time / 60 / 60) % 24, (Time / 60) % 60);
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOR2 | sin33))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 7) - (NowTime - pItem->sItemInfo.dwCreateTime);
+
+		lstrcpy(szTemp, sinContinueTimeItem);
+
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOA1 | sin36))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 7) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOA1 | sin37))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 7) - (NowTime - pItem->sItemInfo.dwCreateTime);
+
+		lstrcpy(szTemp, sinContinueTimeItem);
+
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinDB1 | sin33))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 1) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinDB1 | sin34))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOA2 | sin33))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 1) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOA2 | sin34))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOR2 | sin36) || pItem->sItemInfo.CODE == (sinOR2 | sin37) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin38) || pItem->sItemInfo.CODE == (sinOR2 | sin39) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin40))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 7) - (NowTime - pItem->sItemInfo.dwCreateTime);
+
+		lstrcpy(szTemp, sinContinueTimeItem);
+
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOA1 | sin39) || pItem->sItemInfo.CODE == (sinOA1 | sin40) ||
+		pItem->sItemInfo.CODE == (sinOA1 | sin41) || pItem->sItemInfo.CODE == (sinOA1 | sin42))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 14) - (NowTime - pItem->sItemInfo.dwCreateTime);
+
+		lstrcpy(szTemp, sinContinueTimeItem);
+
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinOR2 | sin34) || pItem->sItemInfo.CODE == (sinOR2 | sin35) ||
+		pItem->sItemInfo.CODE == (sinOA1 | sin38))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 14) - (NowTime - pItem->sItemInfo.dwCreateTime);
+
+		lstrcpy(szTemp, sinContinueTimeItem);
+
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinDB1 | sin31) ||
+		pItem->sItemInfo.CODE == (sinOA2 | sin31) ||
+		pItem->sItemInfo.CODE == (sinDG1 | sin31))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 1) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinDB1 | sin32) ||
+		pItem->sItemInfo.CODE == (sinOA2 | sin32) ||
+		pItem->sItemInfo.CODE == (sinDG1 | sin32))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 7) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinDA1 | sin31) || pItem->sItemInfo.CODE == (sinDA2 | sin31) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin33) || pItem->sItemInfo.CODE == (sinDA2 | sin33) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin35) || pItem->sItemInfo.CODE == (sinDA2 | sin35) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin37) || pItem->sItemInfo.CODE == (sinDA2 | sin37) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin39) || pItem->sItemInfo.CODE == (sinDA2 | sin39) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin41) || pItem->sItemInfo.CODE == (sinDA2 | sin41) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin31) ||
+		pItem->sItemInfo.CODE == (sinOR2 | sin32))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 7) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinDA1 | sin32) || pItem->sItemInfo.CODE == (sinDA2 | sin32) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin34) || pItem->sItemInfo.CODE == (sinDA2 | sin34) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin36) || pItem->sItemInfo.CODE == (sinDA2 | sin36) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin38) || pItem->sItemInfo.CODE == (sinDA2 | sin38) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin40) || pItem->sItemInfo.CODE == (sinDA2 | sin40) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin42) || pItem->sItemInfo.CODE == (sinDA2 | sin42) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin54) || pItem->sItemInfo.CODE == (sinDA2 | sin54) ||
+		pItem->sItemInfo.CODE == (sinDA1 | sin55) || pItem->sItemInfo.CODE == (sinDA2 | sin55) ||
+		pItem->sItemInfo.CODE == (sinSP1 | sin34))
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 30) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+		else
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.CODE == (sinCA1 | sin31) || pItem->sItemInfo.CODE == (sinCA2 | sin32) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin33) || pItem->sItemInfo.CODE == (sinCA2 | sin34) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin35) || pItem->sItemInfo.CODE == (sinCA2 | sin35) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin37) || pItem->sItemInfo.CODE == (sinCA2 | sin37) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin43) || pItem->sItemInfo.CODE == (sinCA2 | sin43) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin45) || pItem->sItemInfo.CODE == (sinCA2 | sin45) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin54) || pItem->sItemInfo.CODE == (sinCA2 | sin54) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin55) || pItem->sItemInfo.CODE == (sinCA2 | sin55) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin85) || pItem->sItemInfo.CODE == (sinCA2 | sin85) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin87) || pItem->sItemInfo.CODE == (sinCA2 | sin87) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin89) || pItem->sItemInfo.CODE == (sinCA2 | sin89) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin91) || pItem->sItemInfo.CODE == (sinCA2 | sin91) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin93) || pItem->sItemInfo.CODE == (sinCA2 | sin95) ||
+
+		pItem->sItemInfo.CODE == (sinCA5 | sin01) || pItem->sItemInfo.CODE == (sinCA6 | sin01) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin02) || pItem->sItemInfo.CODE == (sinCA6 | sin02) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin03) || pItem->sItemInfo.CODE == (sinCA6 | sin03) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin05) || pItem->sItemInfo.CODE == (sinCA6 | sin05) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin07) || pItem->sItemInfo.CODE == (sinCA6 | sin07) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin08) || pItem->sItemInfo.CODE == (sinCA6 | sin08) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin09) || pItem->sItemInfo.CODE == (sinCA6 | sin09) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin11) || pItem->sItemInfo.CODE == (sinCA6 | sin11) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin15) || pItem->sItemInfo.CODE == (sinCA6 | sin15) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin16) || pItem->sItemInfo.CODE == (sinCA6 | sin16) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin17) || pItem->sItemInfo.CODE == (sinCA6 | sin17) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin19) || pItem->sItemInfo.CODE == (sinCA6 | sin19) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin21) || pItem->sItemInfo.CODE == (sinCA6 | sin21) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin23) || pItem->sItemInfo.CODE == (sinCA6 | sin23) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin25) || pItem->sItemInfo.CODE == (sinCA6 | sin25) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin27) || pItem->sItemInfo.CODE == (sinCA6 | sin27) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin31) || pItem->sItemInfo.CODE == (sinCA6 | sin31) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin33) || pItem->sItemInfo.CODE == (sinCA6 | sin33) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin35) || pItem->sItemInfo.CODE == (sinCA6 | sin35) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin37) || pItem->sItemInfo.CODE == (sinCA6 | sin37) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin39) || pItem->sItemInfo.CODE == (sinCA6 | sin39) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin41) || pItem->sItemInfo.CODE == (sinCA6 | sin41) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin43) || pItem->sItemInfo.CODE == (sinCA6 | sin43) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin45) || pItem->sItemInfo.CODE == (sinCA6 | sin45) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin47) || pItem->sItemInfo.CODE == (sinCA6 | sin47) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin48) || pItem->sItemInfo.CODE == (sinCA6 | sin48)
+
+		|| pItem->sItemInfo.CODE == (sinCA1 | sin95) || pItem->sItemInfo.CODE == (sinCA2 | sin93) ||
+
+		pItem->sItemInfo.CODE == (sinCA6 | sin49) || pItem->sItemInfo.CODE == (sinCA5 | sin49) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin50) || pItem->sItemInfo.CODE == (sinCA5 | sin50) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin51) || pItem->sItemInfo.CODE == (sinCA5 | sin51) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin52) || pItem->sItemInfo.CODE == (sinCA5 | sin52) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin53) || pItem->sItemInfo.CODE == (sinCA5 | sin53) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin54) || pItem->sItemInfo.CODE == (sinCA5 | sin54) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin55) || pItem->sItemInfo.CODE == (sinCA5 | sin55) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin56) || pItem->sItemInfo.CODE == (sinCA5 | sin56) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin57) || pItem->sItemInfo.CODE == (sinCA5 | sin57) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin58) || pItem->sItemInfo.CODE == (sinCA5 | sin58) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin59) || pItem->sItemInfo.CODE == (sinCA5 | sin59) ||
+
+		pItem->sItemInfo.CODE == (sinCA6 | sin60) || pItem->sItemInfo.CODE == (sinCA5 | sin60) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin61) || pItem->sItemInfo.CODE == (sinCA5 | sin61) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin62) || pItem->sItemInfo.CODE == (sinCA5 | sin62) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin63) || pItem->sItemInfo.CODE == (sinCA5 | sin63) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin64) || pItem->sItemInfo.CODE == (sinCA5 | sin64)
+		)
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 7) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+		{
+			if (cInvenTory.ShowCostumeGear)
+			{
+				cInvenTory.m_bEnableEffectLoad = FALSE;
+				cInvenTory.m_bEnableEffectRelease = FALSE;
+			}
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+			bExpiredLine = TRUE;
+		}
+		else
+		{
+			ExpiredItemLine = 0;
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		}
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if (bExpiredLine)
+		{
+			ExpiredItemLine = ItemInfoCol;
+			bExpiredLine = FALSE;
+		}
+	}
+
+	if (pItem->sItemInfo.CODE == (sinCA1 | sin67) || pItem->sItemInfo.CODE == (sinCA2 | sin67) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin69) || pItem->sItemInfo.CODE == (sinCA2 | sin69) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin86) || pItem->sItemInfo.CODE == (sinCA2 | sin86) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin88) || pItem->sItemInfo.CODE == (sinCA2 | sin88) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin90) || pItem->sItemInfo.CODE == (sinCA2 | sin90) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin92) || pItem->sItemInfo.CODE == (sinCA2 | sin92) ||
+		pItem->sItemInfo.CODE == (sinCA1 | sin94) || pItem->sItemInfo.CODE == (sinCA2 | sin96) ||
+
+		pItem->sItemInfo.CODE == (sinCA6 | sin04) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin06) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin10) || pItem->sItemInfo.CODE == (sinCA6 | sin10) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin12) || pItem->sItemInfo.CODE == (sinCA6 | sin12) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin18) || pItem->sItemInfo.CODE == (sinCA6 | sin18) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin20) || pItem->sItemInfo.CODE == (sinCA6 | sin20) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin22) || pItem->sItemInfo.CODE == (sinCA6 | sin22) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin24) || pItem->sItemInfo.CODE == (sinCA6 | sin24) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin32) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin36) ||
+		pItem->sItemInfo.CODE == (sinCA6 | sin40) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin42) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin44) ||
+		pItem->sItemInfo.CODE == (sinCA5 | sin46)
+
+		)
+	{
+		DWORD NowTime = GetPlayTime_T();
+		DWORD Time = (60 * 60 * 24 * 30) - (NowTime - pItem->sItemInfo.dwCreateTime);
+		lstrcpy(szTemp, sinContinueTimeItem);
+		if (DeleteEventItem_TimeOut(&pItem->sItemInfo) == TRUE)
+		{
+			if (cInvenTory.ShowCostumeGear)
+			{
+				cInvenTory.m_bEnableEffectLoad = FALSE;
+				cInvenTory.m_bEnableEffectRelease = FALSE;
+			}
+			wsprintf(szTemp2, "%s\r", ExpireItem);
+			bExpiredLine = TRUE;
+		}
+		else
+		{
+			ExpiredItemLine = 0;
+			wsprintf(szTemp2, "%d:%d:%d\r", (Time / 60 / 60) / 24, (Time / 60 / 60) % 24, (Time / 60) % 60);
+		}
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		if (bExpiredLine)
+		{
+			ExpiredItemLine = ItemInfoCol;
+			bExpiredLine = FALSE;
+		}
+	}
+
+	if ((sInfo.CODE & sinITEM_MASK2) == sinBI1) {
+		for (int i = 0; i < 7; i++) {
+			if (pItem->CODE == dwPremiumItemCode[i]) {
+				lstrcpy(szTemp, PremiumItemDoc[i][0]);
+				wsprintf(szTemp2, "\r");
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+
+				lstrcpy(szTemp, PremiumItemDoc[i][1]);
+				wsprintf(szTemp2, "\r");
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+				break;
+			}
+		}
+	}
+
+	if ((sInfo.CODE & sinITEM_MASK2) == sinSE1) {
+		for (int i = 0; i < MAX_SEEL_COUNT; i++) {
+			if (pItem->CODE == sReconItem[i].dwCODE) {
+				lstrcpy(szTemp, sinAbilityName[28]);
+				wsprintf(szTemp2, "%d-%d\r", sReconItem[i].iLevel[0], sReconItem[i].iLevel[1]);
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+			}
+		}
+	}
+
+	if ((sInfo.CODE & sinITEM_MASK2) == sinBC1) {
+		for (i = 0; i < 16; i++) {
+			if ((pItem->CODE & sinITEM_MASK3) == dwCastlItemCODE[i]) {
+				if (i == 5 || i == 6 || i == 7) {
+					lstrcpy(szTemp, CastlItemInfo[5]);
+					wsprintf(szTemp2, "\r");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+
+					lstrcpy(szTemp, CastlItemInfo2[5]);
+					wsprintf(szTemp2, "\r");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+
+					wsprintf(szTemp, AttributeTower[3], 60);
+					wsprintf(szTemp2, "\r");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+
+					lstrcpy(szTemp, AttributeTower[i - 5]);
+					wsprintf(szTemp2, "\r");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+					RedLine[1] = ItemInfoCol;
+
+					break;
+				}
+				else if (i > 7) {
+					lstrcpy(szTemp, CastlItemInfo[6]);
+					wsprintf(szTemp2, "\r");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+
+					lstrcpy(szTemp, CastlItemInfo2[6]);
+					wsprintf(szTemp2, "\r");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+
+					wsprintf(szTemp, AttributeTower[3], 60);
+					wsprintf(szTemp2, "\r");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+
+					lstrcpy(szTemp, CharClassTarget[i - 8]);
+					wsprintf(szTemp2, "\r");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+					RedLine[1] = ItemInfoCol;
+
+					break;
+				}
+				else {
+					lstrcpy(szTemp, CastlItemInfo[i]);
+					wsprintf(szTemp2, "\r");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+
+					lstrcpy(szTemp, CastlItemInfo2[i]);
+					wsprintf(szTemp2, "\r");
+					lstrcat(szInfoBuff, szTemp);
+					lstrcat(szInfoBuff2, szTemp2);
+					ItemInfoCol++;
+
+					if (i < 3) {
+						wsprintf(szTemp, AttributeTower[3], 30);
+						wsprintf(szTemp2, "\r");
+						lstrcat(szInfoBuff, szTemp);
+						lstrcat(szInfoBuff2, szTemp2);
+						ItemInfoCol++;
+					}
+					break;
+				}
+			}
+		}
+	}
+
+	if ((sInfo.CODE & sinITEM_MASK2) == sinBC1)
+	{
+		for (i = 0; i < 9; i++)
+		{
+			if ((pItem->CODE & sinITEM_MASK3) == dwBoosterItemCode[i])
+			{
+				int m, n = 0;
+				if (i >= 0 && i <= 2) m = 0;
+				if (i >= 3 && i <= 5) m = 1;
+				if (i >= 6 && i <= 8) m = 2;
+
+				lstrcpy(szTemp, BoosterItemInfo[m]);
+				wsprintf(szTemp2, "\r");
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+
+				lstrcpy(szTemp, BoosterItemInfo2[m]);
+				wsprintf(szTemp2, "\r");
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+
+				if (i == 0 || i == 3 || i == 6) n = 0;
+				if (i == 1 || i == 4 || i == 7) n = 1;
+				if (i == 2 || i == 5 || i == 8) n = 2;
+				wsprintf(szTemp, AttributeTower[3], BoosterItem_UseTime[n]);
+				wsprintf(szTemp2, "\r");
+				lstrcat(szInfoBuff, szTemp);
+				lstrcat(szInfoBuff2, szTemp2);
+				ItemInfoCol++;
+
+				break;
+			}
+		}
+	}
+
+	if (sInfo.Strength) {
+		lstrcpy(szTemp, sinAbilityName[29]);
+		wsprintf(szTemp2, "%d\r", sInfo.Strength);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		RequireLine[1] = ItemInfoCol;
+		if (sInfo.Strength > sinChar->Strength) {
+			sRequire.rStrength = 1;
+			RedLine[1] = ItemInfoCol;
+		}
+	}
+
+	if (sInfo.Spirit && (sInfo.CODE & sinITEM_MASK2) != sinFO1) {
+		lstrcpy(szTemp, sinAbilityName[30]);
+		wsprintf(szTemp2, "%d\r", sInfo.Spirit);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		RequireLine[2] = ItemInfoCol;
+		if (sInfo.Spirit > sinChar->Spirit) {
+			sRequire.rSpirit = 1;
+			RedLine[2] = ItemInfoCol;
+		}
+	}
+
+	if (sInfo.Talent) {
+		lstrcpy(szTemp, sinAbilityName[31]);
+		wsprintf(szTemp2, "%d\r", sInfo.Talent);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		RequireLine[3] = ItemInfoCol;
+		if (sInfo.Talent > sinChar->Talent) {
+			sRequire.rTalent = 1;
+			RedLine[3] = ItemInfoCol;
+		}
+	}
+
+	if (sInfo.Dexterity) {
+		lstrcpy(szTemp, sinAbilityName[32]);
+		wsprintf(szTemp2, "%d\r", sInfo.Dexterity);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		RequireLine[4] = ItemInfoCol;
+		if (sInfo.Dexterity > sinChar->Dexterity) {
+			sRequire.rDexterity = 1;
+			RedLine[4] = ItemInfoCol;
+		}
+	}
+	if (sInfo.Health) {
+		lstrcpy(szTemp, sinAbilityName[33]);
+		wsprintf(szTemp2, "%d\r", sInfo.Health);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		RequireLine[5] = ItemInfoCol;
+		if (sInfo.Health > sinChar->Health) {
+			sRequire.rHealth = 1;
+			RedLine[5] = ItemInfoCol;
+		}
+	}
+
+	ShowItemInfo2(pItem, Flag, Index);
+	return TRUE;
+}
+
+int cITEM::ShowItemInfo2(sITEM* pItem, int Flag, int Index)
+{
+	int   BlockRate = 0;
+	int   sinSpeed = 0;
+	int   sinAbsorb = 0;
+	int   sinLeftSpot = 0;
+	int   sinRightSpot = 0;
+	int sinMagic_Mastery;
+
+	int   sinRegen = 0;
+
+	char	szTemp[64];
+	char    szTemp2[64];
+
+	sRequire.rDexterity = 0;
+	sRequire.rHealth = 0;
+	sRequire.rLevel = 0;
+	sRequire.rSpirit = 0;
+	sRequire.rStrength = 0;
+	sRequire.rTalent = 0;
+
+	memset(&szTemp, 0, sizeof(szTemp));
+	memset(&szTemp2, 0, sizeof(szTemp2));
+
+	if (sInfo.JobCodeMask && (sInfo.CODE & sinITEM_MASK2) != sinFO1)
+	{
+		SearchSpecialItemJob(sInfo.JobCodeMask);
+	}
+
+	if (sInfo.JobItem.Add_Attack_Speed)
+	{
+		lstrcpy(szTemp, sinSpecialName[0]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Attack_Speed);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Critical_Hit)
+	{
+		lstrcpy(szTemp, sinSpecialName[1]);
+		wsprintf(szTemp2, "%d%s\r", sInfo.JobItem.Add_Critical_Hit, "%");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Defence)
+	{
+		lstrcpy(szTemp, sinSpecialName[2]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Defence);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_fAbsorb)
+	{
+		sinAbsorb = (int)(sInfo.JobItem.Add_fAbsorb * 10.001f);
+		sinRightSpot = sinAbsorb % 10;
+		sinLeftSpot = (sinAbsorb - sinRightSpot) / 10;
+		lstrcpy(szTemp, sinSpecialName[3]);
+		wsprintf(szTemp2, "%d.%d\r", sinLeftSpot, sinRightSpot);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_fBlock_Rating)
+	{
+		BlockRate = (int)(sInfo.JobItem.Add_fBlock_Rating);
+		lstrcpy(szTemp, sinSpecialName[4]);
+		wsprintf(szTemp2, "%d%s\r", BlockRate, "%");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_fMagic_Mastery)
+	{
+		sinMagic_Mastery = (int)(sInfo.JobItem.Add_fMagic_Mastery);
+		lstrcpy(szTemp, sinSpecialName[5]);
+		wsprintf(szTemp2, "%d\r", sinMagic_Mastery);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_fSpeed)
+	{
+		sinSpeed = (int)(sInfo.JobItem.Add_fSpeed * 10.001f);
+		sinRightSpot = sinSpeed % 10;
+		sinLeftSpot = (sinSpeed - sinRightSpot) / 10;
+		lstrcpy(szTemp, sinSpecialName[6]);
+		wsprintf(szTemp2, "%d.%d\r", sinLeftSpot, sinRightSpot);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Resistance[0])
+	{
+		lstrcpy(szTemp, sinSpecialName[7]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Resistance[0]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Resistance[1])
+	{
+		lstrcpy(szTemp, sinSpecialName[8]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Resistance[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Resistance[2])
+	{
+		lstrcpy(szTemp, sinSpecialName[9]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Resistance[2]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Resistance[3])
+	{
+		lstrcpy(szTemp, sinSpecialName[10]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Resistance[3]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Resistance[4])
+	{
+		lstrcpy(szTemp, sinSpecialName[11]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Resistance[4]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Resistance[5])
+	{
+		lstrcpy(szTemp, sinSpecialName[12]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Resistance[5]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Resistance[6])
+	{
+		lstrcpy(szTemp, sinSpecialName[13]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Resistance[6]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Resistance[7])
+	{
+		lstrcpy(szTemp, sinSpecialName[14]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Resistance[7]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Lev_Damage[1])
+	{
+		lstrcpy(szTemp, sinSpecialName[15]);
+		wsprintf(szTemp2, "LV/%d\r", sInfo.JobItem.Lev_Damage[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Lev_Attack_Rating)
+	{
+		lstrcpy(szTemp, sinSpecialName[16]);
+		wsprintf(szTemp2, "LV/%d\r", sInfo.JobItem.Lev_Attack_Rating);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Add_Shooting_Range)
+	{
+		lstrcpy(szTemp, sinSpecialName[17]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Add_Shooting_Range);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Lev_Attack_Resistance[0])
+	{
+		lstrcpy(szTemp, sinSpecialName[18]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Lev_Attack_Resistance[0]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Lev_Attack_Resistance[1])
+	{
+		lstrcpy(szTemp, sinSpecialName[19]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Lev_Attack_Resistance[1]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Lev_Attack_Resistance[2])
+	{
+		lstrcpy(szTemp, sinSpecialName[20]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Lev_Attack_Resistance[2]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Lev_Attack_Resistance[3])
+	{
+		lstrcpy(szTemp, sinSpecialName[21]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Lev_Attack_Resistance[3]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Lev_Attack_Resistance[4]) {
+		wsprintf(szTemp, sinSpecialName[22]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Lev_Attack_Resistance[4]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Lev_Attack_Resistance[5]) {
+		lstrcpy(szTemp, sinSpecialName[23]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Lev_Attack_Resistance[5]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	if (sInfo.JobItem.Lev_Attack_Resistance[6]) {
+		lstrcpy(szTemp, sinSpecialName[24]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Lev_Attack_Resistance[6]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	if (sInfo.JobItem.Lev_Attack_Resistance[7]) {
+		lstrcpy(szTemp, sinSpecialName[25]);
+		wsprintf(szTemp2, "%d\r", sInfo.JobItem.Lev_Attack_Resistance[7]);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	if (sInfo.JobItem.Lev_Life) {
+		lstrcpy(szTemp, sinSpecialName[26]);
+		wsprintf(szTemp2, "LV/%d\r", sInfo.JobItem.Lev_Life);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	if (sInfo.JobItem.Lev_Mana) {
+		lstrcpy(szTemp, sinSpecialName[27]);
+		wsprintf(szTemp2, "LV/%d\r", sInfo.JobItem.Lev_Mana);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	int sinPer_Regen;
+	if (sInfo.JobItem.Per_Life_Regen && (sInfo.CODE & sinITEM_MASK2) != sinFO1) {
+		sinPer_Regen = (int)(sInfo.JobItem.Per_Life_Regen * 10.001f);
+		sinRightSpot = sinPer_Regen % 10;
+		sinLeftSpot = (sinPer_Regen - sinRightSpot) / 10;
+
+		lstrcpy(szTemp, sinSpecialName[28]);
+		wsprintf(szTemp2, "%d.%d\r", sinLeftSpot, sinRightSpot);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+	if (sInfo.JobItem.Per_Mana_Regen && (sInfo.CODE & sinITEM_MASK2) != sinFO1) {
+		sinPer_Regen = (int)(sInfo.JobItem.Per_Mana_Regen * 10.001f);
+		sinRightSpot = sinPer_Regen % 10;
+		sinLeftSpot = (sinPer_Regen - sinRightSpot) / 10;
+		lstrcpy(szTemp, sinSpecialName[29]);
+		wsprintf(szTemp2, "%d.%d\r", sinLeftSpot, sinRightSpot);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (sInfo.JobItem.Per_Stamina_Regen && (sInfo.CODE & sinITEM_MASK2) != sinFO1) {
+		sinPer_Regen = (int)(sInfo.JobItem.Per_Stamina_Regen * 10.001f);
+		sinRightSpot = sinPer_Regen % 10;
+		sinLeftSpot = (sinPer_Regen - sinRightSpot) / 10;
+		lstrcpy(szTemp, sinSpecialName[30]);
+		wsprintf(szTemp2, "%d.%d\r", sinLeftSpot, sinRightSpot);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	char szTemp7[64];
+	memset(szTemp7, 0, sizeof(szTemp7));
+	if (cShop.OpenFlag) {
+		lstrcpy(szTemp, "\r");
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		if (sInfo.Price && pItem->CODE != (sinGF1 | sin01) && pItem->CODE != (sinGF1 | sin02)) {
+			if (Flag == 2) {
+				sinItemPrice = cInvenTory.GetInvenItemPrice(pItem);
+				pItem->SellPrice = sinItemPrice.SellPrice;
+				lstrcpy(szTemp, sinSpecialName[31]);
+
+				NumLineComa(pItem->SellPrice, szTemp7);
+				lstrcpy(szTemp2, szTemp7);
+				lstrcat(szTemp2, "\r");
+			}
+			if (Flag == 1) {
+				lstrcpy(szTemp, sinSpecialName[32]);
+
+#ifdef HASIEGE_MODE
+
+				NumLineComa(cShop.haShopItemPrice(sInfo.Price), szTemp7);
+#else
+				NumLineComa(sInfo.Price, szTemp7);
+#endif
+
+				lstrcpy(szTemp2, szTemp7);
+				lstrcat(szTemp2, "\r");
+			}
+
+			lstrcat(szInfoBuff, szTemp);
+			lstrcat(szInfoBuff2, szTemp2);
+			ItemInfoCol++;
+		}
+	}
+	MyShopItemPriceLine = 0;
+	if (cMyShop.OpenFlag || cCharShop.OpenFlag) {
+		if (Flag == 3) {
+			lstrcpy(szTemp, "\r");
+			lstrcpy(szTemp2, "\r");
+			lstrcat(szInfoBuff, szTemp);
+			lstrcat(szInfoBuff2, szTemp2);
+			ItemInfoCol++;
+
+			if (KindCurrency == 2)
+				lstrcpy(szTemp, MyShopItemSell5);
+			if (KindCurrency == 1)
+				lstrcpy(szTemp, "Preço em créditos: \r");
+
+			NumLineComa(MyShopItemSellMoney2, szTemp7);
+			lstrcpy(szTemp2, szTemp7);
+			lstrcat(szTemp2, "    \r");
+
+			lstrcat(szInfoBuff, szTemp);
+			lstrcat(szInfoBuff2, szTemp2);
+			ItemInfoCol++;
+			MyShopItemPriceLine = ItemInfoCol;
+		}
+	}
+	if (pItem->CODE == (sinGF1 | sin01)) {
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+
+		wsprintf(szTemp, sinGold, sInfo.Price);
+		lstrcat(szTemp, "\r");
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	if (pItem->sItemInfo.SpecialItemFlag[0] == CHECK_COPY_ITEM) {
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, sinCopyItem5);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		RedLine[6] = ItemInfoCol;
+	}
+
+	if (pItem->sItemInfo.SpecialItemFlag[0] == CHECK_GIVE_ITEM) {
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, sinGiveItem5);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		RedLine[7] = ItemInfoCol;
+	}
+
+	if (cItem.GetItemLimitTime(pItem) == FALSE) {
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+
+		lstrcpy(szTemp, sinItemLimitTimeOverMsg);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		RedLine[8] = ItemInfoCol;
+	}
+
+	if (MyShopItemIndex[Index]) {
+		if (Flag == 2) {
+			lstrcat(szInfoBuff, "\r");
+			lstrcat(szInfoBuff2, "\r");
+			ItemInfoCol++;
+
+			wsprintf(szTemp, "%s", NowMyShopSell);
+			lstrcat(szInfoBuff, szTemp);
+			lstrcpy(szTemp2, "\r");
+			lstrcat(szInfoBuff2, szTemp2);
+			ItemInfoCol++;
+
+			RedLine[9] = ItemInfoCol;
+		}
+	}
+
+	if (bItemInfoPerf)
+	{
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+
+		wsprintf(szTemp, "Item Perfeito\r");
+		lstrcat(szInfoBuff, szTemp);
+		strcpy_s(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		ItemPerfLine = ItemInfoCol;
+	}
+
+	if (pItem->sItemInfo.LinkedItem)
+	{
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+
+		wsprintf(szTemp, "Item Vinculado a conta\r");
+		lstrcat(szInfoBuff, szTemp);
+		strcpy_s(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		ItemLinkedLine = ItemInfoCol;
+	}
+
+	if (pItem->sItemInfo.LockItem)
+	{
+		lstrcat(szInfoBuff, "\r");
+		lstrcat(szInfoBuff2, "\r");
+		ItemInfoCol++;
+
+		wsprintf(szTemp, "Item Trancado a conta\r");
+		lstrcat(szInfoBuff, szTemp);
+		strcpy_s(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+		ItemLinkedLine = ItemInfoCol;
+	}
+
+	if (smConfig.DebugMode && VRKeyBuff[VK_CONTROL]) {
+		wsprintf(szTemp, "%d\r", pItem->sItemInfo.ItemHeader.dwChkSum);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+
+		wsprintf(szTemp, "%d\r", pItem->sItemInfo.ItemHeader.Head);
+		lstrcat(szInfoBuff, szTemp);
+		lstrcpy(szTemp2, "\r");
+		lstrcat(szInfoBuff2, szTemp2);
+		ItemInfoCol++;
+	}
+
+	GetInfoBoxSize(pItem, ItemInfoCol);
+
+	sinLineCount = ItemInfoCol;
+
+	return TRUE;
+}
+
+int cITEM::GetInfoBoxSize(sITEM* pItem, int Col)
+{
+	int ty, tx;
+
+	ItemBoxSize.x = 13;
+	ItemBoxSize.y = Col + 1;
+
+	ItemBoxPosi.x = (pItem->x + (pItem->w / 2)) - ((ItemBoxSize.x * 16) / 2);
+	ItemBoxPosi.y = pItem->y - (ItemBoxSize.y * 16);
+
+	ty = ItemBoxPosi.y + (ItemBoxSize.y * 16);
+	tx = ItemBoxPosi.x + (ItemBoxSize.x * 16);
+
+	if (ItemBoxPosi.y < 0)
+		ItemBoxPosi.y = 0;
+	if (ItemBoxPosi.x < 0)
+		ItemBoxPosi.x = 0;
+
+	if (ty > 600)
+		ItemBoxPosi.y -= (ty - 600);
+	if (tx > 800)
+		ItemBoxPosi.x -= (tx - 800);
+
+	return TRUE;
+}
+
+int cITEM::DrawItemText()
+{
+	if (!sinShowItemInfoFlag)return FALSE;
+	if (sinShowItemInfoFlag == 1)dsDrawOffsetArray = dsARRAY_TOP;
+	else dsDrawOffsetArray = dsARRAY_BOTTOM;
+
+	int AddX = 0;
+
+	if (sinShowItemInfoFlag == 2)
+		AddX = InterfaceX;
+
+	int i, Count = 0;
+	int len, len2;
+
+	int TempLen = 0;
+	int TempLen2 = 0;
+
+	int Templen = 0;
+	int TemplenNum = 0;
+
+	int ImsiLen = 0;
+
+	int Textlen = 0;
+	int Textlen2 = 0;
+
+	int SetTextXposi = 0;
+	int SetTextXposi2 = 0;
+
+	int CutLen = 0;
+	int CutLen2 = 0;
+
+	int j;
+
+	char* pItemInfo[40];
+	char* pItemInfo2[40];
+
+	int  BlodCheckFlag = 0;
+
+	len = lstrlen(szInfoBuff);
+	len2 = lstrlen(szInfoBuff2);
+
+	char szInfoBuffBack[5000];
+	char szInfoBuff2Back[5000];
+	char szAgingNum[32];
+
+	int  TempLen3 = 0;
+
+	lstrcpy(szInfoBuffBack, szInfoBuff);
+	lstrcpy(szInfoBuff2Back, szInfoBuff2);
+
+	for (i = 0; i < len; i++)
+	{
+		for (j = 0; j < len2; j++)
+		{
+			if (szInfoBuffBack[i] == '\r')
+			{
+				if (szInfoBuff2Back[j] == '\r')
+				{
+					pItemInfo[Count] = &szInfoBuffBack[TempLen];
+					pItemInfo2[Count] = &szInfoBuff2Back[TempLen2];
+
+					szInfoBuffBack[i] = 0;
+					szInfoBuff2Back[j] = 0;
+
+					TempLen = i + 1;
+					TempLen2 = j + 1;
+
+					Textlen = lstrlen(pItemInfo[Count]);
+					Textlen2 = lstrlen(pItemInfo2[Count]);
+
+					SetTextXposi = (ItemBoxPosi.x + (158 / 2)) - (Textlen * 6);
+					SetTextXposi2 = (ItemBoxPosi.x + (158 / 2));
+
+					SetTextXposi += 20;
+					SetTextXposi2 += 17;
+
+					if (*pItemInfo2[Count] == ' ' || Textlen2 < 1) {
+						SetTextXposi = (ItemBoxPosi.x + (158 / 2)) - (Textlen * 3);
+					}
+
+					char	test[1024];
+					ZeroMemory(test, sizeof(char) * 1024);
+					strcat(test, pItemInfo[Count]);
+					strcat(test, pItemInfo2[Count]);
+
+					SetTextXposi = AddX + ItemBoxPosi.x + (((ItemBoxSize.x * 16) - GetTextFullSize(test)) / 2);
+
+					SetFontTextColor(RGB(255, 255, 255));
+
+					if (Count + 1 == 1)
+					{
+						if (UniFlag)
+							SetFontTextColor(RGB(128, 255, 128));
+						else
+						{
+							SetFontTextColor(RGB(222, 231, 255));
+							if (sinItemKindFlag)
+							{
+								switch (sinItemKindFlag)
+								{
+								case ITEM_KIND_CRAFT:
+
+									SetFontTextColor(RGB(150, 255, 255));
+									break;
+								case ITEM_KIND_AGING:
+									SetFontTextColor(RGB(255, 250, 0));
+									break;
+								case ITEM_KIND_QUEST_WEAPON:
+									SetFontTextColor(RGB(132, 50, 254));
+									break;
+								case 100:
+									SetFontTextColor(RGB(255, 100, 29));
+									break;
+								}
+							}
+						}
+
+						FontType = 1;
+						dsTextLineOut(SetTextXposi - 3, ItemBoxPosi.y + 27 + ((Count - 1) * 14), pItemInfo[Count], Textlen);
+						FontType = 0;
+						BlodCheckFlag = 1;
+					}
+					if (AgingGageFlag)
+					{
+						SetFontTextColor(RGB(255, 255, 255));
+
+						wsprintf(szAgingNum, "+%d", AgingLevel4);
+						if (AgingLevel4 < 10)
+							dsTextLineOut(AddX + ItemBoxPosi.x + 92 + 7, ItemBoxPosi.y + 37, szAgingNum, lstrlen(szAgingNum));
+						else
+							dsTextLineOut(AddX + ItemBoxPosi.x + 92 + 4, ItemBoxPosi.y + 37, szAgingNum, lstrlen(szAgingNum));
+					}
+					SetFontTextColor(RGB(255, 255, 255));
+					for (j = 0; j < 10; j++)
+					{
+						if (Count + 1 == MixItemLine[j])
+							SetFontTextColor(RGB(110, 165, 250)); // Colour mixed item
+						if (AgingGageFlag)
+						{
+							if (Count + 1 == AgingItemLine[j])
+								SetFontTextColor(RGB(119, 200, 254)); // Cor do atributo Aging
+						}
+					}
+
+					if (SpecialItemLine)
+					{
+						if (SpecialItemLine <= Count + 2)
+						{
+							SetFontTextColor(RGB(164, 199, 41)); // Spec adicional
+						}
+						if (SpecialItemLine == Count + 2 || (SpecialItemLine + (CountSpecialName - 1)) == Count + 2)
+							SetFontTextColor(RGB(255, 220, 0));
+					}
+
+					for (j = 0; j < 10; j++)
+					{
+						if (Count + 1 == RequireLine[j])
+							SetFontTextColor(RGB(255, 180, 100));
+
+						if (Count + 1 == RedLine[j])
+							SetFontTextColor(RGB(255, 0, 0));
+					}
+
+					if (cShop.OpenFlag)
+					{
+						if (Count == sinLineCount - 1)
+							SetFontTextColor(RGB(247, 243, 193));
+					}
+
+					if (Count + 1 == QuestItemLine)
+					{
+						SetFontTextColor(RGB(125, 180, 175));
+					}
+
+					if (Count + 1 == MyShopItemPriceLine)
+					{
+						SetFontTextColor(RGB(65, 177, 255));
+					}
+
+					if (Count + 1 == SkinItemLine)
+					{
+						SetFontTextColor(RGB(0, 255, 127));
+					}
+
+					if (Count + 1 == NameMixLine)
+					{
+						SetFontTextColor(RGB(192, 192, 192));
+					}
+
+					if (Count + 1 == Name1MixLine)
+					{
+						SetFontTextColor(RGB(246, 225, 249));
+					}
+					if (Count + 1 == MigraçãoMixLine)
+					{
+						SetFontTextColor(RGB(0, 255, 255));
+					}
+					if (Count + 1 == ItemBossMixLine)
+					{
+						SetFontTextColor(RGB(250, 252, 114));
+					}
+
+					if (Count + 1 == ItemLinkedLine)
+					{
+						SetFontTextColor(RGB(255, 0, 0));
+					}
+
+					//Texto : Set Boss #
+					if (Count + 1 == ItemBossLine && ItemBoss1 == 1)
+					{
+						SetFontTextColor(RGB(246, 225, 249)); // COR TITULO
+					}
+					//Texto : Bracelete
+					if (Count + 1 == Amuleto && ItemBoss2 == 1)
+					{
+						if (TullaAmulet == 1)
+							SetFontTextColor(RGB(199, 107, 252));
+						else
+							SetFontTextColor(RGB(125, 120, 100)); // FALTANDO PARTE
+					}
+					//Texto : Luva
+					if (Count + 1 == Ring && ItemBoss2 == 1)
+					{
+						if (LShyRing + RShyRing == 2)
+							SetFontTextColor(RGB(199, 107, 252));
+						else
+							SetFontTextColor(RGB(125, 120, 100)); // FALTANDO PARTE
+					}
+					//Texto : Bota
+					if (Count + 1 == Sheltom && ItemBoss2 == 1)
+					{
+						if (FurySheltom == 1)
+							SetFontTextColor(RGB(199, 107, 252));
+						else
+							SetFontTextColor(RGB(125, 120, 100)); // FALTANDO PARTE
+					}
+					// Texto : Efeito Bonus
+					if (Count + 1 == Efect1Line && ItemBoss1 == 1)
+					{
+						SetFontTextColor(RGB(255, 140, 0));
+					}
+					//Texto : Bonus 1
+					if (Count + 1 == Efect1Line2 && ItemBoss1 == 1)
+					{
+						if (SetBonus1 >= 2)
+							SetFontTextColor(RGB(199, 107, 252));
+						else
+							SetFontTextColor(RGB(125, 120, 100)); // FALTANDO PARTE
+					}
+					//Texto : Bonus 2
+					if (Count + 1 == Efect1Line3 && ItemBoss1 == 1)
+					{
+						if (SetBonus1 >= 4)
+							SetFontTextColor(RGB(199, 107, 252));
+						else
+							SetFontTextColor(RGB(125, 120, 100)); // FALTANDO PARTE
+					}
+					//Texto : Set Boss #2
+					if (Count + 1 == ItemBossLine && ItemBoss2 == 1)
+					{
+						SetFontTextColor(RGB(246, 225, 249)); // COR TITULO
+					}
+					////Texto : Shy Ring
+					//if (Count + 1 == Ring2 && ItemBoss2 == 1)
+					//{
+					//	if (LShyRing + RShyRing == 2)
+					//		SetFontTextColor(RGB(208, 32, 144));
+					//	else
+					//		SetFontTextColor(RGB(125, 120, 100));
+					//}
+					//Texto : Tulla Amulet
+					if (Count + 1 == Amulet2 && ItemBoss2 == 1)
+					{
+						if (TullaAmulet == 1)
+							SetFontTextColor(RGB(199, 107, 252));
+						else
+							SetFontTextColor(RGB(125, 120, 100)); // FALTANDO PARTE
+					}
+					// Texto : Efeito Bonus
+					if (Count + 1 == Efect2Line && ItemBoss2 == 1)
+					{
+						SetFontTextColor(RGB(246, 225, 249));
+					}
+					//Texto : Bonus 2
+					if (Count + 1 == Efect2Line3 && ItemBoss2 == 1)
+					{
+						if (SetBonus2 >= 4)
+							SetFontTextColor(RGB(199, 107, 252));
+						else
+							SetFontTextColor(RGB(125, 120, 100)); // FALTANDO PARTE
+					}
+
+					if (!BlodCheckFlag)
+					{
+						if (Count + 1 == SkinItemLine || Count + 1 == NameMixLine || Count + 1 == Name1MixLine || Count + 1 == MigraçãoMixLine)
+						{
+							FontType = 1;
+							dsTextLineOut(SetTextXposi - 3, ItemBoxPosi.y + 28 + ((Count - 1) * 14), pItemInfo[Count], Textlen);
+							FontType = 0;
+						}
+						else if (Count + 1 == ItemBossMixLine)
+						{
+							dsTextLineOut(SetTextXposi - 3, ItemBoxPosi.y + 28 + ((Count - 1) * 14), pItemInfo[Count], Textlen);
+						}
+						else if (Count + 1 == MyShopItemPriceLine)
+						{
+							dsTextLineOut(SetTextXposi, ItemBoxPosi.y + 28 + ((Count - 1) * 14), pItemInfo[Count], Textlen);
+							FontType = 1;
+							dsTextLineOut(SetTextXposi + GetTextFullSize(pItemInfo[Count]), ItemBoxPosi.y + 28 + ((Count - 1) * 14), pItemInfo2[Count], Textlen2);
+							FontType = 0;
+						}
+						else
+						{
+							dsTextLineOut(AddX + ItemBoxPosi.x + 15, ItemBoxPosi.y + 28 + ((Count - 1) * 14), pItemInfo[Count], Textlen);
+							//FontType = 1;
+							dsTextLineOut(AddX + ItemBoxPosi.x + 147, ItemBoxPosi.y + 28 + ((Count - 1) * 14), pItemInfo2[Count], Textlen2);
+							//FontType = 0;
+						}
+					}
+
+					BlodCheckFlag = 0;
+
+					Count++;
+					break;
+				}
+			}
+		}
+	}
+
+	return TRUE;
+}
+
+int cITEM::GetJobCode(DWORD SpecialJob_CODE)
+{
+	int cnt, result = 0;
+
+	cnt = 0;
+	while (1)
+	{
+		if (JobDataBase[cnt].JobBitCode == 0)break;
+		if (JobDataBase[cnt].JobBitCode == SpecialJob_CODE)
+		{
+			result = JobDataBase[cnt].JobCode;
+		}
+		cnt++;
+	}
+	return result;
+}
+
+int cITEM::SearchSpecialItemJob(DWORD SpecialJob_CODE)
+{
+	int cnt;
+
+	char	szTemp[64];
+	char    szTemp2[64];
+	CountSpecialName = 0;
+
+	cnt = 0;
+	while (1)
+	{
+		if (JobDataBase[cnt].JobBitCode == 0)break;
+		if (JobDataBase[cnt].JobBitCode == SpecialJob_CODE)
+		{
+			wsprintf(szTemp, SpecialName3, JobDataBase[cnt].szName2);
+			lstrcpy(szTemp2, "  \r");
+			lstrcat(szInfoBuff, szTemp);
+			lstrcat(szInfoBuff2, szTemp2);
+			ItemInfoCol++;
+			SpecialItemLine = ItemInfoCol + 1;
+			CountSpecialName++;
+			SpecialItemLine -= (CountSpecialName - 1);
+		}
+		cnt++;
+	}
+	return FALSE;
+}
+
+int ItemTableCheckDelayTime = 0;
+
+int cITEM::CheckItemTable()
+{
+	ItemTableCheckDelayTime++;
+	if (ItemTableCheckDelayTime < 70 * 10)return FALSE;
+	ItemTableCheckDelayTime = 0;
+
+	DWORD CheckSumItemDataADD = 0;
+
+	for (int j = 0; j < INVENTORY_MAX_POS; j++) {
+		if (sInven[j].Position) {
+			CheckSumItemDataADD += sInven[j].Position * j;
+		}
+	}
+
+	for (int i = 0; i < MAX_ITEM; i++) {
+		if (sItem[i].CODE) {
+			CheckSumItemDataADD += sItem[i].CODE * i;
+			CheckSumItemDataADD += sItem[i].h * i;
+			CheckSumItemDataADD += sItem[i].w * i;
+			CheckSumItemDataADD += sItem[i].Class * i;
+			CheckSumItemDataADD += sItem[i].ItemPosition * i;
+		}
+	}
+	const DWORD CheckSumItemData = 3977515816;
+
+	if (CheckSumItemData != CheckSumItemDataADD) {
+		SendSetHackUser(101);
+	}
+
+	return TRUE;
+}
+
+int cITEM::GetItemLimitTime(sITEM* pItem)
+{
+	return TRUE;
+}

@@ -1,0 +1,624 @@
+#include <math.h>
+#include <stdio.h>
+
+#include "smd3d.h"
+#include "..\\drawsub.h"
+#include "..\\DXPostProcess.h"
+#include "..\\settings.h"
+
+extern HWND hwnd;
+
+#define WINMODE			01
+
+int InterfaceX = 0;
+int WindowMode = WINMODE;
+int	smTextureBPP = 16;
+
+int smScreenWidth, smScreenHeight;
+int smFlipCount = 0;
+bool MagFilter = false;
+int TextureQuality = 0;
+
+LPDIRECT3D9             d3d = nullptr;
+LPDIRECT3DDEVICE9       d3ddev = nullptr;
+D3DPRESENT_PARAMETERS   d3dpp = { 0 };
+D3DDISPLAYMODE d3dm;
+D3DCAPS9  d3dcaps;
+
+int  FontType = 0;
+int  FontOpacity = 255;
+ID3DXFont* RegularFont = nullptr;
+ID3DXFont* FontBold = nullptr;
+ID3DXFont* CoinFont[2] = { nullptr,nullptr };
+ID3DXFont* FontDamageShadow = nullptr;
+extern ID3DXFont* Font = nullptr;
+extern ID3DXFont* FontTitle = nullptr;
+extern ID3DXFont* FontRank = nullptr;
+int SuportPixelShader = true;
+
+extern D3DCOLOR         FontColor = { 0 };
+
+int MESSAGE(char* t)
+{
+	FILE* fp;
+	fp = fopen("error.log", "a+");
+	if (fp != NULL) {
+		fwrite(t, lstrlen(t), 1, fp);
+		fclose(fp);
+	}
+
+	return NULL;
+}
+
+BOOL CreateInterface()
+{
+	if (FAILED(d3d = Direct3DCreate9(D3D_SDK_VERSION)))
+	{
+		return FALSE;
+	}
+
+	if (FAILED(d3d->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &d3dm)))
+	{
+		return FALSE;
+	}
+
+	BOOL bWindowed = Settings::GetInstance()->cWindowed;
+
+	DWORD dwBitDepth = Settings::GetInstance()->cBPP == 16 ? 16 : 32;
+
+	if (FAILED(d3d->CheckDeviceType(D3DADAPTER_DEFAULT,
+		D3DDEVTYPE_HAL,
+		d3dm.Format,
+		dwBitDepth == 32 ? D3DFMT_X8R8G8B8 : D3DFMT_X4R4G4B4,
+		bWindowed)))
+	{
+		dwBitDepth = dwBitDepth == 32 ? 16 : 32;
+
+		if (FAILED(d3d->CheckDeviceType(D3DADAPTER_DEFAULT,
+			D3DDEVTYPE_HAL,
+			d3dm.Format,
+			dwBitDepth == 32 ? D3DFMT_X8R8G8B8 : D3DFMT_X4R4G4B4,
+			bWindowed)))
+		{
+			return FALSE;
+		}
+	}
+
+	if (dwBitDepth == 32)
+	{
+		d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
+	}
+	else if (dwBitDepth == 16)
+	{
+		d3dpp.BackBufferFormat = D3DFMT_X4R4G4B4;
+	}
+	else
+	{
+		return FALSE;
+	}
+
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;
+
+	if (FAILED(d3d->CheckDeviceFormat(D3DADAPTER_DEFAULT,
+		D3DDEVTYPE_HAL,
+		d3dm.Format,
+		D3DUSAGE_DEPTHSTENCIL,
+		D3DRTYPE_SURFACE,
+		d3dpp.AutoDepthStencilFormat)))
+	{
+		d3dpp.AutoDepthStencilFormat = D3DFMT_D15S1;
+
+		if (FAILED(d3d->CheckDeviceFormat(D3DADAPTER_DEFAULT,
+			D3DDEVTYPE_HAL,
+			d3dm.Format,
+			D3DUSAGE_DEPTHSTENCIL,
+			D3DRTYPE_SURFACE,
+			d3dpp.AutoDepthStencilFormat)))
+		{
+			return FALSE;
+		}
+		else
+		{
+		}
+	}
+	else
+	{
+	}
+
+	d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
+	d3dpp.MultiSampleQuality = 0;
+
+	/*if (Settings::GetInstance()->cAutoAdjust)
+	{
+		D3DMULTISAMPLE_TYPE d3daMultipleSampleType[] = {
+			D3DMULTISAMPLE_16_SAMPLES,
+			D3DMULTISAMPLE_15_SAMPLES,
+			D3DMULTISAMPLE_14_SAMPLES,
+			D3DMULTISAMPLE_13_SAMPLES,
+			D3DMULTISAMPLE_12_SAMPLES,
+			D3DMULTISAMPLE_11_SAMPLES,
+			D3DMULTISAMPLE_10_SAMPLES,
+			D3DMULTISAMPLE_9_SAMPLES,
+			D3DMULTISAMPLE_8_SAMPLES,
+			D3DMULTISAMPLE_7_SAMPLES,
+			D3DMULTISAMPLE_6_SAMPLES,
+			D3DMULTISAMPLE_5_SAMPLES,
+			D3DMULTISAMPLE_4_SAMPLES,
+			D3DMULTISAMPLE_3_SAMPLES,
+			D3DMULTISAMPLE_2_SAMPLES,
+		};
+
+		for (int i = 0; i < _countof(d3daMultipleSampleType); i++)
+		{
+			D3DMULTISAMPLE_TYPE t = d3daMultipleSampleType[i];
+			DWORD q;
+
+			if (SUCCEEDED(hr = d3d->CheckDeviceMultiSampleType(D3DADAPTER_DEFAULT,
+				D3DDEVTYPE_HAL,
+				d3dpp.BackBufferFormat,
+				bWindowed,
+				t,
+				&q)) &&
+				SUCCEEDED(hr = d3d->CheckDeviceMultiSampleType(D3DADAPTER_DEFAULT,
+					D3DDEVTYPE_HAL,
+					d3dpp.AutoDepthStencilFormat,
+					bWindowed,
+					t,
+					&q)))
+			{
+				d3dpp.MultiSampleType = t;
+				d3dpp.MultiSampleQuality = q - 1;
+				break;
+			}
+		}
+	}*/
+
+	//Get Device Caps
+	if (FAILED(d3d->GetDeviceCaps(D3DADAPTER_DEFAULT,
+		D3DDEVTYPE_HAL,
+		&d3dcaps)))
+	{
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+BOOL CreateD3D()
+{
+	return CreateInterface();;
+}
+
+void ReleaseD3D()
+{
+	if (d3d)
+	{
+		d3d->Release();
+		d3d = NULL;
+	}
+
+	if (d3ddev)
+	{
+		d3ddev->Release();
+		d3ddev = NULL;
+	}
+
+	if (RegularFont)
+	{
+		RegularFont->Release();
+		RegularFont = NULL;
+	}
+
+	if (FontBold)
+	{
+		FontBold->Release();
+		FontBold = NULL;
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		if (CoinFont[i])
+		{
+			CoinFont[i]->Release();
+			CoinFont[i] = NULL;
+		}
+	}
+
+	if (FontDamageShadow)
+	{
+		FontDamageShadow->Release();
+	}
+
+	if (lpPostProcess)
+		delete lpPostProcess;
+}
+
+BOOL SetDisplayMode(HWND hWnd, DWORD Width, DWORD Height, DWORD BPP)
+{
+	d3dpp.BackBufferWidth = Width;
+	d3dpp.BackBufferHeight = Height;
+	d3dpp.Windowed = Settings::GetInstance()->cWindowed;
+
+	smTextureBPP = BPP;
+	smScreenWidth = Width;
+	smScreenHeight = Height;
+
+	DWORD dwBehaviourFlags = D3DCREATE_FPU_PRESERVE;
+	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
+
+	if (d3dcaps.PixelShaderVersion < D3DPS_VERSION(2, 0))
+	{
+		SuportPixelShader = FALSE;
+#ifdef _DEBUG_DX
+		Record_ClinetLogFile("Pixel Shader < 2.0");
+#endif
+	}
+
+	if (d3dcaps.DevCaps & D3DDEVCAPS_PUREDEVICE)
+	{
+		dwBehaviourFlags |= D3DCREATE_PUREDEVICE;
+	}
+
+	if ((d3dcaps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT) && (d3dcaps.VertexProcessingCaps != 0))
+	{
+		dwBehaviourFlags |= D3DCREATE_HARDWARE_VERTEXPROCESSING;
+	}
+	else
+	{
+		dwBehaviourFlags |= D3DCREATE_SOFTWARE_VERTEXPROCESSING;
+	}
+
+	if (d3dcaps.PresentationIntervals & D3DPRESENT_INTERVAL_IMMEDIATE)
+	{
+		d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+	}
+
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	d3dpp.hDeviceWindow = hWnd;
+	d3dpp.BackBufferCount = 1;
+	d3dpp.EnableAutoDepthStencil = TRUE;
+	d3dpp.Flags = 0;
+
+	if (d3dpp.Windowed) d3dpp.FullScreen_RefreshRateInHz = 0; else  d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
+
+	if (FAILED(d3d->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, dwBehaviourFlags, &d3dpp, &d3ddev)))
+		return FALSE;
+
+	/*
+	D3DCAPS9  d3dCaps;
+	ZeroMemory(&d3dpp, sizeof(D3DPRESENT_PARAMETERS));
+	d3dpp.BackBufferWidth = Width;
+	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
+	d3dpp.EnableAutoDepthStencil = true;
+	d3dpp.BackBufferHeight = Height;
+	d3dpp.hDeviceWindow = hWnd;
+
+	if (BPP == 16)
+		d3dpp.BackBufferFormat = D3DFMT_X4R4G4B4;
+	if (BPP == 32)
+		d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
+
+	smTextureBPP = BPP;
+	smScreenWidth = Width;
+	smScreenHeight = Height;
+
+#ifdef MULTI_THREADED_LOADING
+	DWORD dwBehaviourFlags = D3DCREATE_FPU_PRESERVE | D3DCREATE_MULTITHREADED;
+#else
+	DWORD dwBehaviourFlags = D3DCREATE_FPU_PRESERVE;
+#endif
+
+	if (WindowMode)
+	{
+		d3dpp.Windowed = true;
+		d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	}
+	else
+	{
+		d3dpp.Windowed = false;
+		d3dpp.SwapEffect = D3DSWAPEFFECT_FLIP;
+		d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
+	}
+
+	HRESULT hr = 0;
+	if (FAILED(hr = lpD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,
+		D3DDEVTYPE_HAL,
+		&d3dCaps)))
+	{
+		return FALSE;
+	}
+
+	if (d3dCaps.DevCaps & D3DDEVCAPS_PUREDEVICE)
+	{
+		dwBehaviourFlags |= D3DCREATE_PUREDEVICE;
+	}
+
+	if ((d3dCaps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT) && (d3dCaps.VertexProcessingCaps != 0))
+	{
+		dwBehaviourFlags |= D3DCREATE_HARDWARE_VERTEXPROCESSING;
+	}
+	else
+	{
+		dwBehaviourFlags |= D3DCREATE_SOFTWARE_VERTEXPROCESSING;
+	}
+
+	if (d3dCaps.PresentationIntervals & D3DPRESENT_INTERVAL_IMMEDIATE)
+	{
+		d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+	}
+
+	HRESULT Result = 0;
+	Result = lpD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, dwBehaviourFlags, &d3dpp, &d3ddev);
+	if (FAILED(Result))
+	{
+		lpD3D->Release();
+		lpD3D = NULL;
+
+		if (Result == D3DERR_DEVICELOST)
+			MessageBox(NULL, "D3DERR_DEVICELOST", "D3DERR_DEVICELOST", MB_OK);
+		if (Result == D3DERR_INVALIDCALL)
+			MessageBox(NULL, "D3DERR_DEVICELOST", "D3DERR_DEVICELOST", MB_OK);
+		if (Result == D3DERR_NOTAVAILABLE)
+			MessageBox(NULL, "D3DERR_NOTAVAILABLE", "D3DERR_NOTAVAILABLE", MB_OK);
+		if (Result == D3DERR_OUTOFVIDEOMEMORY)
+			MessageBox(NULL, "D3DERR_OUTOFVIDEOMEMORY", "D3DERR_OUTOFVIDEOMEMORY", MB_OK);
+		return false;
+	}
+	*/
+
+#ifdef _W_DATA_SERVER
+	D3DXCreateFont(d3ddev, 16, 0, FW_NORMAL, 1, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, VARIABLE_PITCH | FF_DONTCARE, "Comic Sans MS", &RegularFont);
+	D3DXCreateFont(d3ddev, 16, 0, FW_BOLD, 1, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, VARIABLE_PITCH | FF_DONTCARE, "Comic Sans MS", &FontBold);
+	D3DXCreateFont(d3ddev, 16, 0, FW_BOLD, 1, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, VARIABLE_PITCH | FF_DONTCARE, "Comic Sans MS", &CoinFont[0]);
+	D3DXCreateFont(d3ddev, 16, 0, FW_NORMAL, 1, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, VARIABLE_PITCH | FF_DONTCARE, "Comic Sans MS", &CoinFont[1]);
+	D3DXCreateFont(d3ddev, 20, 0, FW_BOLD, 1, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, VARIABLE_PITCH | FF_DONTCARE, "Century Schoolbook", &FontDamageShadow);
+	InitTextCache();
+#endif
+	lpPostProcess = new DXPostProcess;
+	lpPostProcess->Init();
+
+	return TRUE;
+}
+
+void OnLostDevice()
+{
+	if (RegularFont)
+		RegularFont->OnLostDevice();
+	if (FontBold)
+		FontBold->OnLostDevice();
+
+	for (int i = 0; i < 2; i++)
+	{
+		if (CoinFont[i])
+		{
+			CoinFont[i]->OnLostDevice();
+		}
+	}
+
+	if (FontDamageShadow)
+		FontDamageShadow->OnLostDevice();
+
+	if (lpPostProcess)
+		lpPostProcess->OnLostDevice();
+}
+
+void OnResetDevice()
+{
+	if (RegularFont)
+		RegularFont->OnResetDevice();
+	if (FontBold)
+		FontBold->OnResetDevice();
+
+	for (int i = 0; i < 2; i++)
+	{
+		if (CoinFont[i])
+		{
+			CoinFont[i]->OnResetDevice();
+		}
+	}
+
+	if (FontDamageShadow)
+		FontDamageShadow->OnResetDevice();
+
+	if (lpPostProcess)
+		lpPostProcess->OnResetDevice();
+}
+
+void RestoreDevice()
+{
+	if (d3ddev)
+	{
+		HRESULT Result = d3ddev->TestCooperativeLevel();
+
+		switch (Result)
+		{
+		case D3DERR_DEVICELOST:
+			OnLostDevice();
+			break;
+		case D3DERR_DEVICENOTRESET:
+			OnLostDevice();
+			Result = d3ddev->Reset(&d3dpp);
+			InitRender();
+			OnResetDevice();
+			break;
+		}
+	}
+}
+
+void InitRender()
+{
+	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	d3ddev->SetRenderState(D3DRS_CLIPPING, FALSE);
+	d3ddev->SetRenderState(D3DRS_CULLMODE, 2);
+	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
+	d3ddev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	d3ddev->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+	d3ddev->SetRenderState(D3DRS_LASTPIXEL, FALSE);
+	d3ddev->SetRenderState(D3DRS_DITHERENABLE, TRUE);
+	d3ddev->SetRenderState(D3DRS_SPECULARENABLE, TRUE);
+	d3ddev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	d3ddev->SetRenderState(D3DRS_ALPHAFUNC, D3DBLEND_DESTALPHA);
+	d3ddev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	d3ddev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	d3ddev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	for (int cnt = 0; cnt < 8; cnt++)
+	{
+		d3ddev->SetSamplerState(cnt, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+		d3ddev->SetSamplerState(cnt, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+		d3ddev->SetSamplerState(cnt, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+		d3ddev->SetSamplerState(cnt, D3DSAMP_ADDRESSU, D3DTEXF_POINT);
+		d3ddev->SetSamplerState(cnt, D3DSAMP_ADDRESSV, D3DTEXF_POINT);
+		d3ddev->SetTexture(cnt, 0);
+	}
+	smRender.AlphaTestDepth = 60;
+	smRender.dwMatDispMask = sMATS_SCRIPT_NOTVIEW;
+	smRender.ZWriteAuto = FALSE;
+}
+
+extern DWORD smBackColor;
+
+void BeginRender()
+{
+	d3ddev->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA(0, 0, 0, 255), 1.0f, 0);
+	d3ddev->BeginScene();
+}
+
+void EndRender()
+{
+	d3ddev->EndScene();
+	d3ddev->Present(NULL, NULL, NULL, NULL);
+}
+
+void DrawTexture(LPDIRECT3DTEXTURE9 Texture, D3DTLVERTEX* Vertex, int AlphaBlend)
+{
+	d3ddev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	d3ddev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	d3ddev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	if (AlphaBlend)
+	{
+		d3ddev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		d3ddev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		d3ddev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	}
+	else
+
+	{
+		d3ddev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	}
+
+	if (MagFilter)
+	{
+		d3ddev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+		d3ddev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	}
+	else
+	{
+		d3ddev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
+		d3ddev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
+	}
+
+	for (int cnt = 0; cnt < 8; cnt++)
+		d3ddev->SetTexture(cnt, 0);
+	d3ddev->SetTexture(0, Texture);
+	d3ddev->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_SPECULAR | D3DFVF_TEX1);
+	d3ddev->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, Vertex, sizeof(D3DTLVERTEX));
+
+	if (!MagFilter)
+	{
+		d3ddev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+		d3ddev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	}
+
+	d3ddev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	d3ddev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+}
+
+void DrawTexture2D(LPDIRECT3DTEXTURE9 lpTexture, RECT destinationRect, RECT sourceRect, int alphaBlend)
+{
+	if (destinationRect.right > destinationRect.left
+		&& destinationRect.bottom > destinationRect.top
+		&& destinationRect.right >= 0
+		&& destinationRect.bottom >= 0
+		&& destinationRect.left < smScreenWidth
+		&& destinationRect.top < smScreenHeight
+		&& sourceRect.right > sourceRect.left
+		&& sourceRect.bottom > sourceRect.top)
+	{
+		D3DSURFACE_DESC Desc;
+		if (lpTexture)
+			lpTexture->GetLevelDesc(0, &Desc);
+
+		float u1, v1, u2, v2;
+
+		if (lpTexture)
+		{
+			u1 = ((float)sourceRect.left + 0.5f) / Desc.Width;
+			v1 = ((float)sourceRect.top + 0.5f) / Desc.Height;
+			u2 = u1 + ((float)sourceRect.right - sourceRect.left) / Desc.Width;
+			v2 = v1 + ((float)sourceRect.bottom - sourceRect.top) / Desc.Height;
+		}
+		else
+		{
+			u1 = 0.0f;
+			v1 = 0.0f;
+			u2 = 1.0f;
+			v2 = 1.0f;
+		}
+
+		D3DTLVERTEX Vertices[4] =
+		{
+			{ (float)destinationRect.left, (float)destinationRect.top, 0.0f, 1.0f, D3DCOLOR_XRGB(255,255,255), 0, u1, v1 },
+			{ (float)destinationRect.right, (float)destinationRect.top, 0.0f, 1.0f, D3DCOLOR_XRGB(255,255,255), 0, u2, v1 },
+			{ (float)destinationRect.left, (float)destinationRect.bottom, 0.0f, 1.0f, D3DCOLOR_XRGB(255,255,255), 0, u1, v2 },
+			{ (float)destinationRect.right,(float)destinationRect.bottom, 0.0f, 1.0f, D3DCOLOR_XRGB(255,255,255), 0, u2, v2 },
+		};
+
+		DrawTexture(lpTexture ? lpTexture : nullptr, Vertices, alphaBlend);
+	}
+}
+
+void DrawTextureOpacity2D(LPDIRECT3DTEXTURE9 lpTexture, RECT destinationRect, RECT sourceRect, int opacity, int alphaBlend)
+{
+	if (destinationRect.right > destinationRect.left
+		&& destinationRect.bottom > destinationRect.top
+		&& destinationRect.right >= 0
+		&& destinationRect.bottom >= 0
+		&& destinationRect.left < smScreenWidth
+		&& destinationRect.top < smScreenHeight
+		&& sourceRect.right > sourceRect.left
+		&& sourceRect.bottom > sourceRect.top)
+	{
+		D3DSURFACE_DESC Desc;
+		if (lpTexture)
+			lpTexture->GetLevelDesc(0, &Desc);
+
+		float u1, v1, u2, v2;
+
+		if (lpTexture)
+		{
+			u1 = ((float)sourceRect.left + 0.5f) / Desc.Width;
+			v1 = ((float)sourceRect.top + 0.5f) / Desc.Height;
+			u2 = u1 + ((float)sourceRect.right - sourceRect.left) / Desc.Width;
+			v2 = v1 + ((float)sourceRect.bottom - sourceRect.top) / Desc.Height;
+		}
+		else
+		{
+			u1 = 0.0f;
+			v1 = 0.0f;
+			u2 = 1.0f;
+			v2 = 1.0f;
+		}
+
+		D3DTLVERTEX Vertices[4] =
+		{
+			{ (float)destinationRect.left, (float)destinationRect.top, 0.0f, 1.0f, D3DCOLOR_RGBA(255,255,255,opacity), 0, u1, v1 },
+			{ (float)destinationRect.right, (float)destinationRect.top, 0.0f, 1.0f, D3DCOLOR_RGBA(255,255,255,opacity), 0, u2, v1 },
+			{ (float)destinationRect.left, (float)destinationRect.bottom, 0.0f, 1.0f, D3DCOLOR_RGBA(255,255,255,opacity), 0, u1, v2 },
+			{ (float)destinationRect.right,(float)destinationRect.bottom, 0.0f, 1.0f, D3DCOLOR_RGBA(255,255,255,opacity), 0, u2, v2 },
+		};
+
+		DrawTexture(lpTexture ? lpTexture : nullptr, Vertices, alphaBlend);
+	}
+}
