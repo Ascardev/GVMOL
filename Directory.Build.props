@@ -1,0 +1,31 @@
+<Project>
+  <PropertyGroup>
+    <LanguageStandard>stdcpp20</LanguageStandard>
+    <ConformanceMode>true</ConformanceMode>
+    <OutDir>$(MSBuildThisFileDirectory)build\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(OutDir)obj\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DirectXSdkDir Condition="'$(DXSDK_DIR)' != ''">$(DXSDK_DIR)</DirectXSdkDir>
+    <DirectXSdkDir Condition="'$(DirectXSdkDir)'==''">C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\</DirectXSdkDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x86' or '$(Platform)'=='ARM'">
+    <DirectXLibSubdir>x86</DirectXLibSubdir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x64'">
+    <DirectXLibSubdir>x64</DirectXLibSubdir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DxIncludePath Condition="'$(DirectXSdkDir)' != ''">$(DirectXSdkDir)Include</DxIncludePath>
+    <DxLibPath Condition="'$(DirectXSdkDir)' != '' and '$(DirectXLibSubdir)' != ''">$(DirectXSdkDir)Lib\$(DirectXLibSubdir)</DxLibPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Shared\;$(DxIncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(DxLibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>
