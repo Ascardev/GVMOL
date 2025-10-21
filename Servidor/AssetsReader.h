@@ -1,6 +1,7 @@
 #pragma once
 #include "CRC.h"
 #include <string>
+#include <vector>
 
 namespace Game
 {

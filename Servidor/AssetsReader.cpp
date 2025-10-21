@@ -5,6 +5,9 @@
 #include <string>
 #include <algorithm>
 #include <fstream>
+#include <array>
+#include <filesystem>
+#include <limits>
 
 #include "AssetsReader.h"
 
@@ -17,12 +20,6 @@ namespace Game
 
 	// Our current salt.
 	constexpr unsigned int CypherSalt = 0xDEAD0000;
-
-	std::ifstream::pos_type LegacyFileSize(const char* FileName)
-	{
-		std::ifstream in(FileName, std::ifstream::ate | std::ifstream::binary);
-		return in.tellg();
-	}
 
 	AssetsReader& AssetsReader::GetInstance()
 	{
@@ -83,61 +80,59 @@ namespace Game
 			}
 		}
 
-		using namespace std::string_literals;
+                namespace fs = std::filesystem;
+                using namespace std::string_literals;
 
-		// Perform decrypt operation.
-		auto FileID = FileCRC + CypherSalt;
+                // Perform decrypt operation.
+                const auto FileID = FileCRC + CypherSalt;
 
-		// Get our file path.
-		auto ErrorCode = std::error_code{ };
-		auto FileBin = AssetsPath + "\\"s + std::to_string(FileID) + ".bin"s;
-		auto FileSize = static_cast<unsigned int>(LegacyFileSize(FileBin.c_str()));
+                // Get our file path.
+                const auto FilePathResolved = fs::path{ AssetsPath } / (std::to_string(FileID) + ".bin");
 
-		if (!ErrorCode)
-		{
-			// Open it.
-			FILE* File = nullptr;
-			if (fopen_s(&File, FileBin.c_str(), "rb") == 0)
-			{
-				unsigned char* Memory = new unsigned char[FileSize];
+                std::error_code ErrorCode{ };
+                const auto FileSizeOnDisk = fs::file_size(FilePathResolved, ErrorCode);
+                if (ErrorCode || FileSizeOnDisk == 0)
+                {
+                        return false;
+                }
 
-				// Read from disk.
-				fread_s(Memory, FileSize, sizeof(unsigned char), FileSize, File);
-				fclose(File);
+                if (FileSizeOnDisk > static_cast<uintmax_t>(std::numeric_limits<unsigned int>::max()))
+                {
+                        return false;
+                }
 
-				// Gets our keys.
-				unsigned char Keys[sizeof(FileCRC)] = { 0 };
+                std::ifstream Input(FilePathResolved, std::ios::binary);
+                if (!Input)
+                {
+                        return false;
+                }
 
-				// Reinterpret and set.
-				auto* Bytes = reinterpret_cast<unsigned char*>(&FileCRC);
-				Keys[0] = Bytes[0];
-				Keys[1] = Bytes[1];
-				Keys[2] = Bytes[2];
-				Keys[3] = Bytes[3];
+                const auto FileSize = static_cast<unsigned int>(FileSizeOnDisk);
+                std::vector<unsigned char> Buffer(FileSize);
 
-				// Construct our AssetsBinary.
-				Binary.Memory = Memory;
+                if (!Input.read(reinterpret_cast<char*>(Buffer.data()), static_cast<std::streamsize>(Buffer.size())))
+                {
+                        return false;
+                }
 
-				// Basic xor decryption.
-				for (size_t i = 0; i < FileSize; i++)
-				{
-					Binary.Memory[i] = Memory[i];
-					Binary.Memory[i] ^= Keys[i % _countof(Keys)];
-				}
+                std::array<unsigned char, sizeof(FileCRC)> Keys{ };
+                const auto* Bytes = reinterpret_cast<unsigned char*>(&FileCRC);
+                std::copy(Bytes, Bytes + Keys.size(), Keys.begin());
 
-				// Copy informations.
-				Binary.Size = FileSize;
-				Binary.Crc = FileCRC;
-				Binary.AllocationTime = GetCurrentTime();
+                auto Memory = std::make_unique<unsigned char[]>(Buffer.size());
 
-				// Insert to our cache.
-				m_Cache.emplace_back(Binary);
+                for (size_t i = 0; i < Buffer.size(); ++i)
+                {
+                        Memory[i] = Buffer[i] ^ Keys[i % Keys.size()];
+                }
 
-				// Return success.
-				return true;
-			}
-		}
+                Binary.Memory = Memory.release();
+                Binary.Size = FileSize;
+                Binary.Crc = FileCRC;
+                Binary.AllocationTime = GetCurrentTime();
 
-		return false;
-	}
+                m_Cache.emplace_back(Binary);
+
+                return true;
+        }
 }
