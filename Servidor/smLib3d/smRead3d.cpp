@@ -1587,21 +1587,22 @@ smPAT3D* smReadModel_Assets(char* File, char* szNodeName = nullptr)
 
 	Game::AssetsBinary Binary;
 
-	if (Game::AssetsReader::GetInstance().Get(FilePath, Binary))
-	{
-		smPAT3D* Pat = new smPAT3D();
+        if (Game::AssetsReader::GetInstance().Get(FilePath, Binary))
+        {
+                if (auto* Memory = Binary.Data(); Memory != nullptr && Binary.Size > 0)
+                {
+                        smPAT3D* Pat = new smPAT3D();
 
-		if (Pat->LoadFromBuffer(const_cast<char*>(reinterpret_cast<const char*>(Binary.Memory)), Binary.Size, szNodeName))
-		{
-			return Pat;
-		}
-		else
-		{
-			delete Pat;
-		}
-	}
+                        if (Pat->LoadFromBuffer(reinterpret_cast<char*>(Memory), Binary.Size, szNodeName))
+                        {
+                                return Pat;
+                        }
 
-	return nullptr;
+                        delete Pat;
+                }
+        }
+
+        return nullptr;
 }
 
 smPAT3D* smASE_Read(char* file, char* szModelName)
