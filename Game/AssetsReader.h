@@ -45,3 +45,4 @@ namespace Game
 		std::vector<AssetsBinary> m_Cache;
 	};
 }
+

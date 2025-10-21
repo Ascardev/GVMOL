@@ -1,5 +1,4 @@
 #include <windows.h>
-
 #include <algorithm>
 #include <array>
 #include <cctype>
@@ -15,15 +14,15 @@
 
 namespace Game
 {
-        constexpr const char* AssetsPath = "Data";
+	constexpr const char* AssetsPath = "Data";
 
-        // Keeps our binary open for 60 seconds.
-        constexpr unsigned int MaxAllocationTime = 1000 * 60;
+	// Keeps our binary open for 60 seconds.
+	constexpr unsigned int MaxAllocationTime = 1000 * 60;
 
-        // Our current salt.
-        constexpr unsigned int CypherSalt = 0xDEAD0000;
+	// Our current salt.
+	constexpr unsigned int CypherSalt = 0xDEAD0000;
 
-	AssetsReader& AssetsReader::GetInstance()
+        AssetsReader& AssetsReader::GetInstance()
 	{
 		static AssetsReader Instance;
 		return Instance;
@@ -52,12 +51,13 @@ namespace Game
                         // Erase by predicate.
                         const auto FirstExpired = std::remove_if(m_Cache.begin(), m_Cache.end(), ErasePredicate);
                         m_Cache.erase(FirstExpired, m_Cache.end());
-                }
-        }
+}
+}
 
-	bool AssetsReader::Get(const char* FilePath, AssetsBinary& Binary)
-	{
-                if (FilePath == nullptr)
+
+        bool AssetsReader::Get(const char* FilePath, AssetsBinary& Binary)
+        {
+                if (FilePath == nullptr || *FilePath == '\0')
                 {
                         return false;
                 }
@@ -70,26 +70,23 @@ namespace Game
                         return static_cast<char>(std::tolower(Ch));
                 });
 
-		auto FileCRC = CRC::Calculate(FileLower.data(), FileLower.size(), m_LookupTable);
+                const auto FileCRC = CRC::Calculate(FileLower.data(), FileLower.size(), m_LookupTable);
 
-                // Check on our cache.
                 for (auto& Bin : m_Cache)
                 {
-                        if (Bin.Crc == FileCRC)
+                        if (Bin.Crc == FileCRC && Bin.Buffer && !Bin.Buffer->empty())
                         {
                                 Bin.AllocationTime = Now;
-                                Bin.Size = static_cast<unsigned int>(Bin.Buffer ? Bin.Buffer->size() : 0);
+                                Bin.Size = static_cast<unsigned int>(Bin.Buffer->size());
 
                                 Binary = Bin;
-                                Binary.Size = static_cast<unsigned int>(Binary.Buffer ? Binary.Buffer->size() : 0);
+                                Binary.AllocationTime = Now;
+                                Binary.Size = static_cast<unsigned int>(Binary.Buffer->size());
                                 return true;
                         }
                 }
 
-                // Perform decrypt operation.
                 const auto FileID = FileCRC + CypherSalt;
-
-                // Resolve our legacy on-disk location.
                 const std::string FilePathResolved = std::string(AssetsPath) + "\\" + std::to_string(FileID) + ".bin";
 
                 std::ifstream Input(FilePathResolved, std::ios::binary | std::ios::ate);
@@ -104,17 +101,20 @@ namespace Game
                         return false;
                 }
 
-                Input.seekg(0, std::ios::beg);
-
                 if (FileSizeOnDisk > static_cast<std::streamoff>(std::numeric_limits<unsigned int>::max()))
                 {
                         return false;
                 }
 
-                const auto FileSize = static_cast<unsigned int>(FileSizeOnDisk);
-                auto Memory = std::make_shared<std::vector<unsigned char>>(FileSize);
+                Input.seekg(0, std::ios::beg);
 
+                auto Memory = std::make_shared<std::vector<unsigned char>>(static_cast<size_t>(FileSizeOnDisk));
                 if (!Input.read(reinterpret_cast<char*>(Memory->data()), static_cast<std::streamsize>(Memory->size())))
+                {
+                        return false;
+                }
+
+                if (Memory->empty())
                 {
                         return false;
                 }
@@ -129,12 +129,14 @@ namespace Game
 
                 AssetsBinary Result;
                 Result.Buffer = std::move(Memory);
-                Result.Size = FileSize;
+                Result.Size = static_cast<unsigned int>(Result.Buffer->size());
                 Result.Crc = FileCRC;
                 Result.AllocationTime = Now;
 
                 Binary = Result;
-                Binary.Size = static_cast<unsigned int>(Binary.Buffer ? Binary.Buffer->size() : 0);
+                Binary.AllocationTime = Now;
+                Binary.Size = static_cast<unsigned int>(Binary.Buffer->size());
+
                 m_Cache.emplace_back(std::move(Result));
 
                 return true;
